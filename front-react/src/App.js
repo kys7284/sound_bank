@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import DepositList from './Deposit/DepositList';
 import AddDeposit from './Deposit/AddDeposit';
 import DepositCalculator from './Deposit/DepositCalculator';
+import FileDownLoader from './Deposit/FileDownLoader';
 
 const App = () => {
   const [deposits, setDeposits] = useState([
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/deposit/calculator" element={<DepositCalculator />} />
         </Routes>
       </BrowserRouter>
+      <FileDownLoader />
     </div>
   );
 };
