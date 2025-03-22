@@ -1,19 +1,20 @@
-.App {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  padding: 20px;
+.deposit-list {
+  text-align: left;
+  margin: 0 auto;
+  max-width: 600px;
 }
 
-h2 {
+.deposit-list h2 {
   color: #333;
+  text-align: center;
 }
 
-ul {
+.deposit-list ul {
   list-style-type: none;
   padding: 0;
 }
 
-li {
+.deposit-list li {
   background: #f9f9f9;
   margin: 10px 0;
   padding: 10px;
@@ -24,7 +25,7 @@ li {
   align-items: center;
 }
 
-button {
+.deposit-list button {
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -38,27 +39,6 @@ button {
   border-radius: 4px;
 }
 
-button:hover {
+.deposit-list button:hover {
   background-color: #45a049;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-form div {
-  margin-bottom: 10px;
-}
-
-label {
-  margin-right: 10px;
-}
-
-input[type="number"],
-input[type="date"] {
-  padding: 5px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
 }
