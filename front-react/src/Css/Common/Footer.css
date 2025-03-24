@@ -3,7 +3,7 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px); /* Safari 호환 */
   padding: 2rem;
-  position: fixed;
+  position: relative;
   bottom: 0;
   width: 100%;
   z-index: 1050;
@@ -12,12 +12,12 @@
 
 /* 메인 페이지에서 투명하게 */
 .footer-main {
-  background-color: rgba(0, 0, 0, 0.55) !important;
+  background-color: rgba(0, 0, 0) !important;
 }
 
 /* 그 외 페이지는 진하게 */
 .footer-default {
-  background-color: rgba(0, 0, 0, 0.85) !important;
+  background-color: rgba(0, 0, 0) !important;
 }
 
 .footer-wrap {
