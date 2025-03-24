@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+ <mapper namespace="com.boot.sound.loan.LoanDAO">
+ 	<select id="loanList" resultType="com.boot.sound.loan.LoanDTO">
+ 		SELECT * FROM LOAN_TBL
+ 		ORDER BY LOAN_ID
+ 	</select>
+ 
+ 	<insert id="loanInsert">
+ 		INSERT INTO LOAN_TBL(LOAN_ID,LOAN_NAME,LOAN_AMOUNT,INTEREST_RATE,LOAN_TERM,LOAN_INFO)
+		VALUES((SELECT NVL(MAX(LOAN_ID)+1,1) FROM LOAN_TBL),#{loan_name},#{loan_amount},#{interest_rate},#{loan_term},#{loan_info})
+ 	</insert>
+
+	<select id="loanDetail">
+		SELECT * FROM LOAN_TBL
+		WHERE loan_id = #{loan_id}
+	</select>
+	
+	<delete id="loanDelete">
+		DELETE * FROM LOAN_TBL
+		WHERE loan_id = #{loan_id}
+	</delete>
+	
+	<update id="loanUpdate">
+		UPDATE LOAN_TBL
+		SET loan_name = #{loan_name}
+		,	loan_amount = #{loan_amount}
+		,	interest_rate = #{interest_rate}
+		,	loan_term = #{loan_term}
+		,	loan_info = #{loan_info}
+		WHERE loan_id = #{loan_id}
+	</update>
+ 
+ 
+ </mapper>
