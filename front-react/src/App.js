@@ -1,4 +1,3 @@
-import Test1 from './Common/Test1';
 import {BrowserRouter,  Route,  Routes,} from 'react-router-dom';
 import React from 'react';
 import Footer from './Common/Footer';
@@ -13,7 +12,6 @@ function App() {
 
             <Routes>
               <Route path="/" element={<Main />} />
-              <Route path="/test" element={<Test1 />} />
             </Routes>
 
           <Footer />
