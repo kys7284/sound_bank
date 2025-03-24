@@ -5,7 +5,8 @@ const LoanInsertForm = (props) => {
   //const navigate = useNavigate();
   const [loan, setLoan] = useState({
     loan_name: "", // 대출 상품명
-    loan_amount: 0, // 대출 금액
+    loan_min_amount: 0, // 최소 대출 금액
+    loan_max_amount: 0, // 최대 대출 금액
     interest_rate: 0.0, // 연 이자율
     loan_term: 0, // 최대 대출 기간
     loan_info: "", // 대출 정보
@@ -58,8 +59,16 @@ const LoanInsertForm = (props) => {
       </div>
       <div>
         <label>
+          최소 대출 금액 :
+          <input type="number" name="loan_min_amount" onChange={changeValue} />
+          {""} 만원
+        </label>
+      </div>
+
+      <div>
+        <label>
           최대 대출 금액 :
-          <input type="number" name="loan_amount" onChange={changeValue} />
+          <input type="number" name="loan_max_amount" onChange={changeValue} />
           {""} 만원
         </label>
       </div>
