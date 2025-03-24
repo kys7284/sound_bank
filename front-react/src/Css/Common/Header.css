@@ -79,6 +79,7 @@
 .nav-item:hover,
 .NavDropdown-menu .nav-link:hover {
   color: #377ee7 !important; /* 마우스 올렸을 때 파란색 강조 */
+  text-decoration: none !important;
 }
 
 /* 드롭다운 영역 위치 제어용 */
@@ -134,15 +135,15 @@
   display: flex;
   flex-direction: row;
   gap: 60px;
-  justify-content: center;
+  justify-content: center ;
   align-items: flex-start;
 }
 
 /* <li> 스타일 초기화 */
 .deposit-saving-row li {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin: 15px;
+  padding: 5px;
 }
 
 /* 소메뉴 스타일 */
@@ -152,6 +153,7 @@
   color: #fff !important;
   padding: 2px 10px;
   white-space: nowrap;
+  text-decoration: none !important;
 }
 
 /* 슬라이드 효과 */
