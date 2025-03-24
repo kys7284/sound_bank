@@ -38,9 +38,10 @@ public class LoanService {
 	
 	// 대출 상품 삭제
 	@Transactional
-	public int loanDelete(int loan_id) {
+	public String loanDelete(int loan_id) {
 		System.out.println("서비스 - loanDelete");
-		return dao.loanDelete(loan_id);
+		dao.loanDelete(loan_id);
+		return "ok";
 	}
 	
 	
