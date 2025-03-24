@@ -23,7 +23,8 @@ public class LoanDTO {
 	@Id
 	private int loan_id;
 	private String loan_name;
-	private int loan_amount;
+	private int loan_min_amount;
+	private int loan_max_amount;
 	@Column(precision = 5, scale = 2)
 	private BigDecimal   interest_rate;
 	private int loan_term;

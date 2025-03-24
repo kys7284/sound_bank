@@ -7,7 +7,8 @@ const LoanList = (props) => {
     {
       loan_id: 0,
       loan_name: "",
-      loan_amount: 0,
+      loan_min_amount: 0, // 최소 대출 금액
+      loan_max_amount: 0, // 최대 대출 금액
       interest_rate: 0.0,
       loan_term: 0,
       loan_info: "",
@@ -41,10 +42,18 @@ const LoanList = (props) => {
           <p>대출 ID : {loan.loan_id}</p>
           <p>
             {" "}
-            대출 금액 :{" "}
-            {loan.loan_amount >= 10000
-              ? `${(loan.loan_amount / 10000).toLocaleString()} 억원` // 10,000만원 이상일 경우 억원 단위로 표기
-              : `${loan.loan_amount.toLocaleString()} 만원`}
+            최소 대출 금액 :{" "}
+            {loan.loan_min_amount >= 10000
+              ? `${(loan.loan_min_amount / 10000).toLocaleString()} 억원` // 10,000만원 이상일 경우 억원 단위로 표기
+              : `${loan.loan_min_amount.toLocaleString()} 만원`}
+          </p>
+
+          <p>
+            {" "}
+            최대 대출 금액 :{" "}
+            {loan.loan_max_amount >= 10000
+              ? `${(loan.loan_max_amount / 10000).toLocaleString()} 억원` // 10,000만원 이상일 경우 억원 단위로 표기
+              : `${loan.loan_max_amount.toLocaleString()} 만원`}
           </p>
           <p>이자율 : {loan.interest_rate} %</p>
           <p>대출기간 : {loan.loan_term} 년</p>
