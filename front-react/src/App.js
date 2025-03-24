@@ -1,10 +1,26 @@
-import './App.css';
-
+import Test1 from './Common/Test1';
+import {BrowserRouter,  Route,  Routes,} from 'react-router-dom';
+import React from 'react';
+import Footer from './Common/Footer';
+import Main from './Common/Main';
+import Header from './Common/Header';
 function App() {
+
   return (
     <div className="App">
-          안뇽
+      <BrowserRouter> {/* Header.js의 Link연동을 위해서 BrowserRouter추가해야됨 */}
+         <Header />
+
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/test" element={<Test1 />} />
+            </Routes>
+
+          <Footer />
+      </BrowserRouter>
+      
     </div>
+    
   );
 }
 
