@@ -80,7 +80,6 @@ const Header = () => {
     <Navbar
       variant="dark"
       className={`nav-bar ${isMainPage ? "nav-bar-main" : "nav-bar-default"}`}
-      fixed="top"
       expand="md"
     >
       <Container fluid>
@@ -123,42 +122,107 @@ const Header = () => {
               >
                 <div className="deposit-saving-row">
                   <ul>
-                    <NavDropdown.Item as={Link} to="/test">
-                      예금
+                    <NavDropdown.Item as={Link} to="/accountOverview">
+                      조회/입출금
                     </NavDropdown.Item>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        예금소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/depositInquire"
+                      >
+                        계좌조회
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        예금소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/transactionHistory"
+                      >
+                        거래내역
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        예금소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/depositWithdrawal"
+                      >
+                        입출금
                       </NavDropdown.Item>
                     </li>
                   </ul>
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">
-                      적금
+                    <NavDropdown.Item as={Link} to="/productSubscription">
+                      상품가입
                     </NavDropdown.Item>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        적금소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/fixedDeposit"
+                      >
+                        정기예금
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        적금소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/installmentSavings"
+                      >
+                        적금
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        적금소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/precautions"
+                      >
+                        유의사항
+                      </NavDropdown.Item>
+                    </li>
+                  </ul>
+                  <ul>
+                    <NavDropdown.Item as={Link} to="/depositManagement">
+                      예금관리
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/depositChange"
+                      >
+                        예금변경
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/autoTransferSettings"
+                      >
+                        자동이체설정
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/taxPreferenceManagement"
+                      >
+                        세금우대관리
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/depositTermination"
+                      >
+                        예금해지
                       </NavDropdown.Item>
                     </li>
                   </ul>
@@ -397,42 +461,148 @@ const Header = () => {
               >
                 <div className="deposit-saving-row">
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">
-                      펀드1
+                    <NavDropdown.Item as={Link} to="/fund">
+                      펀드 상품
                     </NavDropdown.Item>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        펀드1소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/fundSearch"
+                      >
+                        펀드 상품검색
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        펀드1소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/fundList"
+                      >
+                        펀드 상품보기
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        펀드1소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/fundTest"
+                      >
+                        투자성향분석 테스트
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/fundRecommend"
+                      >
+                        AI 펀드 추천
                       </NavDropdown.Item>
                     </li>
                   </ul>
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">
-                      펀드2
+                    <NavDropdown.Item as={Link} to="/myFund">
+                      My 펀드
                     </NavDropdown.Item>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        펀드2소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/myFundInfo"
+                      >
+                        펀드 정보 조회
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        펀드2소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/openAccount"
+                      >
+                        펀드 계좌 개설
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        펀드2소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/closeAccount"
+                      >
+                        펀드 계좌 해지
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/transHistory"
+                      >
+                        거래 내역 (매수, 환매)
+                      </NavDropdown.Item>
+                    </li>
+                  </ul>
+                  <ul>
+                    <NavDropdown.Item as={Link} to="/fundProductAdmin">
+                      펀드 상품
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/fundProductManage"
+                      >
+                        펀드 상품 관리
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/fundTestManage"
+                      >
+                        투자성향분석 테스트 관리
+                      </NavDropdown.Item>
+                    </li>
+                  </ul>
+                  <ul>
+                    <NavDropdown.Item as={Link} to="/fundCustomer">
+                      고객 펀드
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/findFundCustomer"
+                      >
+                        고객 펀드 조회
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/openApplyList"
+                      >
+                        계좌 개설신청 목록
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/closeApplyList"
+                      >
+                        계좌 해지신청 목록
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/customerTransHistory"
+                      >
+                        회원 거래내역 조회
                       </NavDropdown.Item>
                     </li>
                   </ul>
@@ -456,50 +626,122 @@ const Header = () => {
                   handleDropdownMouseLeave(event, "forex-menu")
                 }
               >
+                {/* customer 시작 */}
                 <div className="deposit-saving-row">
                   <ul>
                     <NavDropdown.Item as={Link} to="#">
-                      외환1
+                      외환
                     </NavDropdown.Item>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        외환1소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/exchange_rate"
+                      >
+                        환율조회/환율계산기
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        외환1소메뉴
-                      </NavDropdown.Item>
-                    </li>
-                    <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        외환1소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/exchange_request"
+                      >
+                        환전신청하기
                       </NavDropdown.Item>
                     </li>
                   </ul>
                   <ul>
                     <NavDropdown.Item as={Link} to="#">
-                      외환2
+                      계좌 관리
                     </NavDropdown.Item>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        외환2소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/ex_create_account"
+                      >
+                        외환 계좌 신청
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        외환2소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/ex_set_limit"
+                      >
+                        외환 계좌 한도 설정
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        외환2소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/exchange_list"
+                      >
+                        환전내역 조회
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/ex_account_management"
+                      >
+                        외환 계좌 해지
                       </NavDropdown.Item>
                     </li>
                   </ul>
+                  {/* customer 끝 */}
+
+                  {/* admin 시작 */}
+                  <ul>
+                    <NavDropdown.Item as={Link} to="#">
+                      {" "}
+                      (관리자){" "}
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/admin_ex_request_list"
+                      >
+                        외환 계좌 신청 현황
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/admin_ex_management"
+                      >
+                        계좌정지,해지,상태변경
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/admin_ex_limit"
+                      >
+                        환전한도 설정
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/admin_ex_set_charge"
+                      >
+                        고객별 환전 수수료 조정
+                      </NavDropdown.Item>
+                    </li>
+                  </ul>
+                  {/* admin 끝 */}
                 </div>
               </div>
             </NavDropdown>
+            {/* 외환메뉴 끝 */}
 
             {/* 고객센터 메뉴 */}
             <NavDropdown
@@ -519,42 +761,64 @@ const Header = () => {
               >
                 <div className="deposit-saving-row">
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">
-                      고객센터
+                    <NavDropdown.Item as={Link} to="/customerservice">
+                      상담
                     </NavDropdown.Item>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        고객센터1소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/faq"
+                      >
+                        자주하는질문
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        고객센터1소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/chatbot"
+                      >
+                        누르는 AI상담
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        고객센터1소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/voicebot"
+                      >
+                        말하는 AI상담
                       </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="#"
+                      ></NavDropdown.Item>
                     </li>
                   </ul>
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">
-                      고객센터
+                    <NavDropdown.Item as={Link} to="/authcenter">
+                      인증
                     </NavDropdown.Item>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        고객센터2소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/bankauth"
+                      >
+                        주민등록 인증
                       </NavDropdown.Item>
                     </li>
                     <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        고객센터2소메뉴
-                      </NavDropdown.Item>
-                    </li>
-                    <li>
-                      <NavDropdown.Item className="sub-item" as={Link} to="#">
-                        고객센터2소메뉴
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/idauth"
+                      >
+                        통장 인증
                       </NavDropdown.Item>
                     </li>
                   </ul>

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import BlurText from "./BlurText";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 import "../Css/Common/Main.css";
 
 const Main = () => {
@@ -10,18 +13,18 @@ const Main = () => {
     {
       image: "./Images/main1.png",
       title: "음성 AI로 혁신하는 뱅킹",
-      desc: "효율성과 편의를 극대화한 차세대 금융 경험. 음성 AI로 모든 서비스를 정밀하게 관리하세요."
+      desc: "효율성과 편의를 극대화한 차세대 금융 경험. 음성 AI로 모든 서비스를 정밀하게 관리하세요.",
     },
     {
       image: "./Images/main2.png",
       title: "사운드뱅크, 새로운 대출 상품 출시",
-      desc: "간편한 대출 심사와 낮은 이자로 새로운 금융 서비스를 만나보세요."
+      desc: "간편한 대출 심사와 낮은 이자로 새로운 금융 서비스를 만나보세요.",
     },
     {
       image: "./Images/main3.png",
       title: "예적금 금리 인상! 지금 가입하세요",
-      desc: "높은 금리의 예적금을 지금 바로 확인하고 가입해 보세요."
-    }
+      desc: "높은 금리의 예적금을 지금 바로 확인하고 가입해 보세요.",
+    },
   ];
 
   //  현재 보여질 슬라이드 index 상태
@@ -35,7 +38,7 @@ const Main = () => {
 
     // 컴포넌트가 사라질 때 interval 제거 (메모리 누수 방지)
     return () => clearInterval(interval);
-  }, []);
+  }, [data.length]);
 
   // 애니메이션 종료 시 (디버깅용 로그)
   const onAnimEnd = () => console.log("Animation Done!");
