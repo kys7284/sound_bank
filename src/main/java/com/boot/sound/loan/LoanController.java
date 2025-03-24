@@ -44,7 +44,7 @@ public class LoanController {
 		return new ResponseEntity<>(service.loanUpdate(loan_id,dto),HttpStatus.CREATED);
 	}
 	
-	// 대출 상품 삭제
+	// 대출 상품 삭제 http://localhost:8081/api/loanDelete
 	@DeleteMapping("/loanDelete/{loan_id}")
 	public ResponseEntity<?> loanDelete(@PathVariable int loan_id){
 		System.out.println("loanDelete");
