@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import "../../Css/loan/Loan.css";
+
 const LoanList = (props) => {
   const [loanList, setLoanList] = useState([
     {
@@ -32,14 +34,20 @@ const LoanList = (props) => {
   }, []);
 
   return (
-    <div>
+    <div className="loan">
       {loanList.map((loan) => (
         <div key={loan.loan_id}>
-          <p>대출 ID : {loan.loan_id}</p>
           <p>대출 이름 : {loan.loan_name}</p>
-          <p>대출 금액 : {loan.loan_amount}</p>
-          <p>이자율 : {loan.interest_rate}</p>
-          <p>대출기간 : {loan.loan_term}</p>
+          <p>대출 ID : {loan.loan_id}</p>
+          <p>
+            {" "}
+            대출 금액 :{" "}
+            {loan.loan_amount >= 10000
+              ? `${(loan.loan_amount / 10000).toLocaleString()} 억원` // 10,000만원 이상일 경우 억원 단위로 표기
+              : `${loan.loan_amount.toLocaleString()} 만원`}
+          </p>
+          <p>이자율 : {loan.interest_rate} %</p>
+          <p>대출기간 : {loan.loan_term} 년</p>
           <p>대출 정보 : {loan.loan_info}</p>
           <Link to={"/loanDetail/" + loan.loan_id}>상세보기</Link>
           <hr />

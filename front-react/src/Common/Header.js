@@ -1,9 +1,16 @@
-import { useState, useRef, useEffect } from 'react';
-import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { Link, useLocation } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState, useRef, useEffect } from "react";
+import {
+  Button,
+  Container,
+  Form,
+  Nav,
+  Navbar,
+  NavDropdown,
+} from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import '../Css/Common/Header.css';
+import "../Css/Common/Header.css";
 
 const Header = () => {
   // 현재 열려 있는 드롭다운 메뉴 ID를 저장
@@ -14,7 +21,7 @@ const Header = () => {
 
   // 현재 페이지 경로 확인 (메인 페이지인지 판단)
   const location = useLocation();
-  const isMainPage = location.pathname === '/';
+  const isMainPage = location.pathname === "/";
 
   // 메뉴 항목에 마우스를 올렸을 때 드롭다운 표시
   const handleMouseEnter = (id) => {
@@ -48,7 +55,7 @@ const Header = () => {
 
   // 드롭다운 요소 참조 저장 + 클릭 외부 감지해서 드롭다운 닫기
   useEffect(() => {
-    const dropdownElements = document.querySelectorAll('.NavDropdown-menu');
+    const dropdownElements = document.querySelectorAll(".NavDropdown-menu");
     dropdownElements.forEach((element) => {
       const id = element.id;
       dropdownRefs.current[id] = element;
@@ -63,16 +70,16 @@ const Header = () => {
       }
     };
 
-    document.addEventListener('mousedown', handleDocumentClick);
+    document.addEventListener("mousedown", handleDocumentClick);
     return () => {
-      document.removeEventListener('mousedown', handleDocumentClick);
+      document.removeEventListener("mousedown", handleDocumentClick);
     };
   }, []);
 
   return (
     <Navbar
       variant="dark"
-      className={`nav-bar ${isMainPage ? 'nav-bar-main' : 'nav-bar-default'}`}
+      className={`nav-bar ${isMainPage ? "nav-bar-main" : "nav-bar-default"}`}
       fixed="top"
       expand="md"
     >
@@ -94,34 +101,66 @@ const Header = () => {
         <Navbar.Collapse id="nav-menu">
           <Nav className="menu">
             {/* 홈 */}
-            <Link to="/" className="nav-item">Home</Link>
+            <Link to="/" className="nav-item">
+              Home
+            </Link>
 
             {/* 예/적금 메뉴 */}
             <NavDropdown
               title="예/적금"
               id="deposit-menu"
               className="NavDropdown-menu"
-              show={showDropdown === 'deposit-menu'}
-              onMouseEnter={() => handleMouseEnter('deposit-menu')}
+              show={showDropdown === "deposit-menu"}
+              onMouseEnter={() => handleMouseEnter("deposit-menu")}
               onMouseLeave={handleMouseLeave}
             >
               <div
                 className="NavDropdown-menu"
-                onMouseEnter={() => handleDropdownMouseEnter('deposit-menu')}
-                onMouseLeave={(event) => handleDropdownMouseLeave(event, 'deposit-menu')}
+                onMouseEnter={() => handleDropdownMouseEnter("deposit-menu")}
+                onMouseLeave={(event) =>
+                  handleDropdownMouseLeave(event, "deposit-menu")
+                }
               >
                 <div className="deposit-saving-row">
                   <ul>
-                    <NavDropdown.Item as={Link} to="/test">예금</NavDropdown.Item>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">예금소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">예금소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">예금소메뉴</NavDropdown.Item></li>
+                    <NavDropdown.Item as={Link} to="/test">
+                      예금
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        예금소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        예금소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        예금소메뉴
+                      </NavDropdown.Item>
+                    </li>
                   </ul>
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">적금</NavDropdown.Item>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">적금소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">적금소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">적금소메뉴</NavDropdown.Item></li>
+                    <NavDropdown.Item as={Link} to="#">
+                      적금
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        적금소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        적금소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        적금소메뉴
+                      </NavDropdown.Item>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -132,27 +171,115 @@ const Header = () => {
               title="조회/이체"
               id="transfer-menu"
               className="NavDropdown-menu"
-              show={showDropdown === 'transfer-menu'}
-              onMouseEnter={() => handleMouseEnter('transfer-menu')}
+              show={showDropdown === "transfer-menu"}
+              onMouseEnter={() => handleMouseEnter("transfer-menu")}
               onMouseLeave={handleMouseLeave}
             >
               <div
                 className="dropdown-items-container"
-                onMouseEnter={() => handleDropdownMouseEnter('transfer-menu')}
-                onMouseLeave={(event) => handleDropdownMouseLeave(event, 'transfer-menu')}
+                onMouseEnter={() => handleDropdownMouseEnter("transfer-menu")}
+                onMouseLeave={(event) =>
+                  handleDropdownMouseLeave(event, "transfer-menu")
+                }
               >
                 <div className="deposit-saving-row">
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">조회</NavDropdown.Item>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">조회소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">조회소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">조회소메뉴</NavDropdown.Item></li>
+                    <NavDropdown.Item as={Link} to="/inquire">
+                      조회
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/inquireAccont"
+                      >
+                        보유계좌
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/inquireTransfer"
+                      >
+                        거래내역
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/inquireAssets"
+                      >
+                        자산통계
+                      </NavDropdown.Item>
+                    </li>
                   </ul>
+
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">이체</NavDropdown.Item>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">이체소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">이체소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">이체소메뉴</NavDropdown.Item></li>
+                    <NavDropdown.Item as={Link} to="/transfer">
+                      이체(고객)
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/transInstant"
+                      >
+                        실시간 계좌이체
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/transAuto"
+                      >
+                        자동이체
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/transMulti"
+                      >
+                        다건이체
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/transLimit"
+                      >
+                        이체한도 변경
+                      </NavDropdown.Item>
+                    </li>
+                  </ul>
+
+                  <ul>
+                    <NavDropdown.Item as={Link} to="/transferAdmin">
+                      이체(관리자)
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/limitAdmin"
+                      >
+                        다건이체 승인
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/multiAdmin"
+                      >
+                        이체한도 심사
+                      </NavDropdown.Item>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -163,27 +290,90 @@ const Header = () => {
               title="대출"
               id="loan-menu"
               className="NavDropdown-menu"
-              show={showDropdown === 'loan-menu'}
-              onMouseEnter={() => handleMouseEnter('loan-menu')}
+              show={showDropdown === "loan-menu"}
+              onMouseEnter={() => handleMouseEnter("loan-menu")}
               onMouseLeave={handleMouseLeave}
             >
               <div
                 className="dropdown-items-container"
-                onMouseEnter={() => handleDropdownMouseEnter('loan-menu')}
-                onMouseLeave={(event) => handleDropdownMouseLeave(event, 'loan-menu')}
+                onMouseEnter={() => handleDropdownMouseEnter("loan-menu")}
+                onMouseLeave={(event) =>
+                  handleDropdownMouseLeave(event, "loan-menu")
+                }
               >
                 <div className="deposit-saving-row">
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">대출1</NavDropdown.Item>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">대출1소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">대출1소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">대출1소메뉴</NavDropdown.Item></li>
+                    <NavDropdown.Item as={Link} to="#">
+                      고객
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/loanApply"
+                      >
+                        대출 신청
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/loanStatus"
+                      >
+                        대출 진행현황
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/loanManage"
+                      >
+                        대출 관리
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/loanService"
+                      >
+                        기타 서비스{" "}
+                      </NavDropdown.Item>
+                    </li>
                   </ul>
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">대출2</NavDropdown.Item>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">대출2소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">대출2소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">대출2소메뉴</NavDropdown.Item></li>
+                    <NavDropdown.Item as={Link} to="#">
+                      관리자
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/loanList"
+                      >
+                        대출상품목록
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/loanCustomerList"
+                      >
+                        대출고객목록
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/chartManage"
+                      >
+                        차트관리
+                      </NavDropdown.Item>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -194,27 +384,57 @@ const Header = () => {
               title="펀드"
               id="fund-menu"
               className="NavDropdown-menu"
-              show={showDropdown === 'fund-menu'}
-              onMouseEnter={() => handleMouseEnter('fund-menu')}
+              show={showDropdown === "fund-menu"}
+              onMouseEnter={() => handleMouseEnter("fund-menu")}
               onMouseLeave={handleMouseLeave}
             >
               <div
                 className="dropdown-items-container"
-                onMouseEnter={() => handleDropdownMouseEnter('fund-menu')}
-                onMouseLeave={(event) => handleDropdownMouseLeave(event, 'fund-menu')}
+                onMouseEnter={() => handleDropdownMouseEnter("fund-menu")}
+                onMouseLeave={(event) =>
+                  handleDropdownMouseLeave(event, "fund-menu")
+                }
               >
                 <div className="deposit-saving-row">
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">펀드1</NavDropdown.Item>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">펀드1소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">펀드1소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">펀드1소메뉴</NavDropdown.Item></li>
+                    <NavDropdown.Item as={Link} to="#">
+                      펀드1
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        펀드1소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        펀드1소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        펀드1소메뉴
+                      </NavDropdown.Item>
+                    </li>
                   </ul>
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">펀드2</NavDropdown.Item>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">펀드2소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">펀드2소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">펀드2소메뉴</NavDropdown.Item></li>
+                    <NavDropdown.Item as={Link} to="#">
+                      펀드2
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        펀드2소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        펀드2소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        펀드2소메뉴
+                      </NavDropdown.Item>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -225,27 +445,57 @@ const Header = () => {
               title="외환"
               id="forex-menu"
               className="NavDropdown-menu"
-              show={showDropdown === 'forex-menu'}
-              onMouseEnter={() => handleMouseEnter('forex-menu')}
+              show={showDropdown === "forex-menu"}
+              onMouseEnter={() => handleMouseEnter("forex-menu")}
               onMouseLeave={handleMouseLeave}
             >
               <div
                 className="dropdown-items-container"
-                onMouseEnter={() => handleDropdownMouseEnter('forex-menu')}
-                onMouseLeave={(event) => handleDropdownMouseLeave(event, 'forex-menu')}
+                onMouseEnter={() => handleDropdownMouseEnter("forex-menu")}
+                onMouseLeave={(event) =>
+                  handleDropdownMouseLeave(event, "forex-menu")
+                }
               >
                 <div className="deposit-saving-row">
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">외환1</NavDropdown.Item>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">외환1소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">외환1소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">외환1소메뉴</NavDropdown.Item></li>
+                    <NavDropdown.Item as={Link} to="#">
+                      외환1
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        외환1소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        외환1소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        외환1소메뉴
+                      </NavDropdown.Item>
+                    </li>
                   </ul>
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">외환2</NavDropdown.Item>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">외환2소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">외환2소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">외환2소메뉴</NavDropdown.Item></li>
+                    <NavDropdown.Item as={Link} to="#">
+                      외환2
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        외환2소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        외환2소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        외환2소메뉴
+                      </NavDropdown.Item>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -256,27 +506,57 @@ const Header = () => {
               title="고객센터"
               id="support-menu"
               className="NavDropdown-menu"
-              show={showDropdown === 'support-menu'}
-              onMouseEnter={() => handleMouseEnter('support-menu')}
+              show={showDropdown === "support-menu"}
+              onMouseEnter={() => handleMouseEnter("support-menu")}
               onMouseLeave={handleMouseLeave}
             >
               <div
                 className="dropdown-items-container"
-                onMouseEnter={() => handleDropdownMouseEnter('support-menu')}
-                onMouseLeave={(event) => handleDropdownMouseLeave(event, 'support-menu')}
+                onMouseEnter={() => handleDropdownMouseEnter("support-menu")}
+                onMouseLeave={(event) =>
+                  handleDropdownMouseLeave(event, "support-menu")
+                }
               >
                 <div className="deposit-saving-row">
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">고객센터</NavDropdown.Item>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">고객센터1소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">고객센터1소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">고객센터1소메뉴</NavDropdown.Item></li>
+                    <NavDropdown.Item as={Link} to="#">
+                      고객센터
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        고객센터1소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        고객센터1소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        고객센터1소메뉴
+                      </NavDropdown.Item>
+                    </li>
                   </ul>
                   <ul>
-                    <NavDropdown.Item as={Link} to="#">고객센터</NavDropdown.Item>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">고객센터2소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">고객센터2소메뉴</NavDropdown.Item></li>
-                    <li><NavDropdown.Item className="sub-item" as={Link} to="#">고객센터2소메뉴</NavDropdown.Item></li>
+                    <NavDropdown.Item as={Link} to="#">
+                      고객센터
+                    </NavDropdown.Item>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        고객센터2소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        고객센터2소메뉴
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item className="sub-item" as={Link} to="#">
+                        고객센터2소메뉴
+                      </NavDropdown.Item>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -297,8 +577,12 @@ const Header = () => {
 
           {/* 계좌개설/로그인 버튼 */}
           <div className="auth-buttons">
-            <Link to="/signup" className="auth-btn signup-btn">계좌개설</Link>
-            <Link to="/login" className="auth-btn login-btn">로그인</Link>
+            <Link to="/signup" className="auth-btn signup-btn">
+              계좌개설
+            </Link>
+            <Link to="/login" className="auth-btn login-btn">
+              로그인
+            </Link>
           </div>
         </Navbar.Collapse>
       </Container>
