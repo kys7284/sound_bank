@@ -1,64 +1,38 @@
 .App {
-  font-family: Arial, sans-serif;
   text-align: center;
-  padding: 20px;
 }
 
-h2 {
-  color: #333;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
-li {
-  background: #f9f9f9;
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 10px 2px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-form {
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
-form div {
-  margin-bottom: 10px;
+.App-link {
+  color: #61dafb;
 }
 
-label {
-  margin-right: 10px;
-}
-
-input[type="number"],
-input[type="date"] {
-  padding: 5px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
