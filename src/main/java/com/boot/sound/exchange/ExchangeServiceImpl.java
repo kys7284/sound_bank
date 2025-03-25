@@ -34,17 +34,17 @@ public class ExchangeServiceImpl {
 //                .baseUrl("https://www.koreaexim.go.kr")
 //                .build();
     	 // HttpClient 설정
-        HttpClient httpClient = HttpClient.create()
-                .secure(sslContextSpec -> sslContextSpec.sslContext(
-                        SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE))) // SSL 검증 비활성화
-                .responseTimeout(Duration.ofSeconds(30)) // 응답 타임아웃 30초
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000); // 연결 타임아웃 10초
-
-        // WebClient 설정
-        this.webClient = webClientBuilder
-                .clientConnector(new ReactorClientHttpConnector(httpClient))
-                .baseUrl("https://www.koreaexim.go.kr")
-                .build();
+	    HttpClient httpClient = HttpClient.create()
+	            .secure(sslContextSpec -> sslContextSpec.sslContext(
+	                    SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE))) // SSL 검증 비활성화
+	            .responseTimeout(Duration.ofSeconds(30)) // 응답 타임아웃 30초
+	            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000); // 연결 타임아웃 10초
+	
+	    // WebClient 설정
+	    this.webClient = webClientBuilder
+	            .clientConnector(new ReactorClientHttpConnector(httpClient))
+	            .baseUrl("https://www.koreaexim.go.kr")
+	            .build();
 
     }
 
