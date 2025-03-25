@@ -30,4 +30,6 @@ public class LoanDTO {
 	private int loan_term;
 	private String loan_info;
 	private String loan_type;
+	
+	
 }
