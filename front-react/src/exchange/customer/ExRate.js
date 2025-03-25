@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../Css/exchange/ExRate.css";
+import ExCalc from "./ExCalc";
 
 const ExRate = () => {
   
   const [exchange, setExchange] = useState([]); // 환율데이터
   const [date, setDate] = useState(""); // 선택된 날짜 상태
+  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false); // 팝업 상태
 
      // 날짜 변경 핸들러
      const handleDateChange = (e) => {
@@ -59,7 +61,17 @@ const ExRate = () => {
             />
             <h5> * 주말&공휴일 환율은 조회되지 않습니다. </h5>
         </div>
-
+        <div className="calc-button">
+        {/* 환율 계산기 열기 버튼 */}
+        <button onClick={() => setIsCalculatorOpen(true)}>환율 계산기 열기</button>
+       
+        {/* 환율 계산기 팝업 */}
+        <ExCalc
+            isOpen={isCalculatorOpen}
+            onClose={() => setIsCalculatorOpen(false)}
+            exchange={exchange}
+        />        
+        </div>
         <table border="1" >
             <thead>
                 <tr>
@@ -87,7 +99,7 @@ const ExRate = () => {
                     </tr>
                 ))}
             </tbody>
-        </table>
+        </table>        
     </div>
 );
 };
