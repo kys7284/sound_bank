@@ -10,8 +10,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	</select>
  
  	<insert id="loanInsert">
- 		INSERT INTO LOAN_TBL(LOAN_ID,LOAN_NAME,LOAN_MAX_AMOUNT,LOAN_MIN_AMOUNT,INTEREST_RATE,LOAN_TERM,LOAN_INFO)
-		VALUES((SELECT NVL(MAX(LOAN_ID)+1,1) FROM LOAN_TBL),#{loan_name},#{loan_max_amount},#{loan_min_amount},#{interest_rate},#{loan_term},#{loan_info})
+ 		INSERT INTO LOAN_TBL(LOAN_ID,LOAN_NAME,LOAN_MAX_AMOUNT,LOAN_MIN_AMOUNT,INTEREST_RATE,LOAN_TERM,LOAN_INFO,LOAN_TYPE)
+		VALUES((SELECT NVL(MAX(LOAN_ID)+1,1) FROM LOAN_TBL),#{loan_name},#{loan_max_amount},#{loan_min_amount},#{interest_rate},#{loan_term},#{loan_info},#{loan_type})
  	</insert>
 
 	<select id="loanDetail" parameterType="int">
@@ -27,10 +27,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="loanUpdate" parameterType="com.boot.sound.loan.LoanDTO">
 		UPDATE LOAN_TBL
 		SET loan_name = #{loan_name}
-		,	loan_amount = #{loan_amount}
+		,	loan_min_amount = #{loan_min_amount}
+		,	loan_max_amount	= #{loan_max_amount}
 		,	interest_rate = #{interest_rate}
 		,	loan_term = #{loan_term}
 		,	loan_info = #{loan_info}
+		,	loan_type = #{loan_type}
 		WHERE loan_id = #{loan_id}
 	</update>
  

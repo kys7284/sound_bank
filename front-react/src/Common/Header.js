@@ -424,6 +424,15 @@ const Header = () => {
                       <NavDropdown.Item
                         className="sub-item"
                         as={Link}
+                        to="/loanInsertForm"
+                      >
+                        대출상품등록
+                      </NavDropdown.Item>
+                    </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
                         to="/loanCustomerList"
                       >
                         대출고객목록
