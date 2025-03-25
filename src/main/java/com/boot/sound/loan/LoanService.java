@@ -32,7 +32,7 @@ public class LoanService {
 	@Transactional
 	public int loanUpdate(int loan_id, LoanDTO dto) {
 		System.out.println("서비스 - loanUpdate");
-		dto.setLoan_id(loan_id);
+		//dto.setLoan_id(loan_id);
 		return dao.loanUpdate(dto);
 	}
 	

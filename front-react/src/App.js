@@ -73,6 +73,8 @@ import LoanInsertForm from "./sound_loan/admin/LoanInsertForm";
 import LoanCalculator from "./sound_loan/customer/LoanCalculator";
 import LoanChart from "./sound_loan/customer/LoanChart";
 import LoanCreditScore from "./sound_loan/customer/LoanCreditScore";
+import Join from "./customer/Join";
+import Login from "./customer/Login";
 function App() {
   return (
     <div className="App">
@@ -202,6 +204,13 @@ function App() {
           <Route path="/bankauth" element={<Bankauth />} />
           <Route path="/idauth" element={<Idauth />} />
           {/* 고객센터 Route 끝 */}
+
+          {/* 계좌개설 / 로그인 Route 시작 */}
+          <Route path="/join" element={<Join />} />
+          <Route path="/login" element={<Login />} />
+          {/* 계좌개설 / 로그인 Route 끝 */}
+
+
         </Routes>
         <Footer />
       </BrowserRouter>
