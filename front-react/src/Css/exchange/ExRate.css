@@ -26,3 +26,8 @@ th {
     margin-bottom: 20px; /* 아래쪽 여백 */
     text-align: center;
 }
+
+.calc-button {
+    margin-top: 20px;
+    text-align: center;
+}
