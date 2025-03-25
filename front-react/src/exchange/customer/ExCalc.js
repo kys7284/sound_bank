@@ -12,8 +12,8 @@ const ExCalc = ({ isOpen, onClose, exchange }) => {
             return;
         }
         
-        const fromRate = parseFloat(exchange.find(item => item.cur_unit === fromCurrency)?.deal_bas_r); // 환전 전 통화
-        const toRate = parseFloat(exchange.find(item => item.cur_unit === toCurrency)?.deal_bas_r);     // 환전할 통화
+        const fromRate = parseFloat(exchange.find(item => item.cur_unit === fromCurrency)?.deal_bas_r); 
+        const toRate = parseFloat(exchange.find(item => item.cur_unit === toCurrency)?.deal_bas_r);     
         console.log("fromRate:", fromRate, "toRate:", toRate);
 
         if (!isNaN(fromRate) && !isNaN(toRate)) {
