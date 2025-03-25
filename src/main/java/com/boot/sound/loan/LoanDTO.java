@@ -29,4 +29,5 @@ public class LoanDTO {
 	private BigDecimal   interest_rate;
 	private int loan_term;
 	private String loan_info;
+	private String loan_type;
 }
