@@ -69,6 +69,10 @@ import AdminExAccountRequestList from "./exchange/admin/AdminExAccountRequestLis
 import AdminExAccountStatement from "./exchange/admin/AdminExAccountStatement";
 import AdminExLimit from "./exchange/admin/AdminExLimit";
 import AdminExSetCharge from "./exchange/admin/AdminExSetCharge";
+import LoanInsertForm from "./sound_loan/admin/LoanInsertForm";
+import LoanCalculator from "./sound_loan/customer/LoanCalculator";
+import LoanChart from "./sound_loan/customer/LoanChart";
+import LoanCreditScore from "./sound_loan/customer/LoanCreditScore";
 function App() {
   return (
     <div className="App">
@@ -123,7 +127,11 @@ function App() {
           <Route path="/loanStatus" element={<LoanStatus />} />
           <Route path="/loanManage" element={<LoanManage />} />
           <Route path="/loanService" element={<LoanService />} />
+          <Route path="/loanCalculator" element={<LoanCalculator />} />
+          <Route path="/loanChart" element={<LoanChart />} />
+          <Route path="/loanCreditScore" element={<LoanCreditScore />} />
           <Route path="/loanList" element={<LoanList />} />
+          <Route path="/loanInsertForm" element={<LoanInsertForm />} />
           <Route path="/loanDetail/:loan_id" element={<LoanDetail />} />
           <Route path="/loanUpdate/:loan_id" element={<LoanUpdate />} />
           <Route path="/loanCustomerList" element={<LoanCustomerList />} />
