@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { React, useRef, useEffect, useState } from 'react';
 import { useSprings, animated } from '@react-spring/web';
 
 const BlurText = ({
