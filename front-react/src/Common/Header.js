@@ -636,7 +636,7 @@ const Header = () => {
                       <NavDropdown.Item
                         className="sub-item"
                         as={Link}
-                        to="/exchange_rate"
+                        to="/ex_rate"
                       >
                         환율조회/환율계산기
                       </NavDropdown.Item>
@@ -645,7 +645,7 @@ const Header = () => {
                       <NavDropdown.Item
                         className="sub-item"
                         as={Link}
-                        to="/exchange_request"
+                        to="/ex_request"
                       >
                         환전신청하기
                       </NavDropdown.Item>

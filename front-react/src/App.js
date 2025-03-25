@@ -154,36 +154,15 @@ function App() {
           {/* 펀드 Route 끝 */}
           {/* 외환 Route 시작 */}
           <Route path="/ex_rate" element={<ExRate />} /> {/* 환율조회/계산기 */}
-          <Route path="/ex_request" element={<ExRequest />} />{" "}
-          {/* 환전신청하기 */}
-          <Route path="/ex_create_account" element={<ExCreateAccount />} />{" "}
-          {/* 외환 계좌 신청 */}
-          <Route path="/ex_set_limit" element={<ExRequestSetLimit />} />{" "}
-          {/* 외환 계좌 한도 설정 */}
-          <Route path="/ex_change_list" element={<ExList />} />{" "}
-          {/* 환전내역 조회 */}
-          <Route
-            path="/ex_account_management"
-            element={<ExAccountManagement />}
-          />{" "}
-          {/* 외환 계좌 해지 */}
-          <Route
-            path="/admin_ex_request_list"
-            element={<AdminExAccountRequestList />}
-          />{" "}
-          {/* 외환 계좌 신청 현황 */}
-          <Route
-            path="/admin_ex_management"
-            element={<AdminExAccountStatement />}
-          />{" "}
-          {/* 계좌상태변경 */}
-          <Route path="/admin_ex_limit" element={<AdminExLimit />} />{" "}
-          {/* 환전한도 설정 */}
-          <Route
-            path="/admin_ex_set_charge"
-            element={<AdminExSetCharge />}
-          />{" "}
-          {/* 고객별 환전 수수료 조정 */}
+          <Route path="/ex_request" element={<ExRequest />} />{" "}{/* 환전신청하기 */}
+          <Route path="/ex_create_account" element={<ExCreateAccount />} />{" "}{/* 외환 계좌 신청 */}
+          <Route path="/ex_set_limit" element={<ExRequestSetLimit />} />{" "}{/* 외환 계좌 한도 설정 */}
+          <Route path="/exchange_list" element={<ExList />} />{" "}{/* 환전내역 조회 */}
+          <Route path="/ex_account_management" element={<ExAccountManagement />}/>{" "} {/* 외환 계좌 해지 */}
+          <Route path="/admin_ex_request_list" element={<AdminExAccountRequestList />}/>{" "}{/* 외환 계좌 신청 현황 */}
+          <Route path="/admin_ex_management" element={<AdminExAccountStatement />}/>{" "}{/* 계좌상태변경 */}
+          <Route path="/admin_ex_limit" element={<AdminExLimit />} />{" "}{/* 환전한도 설정 */}
+          <Route path="/admin_ex_set_charge"element={<AdminExSetCharge />}/>{" "}{/* 고객별 환전 수수료 조정 */}
           {/* 외환 Route 끝 */}
           {/* 고객센터 Route 시작 */}
           <Route path="/customerservice" element={<Customerservice />} />
