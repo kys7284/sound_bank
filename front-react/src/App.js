@@ -70,6 +70,8 @@ import AdminExAccountStatement from "./exchange/admin/AdminExAccountStatement";
 import AdminExLimit from "./exchange/admin/AdminExLimit";
 import AdminExSetCharge from "./exchange/admin/AdminExSetCharge";
 import LoanInsertForm from "./sound_loan/admin/LoanInsertForm";
+import Join from "./customer/Join";
+import Login from "./customer/Login";
 function App() {
   return (
     <div className="App">
@@ -196,6 +198,13 @@ function App() {
           <Route path="/bankauth" element={<Bankauth />} />
           <Route path="/idauth" element={<Idauth />} />
           {/* 고객센터 Route 끝 */}
+
+          {/* 계좌개설 / 로그인 Route 시작 */}
+          <Route path="/join" element={<Join />} />
+          <Route path="/login" element={<Login />} />
+          {/* 계좌개설 / 로그인 Route 끝 */}
+
+
         </Routes>
         <Footer />
       </BrowserRouter>
