@@ -12,6 +12,7 @@ const LoanList = (props) => {
       interest_rate: 0.0,
       loan_term: 0,
       loan_info: "",
+      loan_type: "",
     },
   ]);
 
@@ -35,33 +36,50 @@ const LoanList = (props) => {
   }, []);
 
   return (
-    <div className="loan">
-      {loanList.map((loan) => (
-        <div key={loan.loan_id}>
-          <p>대출 이름 : {loan.loan_name}</p>
-          <p>대출 ID : {loan.loan_id}</p>
-          <p>
-            {" "}
-            최소 대출 금액 :{" "}
-            {loan.loan_min_amount >= 10000
-              ? `${(loan.loan_min_amount / 10000).toLocaleString()} 억원` // 10,000만원 이상일 경우 억원 단위로 표기
-              : `${loan.loan_min_amount.toLocaleString()} 만원`}
-          </p>
-
-          <p>
-            {" "}
-            최대 대출 금액 :{" "}
-            {loan.loan_max_amount >= 10000
-              ? `${(loan.loan_max_amount / 10000).toLocaleString()} 억원` // 10,000만원 이상일 경우 억원 단위로 표기
-              : `${loan.loan_max_amount.toLocaleString()} 만원`}
-          </p>
-          <p>이자율 : {loan.interest_rate} %</p>
-          <p>대출기간 : {loan.loan_term} 년</p>
-          <p>대출 정보 : {loan.loan_info}</p>
-          <Link to={"/loanDetail/" + loan.loan_id}>상세보기</Link>
-          <hr />
-        </div>
-      ))}
+    <div className="loanList">
+      <table className="listTable">
+        <thead>
+          <tr>
+            <h2>대출 상품 목록</h2>
+          </tr>
+          <tr>
+            <th>대출 아이디</th>
+            <th>대출 상품명</th>
+            <th>대출 유형</th>
+            <th>최소 대출 금액</th>
+            <th>최대 대출 금액</th>
+            <th>이자율</th>
+            <th>대출기간</th>
+            <th>대출정보</th>
+            <th>관리</th>
+          </tr>
+        </thead>
+        <tbody>
+          {loanList.map((loan) => (
+            <tr key={loan.loan_id}>
+              <td>{loan.loan_id}</td>
+              <td>{loan.loan_name}</td>
+              <td>{loan.loan_type}</td>
+              <td>
+                {loan.loan_min_amount >= 10000
+                  ? `${(loan.loan_min_amount / 10000).toLocaleString()} 억원` // 10,000만원 이상일 경우 억원 단위로 표기
+                  : `${loan.loan_min_amount.toLocaleString()} 만원`}
+              </td>
+              <td>
+                {loan.loan_max_amount >= 10000
+                  ? `${(loan.loan_max_amount / 10000).toLocaleString()} 억원` // 10,000만원 이상일 경우 억원 단위로 표기
+                  : `${loan.loan_max_amount.toLocaleString()} 만원`}
+              </td>
+              <td>{loan.interest_rate}</td>
+              <td>{loan.loan_term}</td>
+              <td>{loan.loan_info}</td>
+              <td>
+                <Link to={"/loanDetail/" + loan.loan_id}>상세보기</Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
