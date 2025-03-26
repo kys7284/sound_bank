@@ -645,7 +645,7 @@ const Header = () => {
                       <NavDropdown.Item
                         className="sub-item"
                         as={Link}
-                        to="/exchange_rate"
+                        to="/ex_rate"
                       >
                         환율조회/환율계산기
                       </NavDropdown.Item>
@@ -654,7 +654,7 @@ const Header = () => {
                       <NavDropdown.Item
                         className="sub-item"
                         as={Link}
-                        to="/exchange_request"
+                        to="/ex_request"
                       >
                         환전신청하기
                       </NavDropdown.Item>
@@ -818,7 +818,7 @@ const Header = () => {
                         as={Link}
                         to="/bankauth"
                       >
-                        주민등록 인증
+                        통장 인증
                       </NavDropdown.Item>
                     </li>
                     <li>
@@ -827,7 +827,7 @@ const Header = () => {
                         as={Link}
                         to="/idauth"
                       >
-                        통장 인증
+                        주민등록인증 인증
                       </NavDropdown.Item>
                     </li>
                   </ul>
