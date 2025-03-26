@@ -1,0 +1,18 @@
+.calculator {
+  display: grid;
+  align-content: center;
+  justify-content: center;
+}
+
+.calItem {
+  padding: 10px;
+  width: 300px;
+}
+
+.serviceBtn {
+  margin-top: 10px;
+}
+
+.serviceBtn button {
+  background-color: black;
+}

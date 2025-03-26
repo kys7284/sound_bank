@@ -9,6 +9,7 @@
   align-content: center;
   justify-content: center;
   background-color: black;
+  color: white;
 }
 
 .insertInput {
@@ -25,12 +26,17 @@
   color: white;
 }
 
+.insertTable label {
+  color: white;
+}
+
 .insertTable th,
 .insertTable td {
   border-style: solid;
   border-width: 1px;
   border-color: white;
   padding: 5px;
+  color: white;
 }
 
 .sideBar {

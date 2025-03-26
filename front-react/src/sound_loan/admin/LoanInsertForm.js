@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../Css/loan/Loan.css";
-import LoanSideBar from "./LoanSideBar";
 
 const LoanInsertForm = (props) => {
   const navigate = useNavigate();
@@ -87,7 +86,6 @@ const LoanInsertForm = (props) => {
 
   return (
     <div className="loanInsert">
-      <LoanSideBar />
       <form ref={formRef}>
         <table className="insertTable">
           <thead>
