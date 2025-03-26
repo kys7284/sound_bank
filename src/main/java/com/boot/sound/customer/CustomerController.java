@@ -1,7 +1,5 @@
-package com.boot.sound.customer.controller;
+package com.boot.sound.customer;
 
-import com.boot.sound.customer.dto.CustomerDTO;
-import com.boot.sound.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
