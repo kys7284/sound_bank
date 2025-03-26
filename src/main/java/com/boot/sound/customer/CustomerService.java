@@ -1,7 +1,5 @@
-package com.boot.sound.customer.service;
+package com.boot.sound.customer;
 
-import com.boot.sound.customer.dto.CustomerDTO;
-import com.boot.sound.customer.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
