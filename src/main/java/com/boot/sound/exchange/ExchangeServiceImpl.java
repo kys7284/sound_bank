@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -15,6 +17,8 @@ import io.netty.channel.ChannelOption;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import reactor.netty.http.client.HttpClient;
+import reactor.util.retry.Retry;
+
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 
 @Service
@@ -23,7 +27,7 @@ public class ExchangeServiceImpl {
     // API Key
     private final String apiKey = "TzsQ31CAai0yWB3qXIhrtFyxqpxNO7H6";
     private final WebClient webClient;
-
+    private final Logger logger = LoggerFactory.getLogger(ExchangeServiceImpl.class);
     // WebClient 주입
     public ExchangeServiceImpl(WebClient.Builder webClientBuilder) {
 //        HttpClient httpClient = HttpClient.create()
@@ -61,13 +65,15 @@ public class ExchangeServiceImpl {
         
         // API 요청 URL 구성
         String requestUrl = "/site/program/financial/exchangeJSON?authkey=" + apiKey + "&searchdate=" + date + "&data=AP01";
-
+        logger.info("API 요청 URL: {}", requestUrl);
+        
         try {
         	System.out.println("service요청 API : "+requestUrl);
             return webClient.get()
                     .uri(requestUrl)
                     .retrieve()
                     .bodyToMono(new ParameterizedTypeReference<List<Map<String, Object>>>() {})
+                    .retryWhen(Retry.backoff(3, Duration.ofSeconds(1))) // 3번 재시도, 1초 간격                    
                     .block(); // 동기 호출
         } catch (WebClientResponseException e) {
             System.err.println("API 호출 실패: " + e.getStatusCode() + " - " + e.getResponseBodyAsString());
