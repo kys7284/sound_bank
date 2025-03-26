@@ -18,12 +18,17 @@ public class ExchangeController {
 
     // 환율 조회 API (날짜 선택 가능, 기본값: 오늘 날짜)
     @GetMapping("/rates")
-    public List<Map<String, Object>> getExchangeRates(@RequestParam(required = false) String date) {
-        System.out.println("API 요청: 환율 조회");
+    public List<Map<String, Object>> getExchangeRates(@RequestParam("date") String date) {
+        System.out.println("paramDate -"+ date);
+    	System.out.println("API 요청: 환율 조회");
 
         // 날짜가 제공되지 않으면 오늘 날짜를 yyyyMMdd 형식으로 설정
         if (date == null || date.isEmpty()) {
             date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        } else if (date.contains("-")) {
+        // yyyy-MM-dd 형식인 경우 yyyyMMdd로 변환
+        date = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                         .format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         }
 
         return service.getExchangeRates(date);
