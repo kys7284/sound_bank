@@ -56,7 +56,7 @@ import Customerservice from "./customer_center/Customerservice";
 import FAQ from "./customer_center/FAQ";
 import Chatbot from "./customer_center/Chatbot";
 import Voicebot from "./customer_center/Voicebot";
-import Authcenter from "./customer_center/Authcenter";
+
 import Bankauth from "./customer_center/Bankauth";
 import Idauth from "./customer_center/Idauth";
 import ExRate from "./exchange/customer/ExRate";
@@ -75,6 +75,7 @@ import LoanChart from "./sound_loan/customer/LoanChart";
 import LoanCreditScore from "./sound_loan/customer/LoanCreditScore";
 import Join from "./customer/Join";
 import Login from "./customer/Login";
+import Authcenter from "./customer_center/Authcenter";
 function App() {
   return (
     <div className="App">
