@@ -32,52 +32,53 @@ const ExCalc = ({ isOpen, onClose, exchange }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                <h3>환율 계산기</h3>
-                <div>
-                    <label>금액:</label>
-                    <input
-                        type="number"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                    />
-                </div>
+        <img src="/images/exchange/ex_calc.png" alt="환율계산기" />
+        //     <div className="modal-overlay">
+    //         <div className="modal-content">
+    //             <h3>환율 계산기</h3>
+    //             <div>
+    //                 <label>금액:</label>
+    //                 <input
+    //                     type="number"
+    //                     value={amount}
+    //                     onChange={(e) => setAmount(e.target.value)}
+    //                 />
+    //             </div>
 
-                <div>
-                    <label>From:</label>
-                    <select value={fromCurrency} onChange={(e) => setFromCurrency(e.target.value)}>
-                        <option value="">통화 선택</option>
-                        {exchange.map((item, index) => (
-                            <option key={index} value={item.cur_unit}>
-                                {item.cur_unit} - {item.cur_nm}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>To:</label>
-                    <select value={toCurrency} onChange={(e) => setToCurrency(e.target.value)}>
-                        <option value="">통화 선택</option>
-                        {exchange.map((item, index) => (
-                            <option key={index} value={item.cur_unit}>
-                                {item.cur_unit} - {item.cur_nm}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <button onClick={calculateExchange}>계산</button>
-                {convertedAmount !== null && (
-                    <div>
-                        <h4>결과:</h4>
-                        <p>
-                            {amount} {fromCurrency} = {convertedAmount} {toCurrency}
-                        </p>
-                    </div>
-                )}
-                <button onClick={onClose}>닫기</button>
-            </div>
-        </div>
-    );
+    //             <div>
+    //                 <label>From:</label>
+    //                 <select value={fromCurrency} onChange={(e) => setFromCurrency(e.target.value)}>
+    //                     <option value="">통화 선택</option>
+    //                     {exchange.map((item, index) => (
+    //                         <option key={index} value={item.cur_unit}>
+    //                             {item.cur_unit} - {item.cur_nm}
+    //                         </option>
+    //                     ))}
+    //                 </select>
+    //             </div>
+    //             <div>
+    //                 <label>To:</label>
+    //                 <select value={toCurrency} onChange={(e) => setToCurrency(e.target.value)}>
+    //                     <option value="">통화 선택</option>
+    //                     {exchange.map((item, index) => (
+    //                         <option key={index} value={item.cur_unit}>
+    //                             {item.cur_unit} - {item.cur_nm}
+    //                         </option>
+    //                     ))}
+    //                 </select>
+    //             </div>
+    //             <button onClick={calculateExchange}>계산</button>
+    //             {convertedAmount !== null && (
+    //                 <div>
+    //                     <h4>결과:</h4>
+    //                     <p>
+    //                         {amount} {fromCurrency} = {convertedAmount} {toCurrency}
+    //                     </p>
+    //                 </div>
+    //             )}
+    //             <button onClick={onClose}>닫기</button>
+    //         </div>
+    //     </div>
+     );
 }
 export default ExCalc;

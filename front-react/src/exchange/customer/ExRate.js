@@ -48,10 +48,12 @@ const ExRate = () => {
 
 
   return (
-    <div className="container"> 
-
+    <div> 
+        {/* 환율 계산기 열기 버튼 */}
+        <button onClick={() => setIsCalculatorOpen(true)}>환율 계산기 열기</button>
+        <img src="/images/exchange/ex_rate.png" alt="환율정보" />
         {/* 날짜 입력 필드 */}
-        <div className="date-input">
+        {/* <div className="date-input">
             <label htmlFor="date">날짜 선택: </label>
             <input
                 type="date"
@@ -61,12 +63,11 @@ const ExRate = () => {
             />
             <h5> * 주말&공휴일 환율은 조회되지 않습니다. </h5>
         </div>
-        <div className="calc-button">
-        {/* 환율 계산기 열기 버튼 */}
-        <button onClick={() => setIsCalculatorOpen(true)}>환율 계산기 열기</button>
+        <div className="calc-button"> */}
+        
        
         {/* 환율 계산기 팝업 */}
-        <ExCalc
+        {/* <ExCalc
             isOpen={isCalculatorOpen}
             onClose={() => setIsCalculatorOpen(false)}
             exchange={exchange}
@@ -89,7 +90,7 @@ const ExRate = () => {
                 {exchange.map((item, index) => (
                     <tr key={index}>
                         <td>{item.cur_unit}</td> {/* 필드 이름이 소문자일 경우 */}
-                        <td>{item.cur_nm}</td>
+                        {/* <td>{item.cur_nm}</td>
                         <td>{item.ttb}</td>
                         <td>{item.tts}</td>
                         <td>{item.deal_bas_r}</td>
@@ -99,7 +100,7 @@ const ExRate = () => {
                     </tr>
                 ))}
             </tbody>
-        </table>        
+        </table>         */}
     </div>
 );
 };
