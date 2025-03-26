@@ -1,7 +1,7 @@
 import React from "react";
 
-const ChartManage = () => {
+const LoanCreditScore = () => {
   return <div style={{ minHeight: 600 }}></div>;
 };
 
-export default ChartManage;
+export default LoanCreditScore;
