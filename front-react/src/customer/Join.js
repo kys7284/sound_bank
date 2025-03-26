@@ -239,8 +239,11 @@ const Join = () => {
                     <select name="customer_risk_type" value={form.customer_risk_type} onChange={handleChange} required>
                         <option value="">선택하세요</option>
                         <option value="안정형">안정형</option>
-                        <option value="중립형">중립형</option>
+                        <option value="중립형">보수형</option>
+                        <option value="공격형">위험중립형</option>
+                        <option value="공격형">적극형</option>
                         <option value="공격형">공격형</option>
+                        <option value="공격형">알수없음</option>
                     </select>
                     </div>
 
