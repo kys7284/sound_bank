@@ -438,15 +438,6 @@ const Header = () => {
                         대출고객목록
                       </NavDropdown.Item>
                     </li>
-                    <li>
-                      <NavDropdown.Item
-                        className="sub-item"
-                        as={Link}
-                        to="/chartManage"
-                      >
-                        차트관리
-                      </NavDropdown.Item>
-                    </li>
                   </ul>
                 </div>
               </div>

@@ -137,8 +137,7 @@ function App() {
           <Route path="/loanInsertForm" element={<LoanInsertForm />} />
           <Route path="/loanDetail/:loan_id" element={<LoanDetail />} />
           <Route path="/loanUpdate/:loan_id" element={<LoanUpdate />} />
-          <Route path="/loanCustomerList" element={<LoanCustomerList />} />
-          <Route path="/chartManage" element={<ChartManage />} />
+          <Route path="/loanCustomerList" element={<LoanCustomerList />} />          
           {/* 대출관련 Route 종료 */}
           {/* 펀드 Route 시작 */}
           <Route path="/fund" element={<Fund />} />
