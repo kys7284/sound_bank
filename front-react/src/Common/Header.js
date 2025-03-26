@@ -818,7 +818,7 @@ const Header = () => {
                         as={Link}
                         to="/bankauth"
                       >
-                        주민등록 인증
+                        통장 인증
                       </NavDropdown.Item>
                     </li>
                     <li>
@@ -827,7 +827,7 @@ const Header = () => {
                         as={Link}
                         to="/idauth"
                       >
-                        통장 인증
+                        주민등록인증 인증
                       </NavDropdown.Item>
                     </li>
                   </ul>
