@@ -7,7 +7,9 @@ const LoanCustomerList = () => {
       <table className="insertTable">
         <thead>
           <tr>
-            <h2>대출 가입 고객 목록</h2>
+            <th colSpan={9}>
+              <h2>대출 가입 고객 목록</h2>
+            </th>
           </tr>
           <tr>
             <th>고객 아이디</th>

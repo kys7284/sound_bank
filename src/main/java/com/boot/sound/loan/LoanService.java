@@ -51,5 +51,39 @@ public class LoanService {
 		System.out.println("서비스 - loanDetail");
 		return dao.loanDetail(loan_id);
 	}
-
+	
+	// 전체 대출 상품 갯수
+	@Transactional
+	public int loanCnt() {
+		System.out.println("서비스 - loanCnt()");
+		return dao.loanCnt();
+	}
+	
+	// 대출유형 검색 리스트
+	@Transactional
+	public List<LoanDTO> loanTypeSearch(String loan_type) {
+		System.out.println("서비스 - loanTypeSearch()");
+		return dao.loanTypeSearch(loan_type);
+	}
+	
+	// 대출 유형 상품별 갯수
+	@Transactional
+	public int loanTypeCnt(String loan_type) {
+		System.out.println("서비스 - loanTypeCnt()");
+		return dao.loanTypeCnt(loan_type);
+	}
+	
+	// 대출 이름검색 리스트
+	@Transactional
+	public List<LoanDTO> loanNameSearch(String loan_name){
+		System.out.println("서비스 - loanNameSearch()");
+		return dao.loanNameSearch(loan_name);
+	}
+	
+	// 대출 이름 검색 결과 갯수
+	@Transactional
+	public int loanNameCnt(String loan_name){
+		System.out.println("서비스 - loanNameSearch()");
+		return dao.loanNameCnt(loan_name);
+	}
 }
