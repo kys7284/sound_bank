@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -57,6 +58,42 @@ public class LoanController {
 		System.out.println("loanDetail");
 		return new ResponseEntity<>(service.loanDetail(loan_id),HttpStatus.OK);
 	}
+	
+	// 대출 상품 전체 갯수 http://localhost:8081/api/loanCnt
+	@GetMapping("/loanCnt")
+	public ResponseEntity<?> loanCnt(){
+		System.out.println("컨트롤 - loanCnt()");
+		return new ResponseEntity<>(service.loanCnt(),HttpStatus.CREATED);
+	}
+	
+	// 대출 유형 맞춤검사 http://localhost:8081/api/loanTypeSearch/{loan_type}
+	@GetMapping("/loanTypeSearch/")
+	public ResponseEntity<?> loanTypeSearch(@RequestParam("loan_type") String loan_type){
+		System.out.println("컨트롤 - loanTypeSearch()");
+		return new ResponseEntity<>(service.loanTypeSearch(loan_type),HttpStatus.CREATED);
+	}
+	
+	// 대출 유형 맞춤검사 http://localhost:8081/api/loanTypeCnt/{loan_type}
+	@GetMapping("/loanTypeCnt/")
+	public ResponseEntity<?> loanTypeCnt(@RequestParam("loan_type") String loan_type){
+		System.out.println("컨트롤 - loanTypeCnt()");
+		return new ResponseEntity<>(service.loanTypeCnt(loan_type),HttpStatus.CREATED);
+	}
+	
+	// 대출이름검색 http://localhost:8081/api/loanNameSearch/{loan_type}
+	@GetMapping("/loanNameSearch/")
+	public ResponseEntity<?> loanNameSearch(@RequestParam("loan_name") String loan_name){
+		System.out.println("컨트롤 - loanNameSearch()");
+		return new ResponseEntity<>(service.loanNameSearch(loan_name),HttpStatus.CREATED);
+	}
+	
+	// 대출이름 검색 결과 카운트 http://localhost:8081/api/loanNameCnt/{loan_type}
+	@GetMapping("/loanNameCnt/")
+	public ResponseEntity<?> loanNameCnt(@RequestParam("loan_name") String loan_name){
+		System.out.println("컨트롤 - loanNameCnt()");
+		return new ResponseEntity<>(service.loanNameCnt(loan_name),HttpStatus.CREATED);
+	}
+	
 	
 	
 }
