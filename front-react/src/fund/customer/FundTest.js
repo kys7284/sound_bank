@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../../Css/fund/Fund.css"; // 스타일 파일 추가
 
 const questions = [
   {
@@ -87,27 +88,31 @@ const FundTest = () => {
   };
 
   return (
-    <div>
-      <h2>투자성향 분석 테스트</h2>
-      {questions.map((question, index) => (
-        <div key={index}>
-          <label>{question.question}</label>
-          {question.options.map((option, optionIndex) => (
-            <div key={optionIndex}>
-              <input
-                type="radio"
-                name={`question-${index}`}
-                value={option}
-                checked={answers[index] === option}
-                onChange={() => handleChange(index, option)}
-              />
-              <label>{option}</label>
-            </div>
-          ))}
-        </div>
-      ))}
-      <button onClick={handleSubmit}>결과 확인</button>
-      {result !== null && <h3>예측된 투자 성향: {result}</h3>}
+    <div className="fund-test-container">
+      <h2 className="fund-test-title">투자성향 분석</h2>
+      <div className="fund-test-card">
+        {questions.map((question, index) => (
+          <div key={index} className="fund-test-question">
+            <p className="fund-test-question-title">{question.question}</p>
+            {question.options.map((option, optionIndex) => (
+              <div key={optionIndex} className="fund-test-option">
+                <input
+                  type="radio"
+                  name={`question-${index}`}
+                  value={option}
+                  checked={answers[index] === option}
+                  onChange={() => handleChange(index, option)}
+                />
+                <label>{option}</label>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <button className="fund-test-submit" onClick={handleSubmit}>
+        결과 확인
+      </button>
+      {result !== null && <h3 className="fund-test-result">예측된 투자 성향: {result}</h3>}
     </div>
   );
 };
