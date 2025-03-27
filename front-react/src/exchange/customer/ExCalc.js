@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "../../Css/exchange/ExRate.module.css";
 
 const ExCalc = ({ isOpen, onClose, exchange }) => {
     const [amount, setAmount] = useState(0);

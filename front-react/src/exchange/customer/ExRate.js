@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../../Css/exchange/ExRate.css";
+import styles from "../../Css/exchange/ExRate.module.css";
+
 import ExCalc from "./ExCalc";
 
 const ExRate = () => {
@@ -67,7 +68,7 @@ const ExRate = () => {
         <button onClick={() => setIsCalculatorOpen(true)}>환율 계산기 열기</button>        
         
         {/* 날짜 입력 필드 */}
-        <div className="date-input">
+        <div className={styles.dateInput}>
             <label htmlFor="date">날짜 선택: </label>
             <input
                 type="date"
@@ -78,7 +79,7 @@ const ExRate = () => {
             <h5> * 주말&공휴일 환율은 조회되지 않습니다. </h5>
         </div>
         
-        <div className="calc-button">               
+        <div className={styles.calcButton}>               
         {/* 환율 계산기 팝업 */}
         <ExCalc
             isOpen={isCalculatorOpen}
@@ -87,7 +88,7 @@ const ExRate = () => {
         />        
         </div>
 
-        <table border="1" >
+        <table border="1" className={styles.table}>
             <thead>
                 <tr>
                 <th>통화 코드</th>
