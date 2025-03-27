@@ -35,6 +35,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,	loan_type = #{loan_type}
 		WHERE loan_id = #{loan_id}
 	</update>
+	
+	<select id="loanCnt" resultType="int">
+		SELECT COUNT(*) FROM LOAN_TBL
+	</select>
+	
+	<select id="loanTypeSearch" parameterType="String" resultType="com.boot.sound.loan.LoanDTO">
+		SELECT * FROM LOAN_TBL
+ 		WHERE loan_type = #{loan_type}
+	</select>
+	
+	<select id="loanTypeCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM LOAN_TBL
+		WHERE loan_type = #{loan_type}
+	</select>
+	
+	<select id="loanNameSearch" parameterType="String" resultType="com.boot.sound.loan.LoanDTO">
+	SELECT * FROM LOAN_TBL
+	WHERE loan_name LIKE '%${loan_name}%'
+	</select>
+	
+	<select id="loanNameCnt" parameterType="String" resultType="int">
+	SELECT COUNT(*) FROM LOAN_TBL
+	WHERE loan_name LIKE '%${loan_name}%'
+	</select>
  
  
  </mapper>
