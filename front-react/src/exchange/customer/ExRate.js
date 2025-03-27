@@ -5,56 +5,67 @@ import ExCalc from "./ExCalc";
 
 const ExRate = () => {
   
-  const [exchange, setExchange] = useState([]); // 환율데이터
-  const [date, setDate] = useState(""); // 선택된 날짜 상태
-  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false); // 팝업 상태
-
-     // 날짜 변경 핸들러
-     const handleDateChange = (e) => {
-        setDate(e.target.value); // 선택된 날짜를 상태에 저장
+    const [exchange, setExchange] = useState([]);
+    const [date, setDate] = useState("");
+    const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
+    
+    // 날짜 포맷 함수
+    const formatDate = (dateObj) => {
+      const offset = dateObj.getTimezoneOffset();
+      const localDate = new Date(dateObj.getTime() - offset * 60 * 1000);
+      return localDate.toISOString().split("T")[0];
     };
-
-    // 날짜별 환율 조회 함수
+    
+    // 환율 조회
     const fetchExchangeRates = (selectedDate) => {
-        console.log("선택된 날짜", selectedDate);
-      axios.get("http://localhost:8081/api/exchange/rates", {
-          params: { date: selectedDate } // API 요청에 날짜를 파라미터로 전달
+      const formattedDate = formatDate(new Date(selectedDate));
+      console.log("조회할 날짜:", formattedDate);
+    
+      axios.get('http://localhost:8081/api/exchange/rates', {
+        params: { date: formattedDate }
       })
-      .then((res) => {
+        .then((res) => {
           console.log("api데이터", res.data);
-          setExchange(res.data); // 응답 데이터를 상태에 저장
-      })
-      .catch((err) => {
-          console.log("에러", err);
+          if (Array.isArray(res.data)) {
+            setExchange(res.data);
+          } else {
+            setExchange([]);
+          }
+        })
+        .catch((err) => {
+          console.error("에러", err);
           alert("환율 정보를 불러오는 중 오류가 발생했습니다.");
-      });
-  };
-
-  // 날짜가 변경될 때마다 API 호출
-  useEffect(() => {
-    if (date) {
-        fetchExchangeRates(date); // 선택된 날짜로 API 호출
-    }
+          setExchange([]);
+        });
+    };
+    
+    // 초기 로드
+    useEffect(() => {
+      const today = new Date();
+      const formatted = formatDate(today);
+      setDate(formatted);
+    }, []);
+    
+    // 날짜 변경 시 API 호출
+    useEffect(() => {
+      if (date) {
+        fetchExchangeRates(date);
+      }
     }, [date]);
+    
+    // 날짜 선택 핸들러
+    const handleDateChange = (e) => {
+      setDate(e.target.value);
+    };
+    
 
-  useEffect(() => {
-    axios.get("http://localhost:8081/api/exchange/rates")
-    .then((res) => {
-        console.log("api데이터", res.data);
-        setExchange(res.data);
-    })
-    .catch((err) => {
-        console.log("에러", err);
-        alert("환율 정보를 불러오는 중 오류가 발생했습니다.");
-    });
-  }, [date]);
-
+    
 
   return (
     <div> 
         {/* 환율 계산기 열기 버튼 */}
-        <button onClick={() => setIsCalculatorOpen(true)}>환율 계산기 열기</button>
-        {/* <img src="/images/exchange/ex_rate.png" alt="환율정보" /> */}
+        <button onClick={() => setIsCalculatorOpen(true)}>환율 계산기 열기</button>        
+        
         {/* 날짜 입력 필드 */}
         <div className="date-input">
             <label htmlFor="date">날짜 선택: </label>
@@ -66,9 +77,8 @@ const ExRate = () => {
             />
             <h5> * 주말&공휴일 환율은 조회되지 않습니다. </h5>
         </div>
-        <div className="calc-button">
         
-       
+        <div className="calc-button">               
         {/* 환율 계산기 팝업 */}
         <ExCalc
             isOpen={isCalculatorOpen}
@@ -76,6 +86,7 @@ const ExRate = () => {
             exchange={exchange}
         />        
         </div>
+
         <table border="1" >
             <thead>
                 <tr>
@@ -104,6 +115,7 @@ const ExRate = () => {
                 ))}
             </tbody>
         </table>         
+
     </div>
 );
 };
