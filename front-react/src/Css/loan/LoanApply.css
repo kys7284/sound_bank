@@ -1,0 +1,75 @@
+.box {
+  width: 90%;
+  margin-left: 40%;
+}
+
+.TypeBtn {
+  display: flex;
+  height: 50px;
+
+  margin-top: 10%;
+}
+
+.TypeBtn button {
+  height: 50px;
+  width: 160px;
+}
+
+.LoanSearch {
+  width: 600px;
+}
+
+.container {
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.InfoArea {
+  /* text-align: left;
+  margin-bottom: 10px; */
+  flex-basis: 60%;
+}
+
+.LoanApply {
+  margin-bottom: 10px;
+}
+
+.AmontArea {
+  text-align: right;
+  color: black; /* 주황색 계열 색상 */
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 10%;
+  margin-left: 20%;
+  margin-bottom: 10px;
+}
+
+.ButtonArea {
+  text-align: right;
+  margin-top: 20%;
+  margin-left: -20%;
+}
+
+.BtnSearch {
+  display: flex;
+}
+
+.ButtonArea button,
+.TextSearch button,
+.BtnSearch button {
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-left: 50px;
+  background-color: black;
+}
+
+.ButtonArea button:hover,
+.TextSearch button:hover,
+.BtnSearch button:hover {
+  color: black;
+  background-color: skyblue;
+}
+
+.LoanDisplay {
+  display: flex;
+}
