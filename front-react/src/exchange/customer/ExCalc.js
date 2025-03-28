@@ -19,19 +19,20 @@ const ExCalc = ({ isOpen, onClose, exchange }) => {
     };
 
     const calculateExchange = () => {
-        if (!fromCurrency || !toCurrency || !amount) {
-            setConvertedAmount(null);
+        if (!fromCurrency || !toCurrency || !amount) { //입력값이 없으면 계산하지 않음
+            setConvertedAmount(null); 
             return;
         }
 
-        const fromRate = getExchangeRate(fromCurrency);
-        const toRate = getExchangeRate(toCurrency);
+        const fromRate = getExchangeRate(fromCurrency); //입력받은 통화의 환율
+        const toRate = getExchangeRate(toCurrency); //변환할 통화의 환율
+        //환율을 가져와서 계산
 
         if (fromRate && toRate) {
-            const result = amount * (fromRate / toRate);
-            setConvertedAmount(result.toFixed(2));
+            const result = amount * (fromRate / toRate); 
+            setConvertedAmount(result.toFixed(2));  
         } else {
-            setConvertedAmount(null);
+            setConvertedAmount(null);   
         }
     };
 
