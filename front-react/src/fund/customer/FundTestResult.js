@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import "../../Css/fund/Fund.css"; // 스타일 파일 추가
 
 const FundTestResult = () => {
     const location = useLocation();
@@ -10,10 +11,25 @@ const FundTestResult = () => {
     const investmentType = investmentTypes[result] || "알 수 없음";
 
     return (
-        <div>
-            <h1>투자성향 분석 결과</h1>
-            <p>고객님의 투자 성향은 <strong>{investmentType}</strong> 입니다.</p>
-            <button onClick={() => navigate("/")}>홈으로</button>
+        <div className="fund-test-result-container">
+            <h1 className="fund-test-result-title">투자성향 분석 결과</h1>
+            <table className="fund-test-result-table">
+                <tbody>
+                    <tr>
+                        고객님의 투자성향은
+                        <strong> {investmentType}</strong>입니다.
+                    </tr>
+                </tbody>
+            </table>
+            <div className="fund-test-result-buttons">
+                <button
+                    className="fund-test-result-button"
+                    onClick={() => navigate("/fund-recommendation")}
+                >
+                    나에게 맞는 <br>
+                    </br>펀드 추천받기
+                </button>
+            </div>
         </div>
     );
 };

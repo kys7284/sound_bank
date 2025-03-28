@@ -69,21 +69,36 @@ const questions = [
 
 const FundTest = () => {
   const navigate = useNavigate();
-  const [answers, setAnswers] = useState(Array(questions.length).fill(null));
+  const [answers, setAnswers] = useState(Array(questions.length).fill(null)); // 초기 상태는 null로 설정
   const [result, setResult] = useState(null);
 
+  // 사용자가 선택한 답변을 업데이트하는 함수
   const handleChange = (index, value) => {
     const newAnswers = [...answers];
-    newAnswers[index] = value;
+    newAnswers[index] = value; // 선택한 답변을 업데이트
     setAnswers(newAnswers);
   };
 
+  // 서버로 데이터 전송 후 결과를 받아오는 함수
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("http://127.0.0.1:8000/predict", { answers });
+      // 서버로 전송할 데이터 준비
+      const payload = { answers };
+      console.log("Submitting payload:", payload); // 디버깅용 로그
+
+      // 서버로 POST 요청
+      const response = await axios.post("http://127.0.0.1:8000/predict", payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Server response:", response.data); // 디버깅용 로그
+
+      // 결과를 결과 페이지로 이동
       navigate("/test-result", { state: { result: response.data.investment_type } });
     } catch (error) {
       console.error("Error submitting test:", error);
+      alert("서버 요청 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -99,9 +114,9 @@ const FundTest = () => {
                 <input
                   type="radio"
                   name={`question-${index}`}
-                  value={option}
-                  checked={answers[index] === option}
-                  onChange={() => handleChange(index, option)}
+                  value={optionIndex + 1} // 선택지를 숫자로 매핑
+                  checked={answers[index] === optionIndex + 1} // 수정된 checked 조건
+                  onChange={() => handleChange(index, optionIndex + 1)} // 숫자 값으로 업데이트
                 />
                 <label>{option}</label>
               </div>

@@ -26,6 +26,9 @@ class InvestmentRequest(BaseModel):
 @app.post("/predict")
 async def predict(data: InvestmentRequest):
     try:
+        # 요청 데이터 출력
+        print(f"Received data: {data.answers}")  # 디버깅용 로그
+        
         # 입력 데이터가 9개의 특성을 가지는지 확인
         if len(data.answers) != 9:
             raise HTTPException(status_code=400, detail="Input data must have exactly 9 features.")
@@ -36,6 +39,7 @@ async def predict(data: InvestmentRequest):
         investment_type = int(np.argmax(prediction))  # 예측 결과에서 가장 높은 확률을 가진 클래스 선택
         return {"investment_type": investment_type}
     except Exception as e:
+        print(f"Error during prediction: {e}")  # 예외 출력
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":

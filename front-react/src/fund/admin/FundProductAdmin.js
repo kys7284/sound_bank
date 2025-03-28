@@ -238,7 +238,7 @@ const FundProductAdmin = () => {
               className="close-button"
               onClick={handleClosePopup}
               style={{
-                position: "relative",
+                position: "absolute",
                 top: "10px",
                 right: "10px",
                 background: "none",

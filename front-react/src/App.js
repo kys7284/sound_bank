@@ -28,6 +28,7 @@ import Fund from "./fund/customer/Fund";
 import FundSearch from "./fund/customer/FundSearch";
 import FundList from "./fund/customer/FundList";
 import FundTest from "./fund/customer/FundTest";
+import FundTestResult from "./fund/customer/FundTestResult";
 import FundRecommend from "./fund/customer/FundRecommend";
 import MyFund from "./fund/customer/MyFund";
 import MyFundInfo from "./fund/customer/MyFundInfo";
@@ -144,6 +145,7 @@ function App() {
           <Route path="/fundSearch" element={<FundSearch />} />
           <Route path="/fundList" element={<FundList />} />
           <Route path="/fundTest" element={<FundTest />} />
+          <Route path="/test-result" element={<FundTestResult />} />
           <Route path="/fundRecommend" element={<FundRecommend />} />
           <Route path="/myFund" element={<MyFund />} />
           <Route path="/myFundInfo" element={<MyFundInfo />} />

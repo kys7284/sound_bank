@@ -188,4 +188,50 @@
   .action-buttons button:hover {
     background-color: #21a1f1; /* 버튼 호버 시 배경색 변경 */
   }
+
+  .fund-test-result-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.fund-test-result-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.fund-test-result-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.fund-test-result-buttons {
+    margin-top: 20px;
+}
+
+.fund-test-result-button {
+    size: 200%;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+    width: 200px;
+}
+
+.fund-test-result-button:hover {
+    background-color: #0056b3;
+}
   
