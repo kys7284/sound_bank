@@ -3,15 +3,24 @@
 환율 수출입 API SSL 검증
 SSL 연결/인증 관련 이슈
 
-1. cmd관리자 권한에서
-  
+DigiCert Global Root G2.crt 파일
+Thawte TLS RSA CA G1.crt 파일
+위 2개 더블클릭해서 설치.
+그래도 안되면 
+
+1. cmd관리자 권한에서  
 keytool -import -trustcacerts -alias digicert-root-g2 \
   -file "D:\DEV\workspace_springBoot_ict04\sound_bank\DigiCert Global Root G2.crt"\ *(주의:각자 경로가 다를수 있으니 확인후 수정)* 
   -keystore "%JAVA_HOME%\lib\security\cacerts"\ *(환경변수 JAVA_HOME에 jdk17 있어야함. 그리고 폴더 경로 추적해서 cacerts 있는지 확인. 없으면 보통 C:\Program Files\Java\jdk-17\lib\security안에 있음.)*
   -storepass changeit
 
-* cmd관리자 권한에서 복사 붙혀넣기.
-keytool -import -trustcacerts -alias digicert-root-g2 -file "D:\DEV\workspace_springBoot\sound_bank\DigiCert Global Root G2.crt" -keystore "C:\Program Files\Java\jdk-17\lib\security\cacerts" -storepass changeit
 
-keytool -import -trustcacerts -alias digicert-root-g2 -file "D:\DEV\workspace_springBoot\sound_bank\Thawte TLS RSA CA G1.crt" -keystore "C:\Program Files\Java\jdk-17\lib\security\cacerts" -storepass changeit
+* cmd관리자 권한에서 복사 붙혀넣기.
+keytool -import -trustcacerts -alias digicert-root-g2 -file "D:\DEV\workspace_springBoot_ict04\sound_bank\DigiCert Global Root G2.crt" -keystore "C:\Program Files\Java\jdk-17\lib\security\cacerts" -storepass changeit
+
+keytool -import -trustcacerts -alias digicert-tls-rsa-ca1 ^
+  -file "D:\DEV\workspace_springBoot_ict04\sound_bank\Thawte TLS RSA CA G1.crt" ^
+  -keystore "%JAVA_HOME%\lib\security\cacerts" ^
+  -storepass changeit
+  
   
