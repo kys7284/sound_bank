@@ -64,9 +64,12 @@ const ExRate = () => {
 
   return (
     <div> 
-        {/* 환율 계산기 열기 버튼 */}
-        <button onClick={() => setIsCalculatorOpen(true)}>환율 계산기 열기</button>        
-        
+      
+        <div className={styles.calcButtonWrapper}>
+          {/* 환율 계산기 열기 버튼 */}
+          <button className={styles.calcButton} onClick={() => setIsCalculatorOpen(true)}>환율 계산기 열기</button>        
+        </div>
+      
         {/* 날짜 입력 필드 */}
         <div className={styles.dateInput}>
             <label htmlFor="date">날짜 선택: </label>
@@ -76,10 +79,11 @@ const ExRate = () => {
                 value={date}
                 onChange={handleDateChange}
             />
+            <h5> * 영업일 11시 전후로 업데이트 됩니다 </h5>
             <h5> * 주말&공휴일 환율은 조회되지 않습니다. </h5>
         </div>
         
-        <div className={styles.calcButton}>               
+        <div>               
         {/* 환율 계산기 팝업 */}
         <ExCalc
             isOpen={isCalculatorOpen}

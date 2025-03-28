@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styles from "../../Css/exchange/ExRate.module.css";
+import React, { useState, useEffect } from "react";
+import styles from "../../Css/exchange/ExCalc.module.css";
 
 const ExCalc = ({ isOpen, onClose, exchange }) => {
     const [amount, setAmount] = useState(0);
@@ -7,36 +7,45 @@ const ExCalc = ({ isOpen, onClose, exchange }) => {
     const [toCurrency, setToCurrency] = useState("");
     const [convertedAmount, setConvertedAmount] = useState(null);
 
+    const getExchangeRate = (currency) => {
+        const item = exchange.find(item => item.cur_unit === currency);
+        if (!item) return null;
+
+        const rate = parseFloat(item.deal_bas_r.replace(/,/g, ''));
+        const unit = (item.cur_unit.includes("JPY") || item.cur_unit.includes("IDR")) ? 100 : 1;
+
+        return rate / unit;
+    };
+
     const calculateExchange = () => {
         if (!fromCurrency || !toCurrency || !amount) {
-            alert("모든 필드를 입력해주세요.");
+            setConvertedAmount(null);
             return;
         }
-        
-        const fromRate = parseFloat(exchange.find(item => item.cur_unit === fromCurrency)?.deal_bas_r); 
-        const toRate = parseFloat(exchange.find(item => item.cur_unit === toCurrency)?.deal_bas_r);     
-        console.log("fromRate:", fromRate, "toRate:", toRate);
 
-        if (!isNaN(fromRate) && !isNaN(toRate)) {
+        const fromRate = getExchangeRate(fromCurrency);
+        const toRate = getExchangeRate(toCurrency);
 
-            const result = (amount/fromRate) * toRate;
-            
-            setConvertedAmount(result.toFixed(2)); // 소수점 2자리까지 표시
-            
-            console.log("fromRate:", fromRate, "toRate:", toRate, "amount:", amount);
-            console.log(result);
+        if (fromRate && toRate) {
+            const result = amount * (fromRate / toRate);
+            setConvertedAmount(result.toFixed(2));
         } else {
-            alert("선택한 통화의 환율 정보를 찾을 수 없습니다.");
+            setConvertedAmount(null);
         }
     };
+
+    // 입력이 바뀔 때마다 자동 계산
+    useEffect(() => {
+        calculateExchange();
+    }, [amount, fromCurrency, toCurrency]);
 
     if (!isOpen) return null;
 
     return (
-        // <img src="/images/exchange/ex_calc.png" alt="환율계산기" />
-            <div className="modal-overlay">
-            <div className="modal-content">
+        <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
                 <h3>환율 계산기</h3>
+
                 <div>
                     <label>금액:</label>
                     <input
@@ -57,6 +66,7 @@ const ExCalc = ({ isOpen, onClose, exchange }) => {
                         ))}
                     </select>
                 </div>
+
                 <div>
                     <label>To:</label>
                     <select value={toCurrency} onChange={(e) => setToCurrency(e.target.value)}>
@@ -68,7 +78,7 @@ const ExCalc = ({ isOpen, onClose, exchange }) => {
                         ))}
                     </select>
                 </div>
-                <button onClick={calculateExchange}>계산</button>
+
                 {convertedAmount !== null && (
                     <div>
                         <h4>결과:</h4>
@@ -77,9 +87,11 @@ const ExCalc = ({ isOpen, onClose, exchange }) => {
                         </p>
                     </div>
                 )}
+
                 <button onClick={onClose}>닫기</button>
             </div>
         </div>
-     );
-}
+    );
+};
+
 export default ExCalc;
