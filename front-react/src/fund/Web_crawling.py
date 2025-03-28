@@ -1,6 +1,12 @@
 import pandas as pd
 import requests
 from itertools import count
+import io  # 파일 입출력
+import sys
+
+
+# python 표준 출력 스트림(sys.stdout)의 인코딩을 UTF-8로 변경하는 코드
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 accessToken = 'XT9mT2J%2B83N0usXkqjWkPH4EgdIbRZ%2BeJuqmfrLNUYEERMf4mQeXxDqydemAr8i0c45qQKqvwP3SZNKtEvFN%2BA%3D%3D'
 pageSize = 10
