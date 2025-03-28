@@ -6,6 +6,7 @@ const FundProductAdmin = () => {
   const [funds, setFunds] = useState([]); // 테이블에 표시할 펀드 목록
   const [selectedFund, setSelectedFund] = useState(null); // 선택된 펀드
   const [formData, setFormData] = useState({
+    FUND_ID: 1, // 펀드 ID는 자동 생성
     FUND_NAME: "",
     FUND_COMPANY: "",
     FUND_TYPE: "",
@@ -56,6 +57,7 @@ const FundProductAdmin = () => {
   const handleUpdateFund = (fund) => {
     setSelectedFund(fund);
     setFormData({
+      FUND_ID: fund["펀드 ID"],
       FUND_NAME: fund["상품명"],
       FUND_COMPANY: fund["운용사명"],
       FUND_TYPE: fund["펀드유형"],
@@ -75,6 +77,23 @@ const FundProductAdmin = () => {
     setFunds(updatedFunds); // 상태 업데이트
   setModalPosition({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 150 }); // 모달 초기 위치 설정
   };  
+
+  // 팝업 닫기 함수
+  const handleClosePopup = () => {
+    setSelectedFund(null); // 선택된 펀드 초기화
+    setFormData({
+      FUND_ID: 0,
+      FUND_NAME: "",
+      FUND_COMPANY: "",
+      FUND_TYPE: "",
+      FUND_GRADE: "",
+      FUND_FEE_RATE: "",
+      RETURN_1M: 0,
+      RETURN_3M: 0,
+      RETURN_6M: 0,
+      RETURN_12M: 0,
+    }); // 폼 초기화
+  };
 
   const handleMouseDown = (e) => {
     // 입력 필드에서 발생한 이벤트는 무시
@@ -106,6 +125,7 @@ const FundProductAdmin = () => {
     try {
       if (selectedFund) {
         const formattedData = {
+          FUND_ID: formData.FUND_ID,
           FUND_NAME: formData.FUND_NAME,
           FUND_COMPANY: formData.FUND_COMPANY,
           FUND_TYPE: formData.FUND_TYPE,
@@ -130,6 +150,7 @@ const FundProductAdmin = () => {
           fetchFundsFromCSV(); // 수정 후 목록 갱신
           setSelectedFund(null); // 선택 초기화
           setFormData({
+            FUND_ID: 0,
             FUND_NAME: "",
             FUND_COMPANY: "",
             FUND_TYPE: "",
@@ -157,6 +178,7 @@ const FundProductAdmin = () => {
         <table className="fund-table">
           <thead>
             <tr>
+              <th>펀드ID</th>
               <th>펀드명</th>
               <th>운용사명</th>
               <th>펀드유형</th>
@@ -172,6 +194,7 @@ const FundProductAdmin = () => {
           <tbody>
             {funds.map((fund, index) => (
               <tr key={index}>
+                <td>{fund["펀드 ID"]}</td>
                 <td>{fund["상품명"]}</td>
                 <td>{fund["운용사명"]}</td>
                 <td>{fund["펀드유형"]}</td>
@@ -192,7 +215,7 @@ const FundProductAdmin = () => {
           </tbody>
         </table>
 
-        {/* 펀드 수정 폼 */}
+        {/* 펀드 수정 팝업폼 */}
         {selectedFund && (
           <div
             className="fund-form-container"
@@ -210,6 +233,23 @@ const FundProductAdmin = () => {
             }}
             onMouseDown={handleMouseDown}
           >
+            {/* 닫기 버튼 */}
+            <button
+              className="close-button"
+              onClick={handleClosePopup}
+              style={{
+                position: "relative",
+                top: "10px",
+                right: "10px",
+                background: "none",
+                border: "none",
+                fontSize: "16px",
+                fontColor: "#61dafb",
+                cursor: "pointer",
+              }}
+            >
+              X
+            </button>
             <h3>펀드 수정</h3>
             <form
               onSubmit={(e) => {
@@ -217,6 +257,16 @@ const FundProductAdmin = () => {
                 handleSaveFund();
               }}
             >
+              <div>
+                <label>펀드 ID:</label>
+                <input
+                  type="number"
+                  name="FUND_ID"
+                  value={formData.FUND_ID}
+                  onChange={handleChange}
+                  disabled // 수정 시 펀드 ID는 읽기 전용
+                />
+              </div>
               <div>
                 <label>펀드 이름:</label>
                 <input
