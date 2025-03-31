@@ -240,10 +240,10 @@ const Join = () => {
                         <option value="">선택하세요</option>
                         <option value="안정형">안정형</option>
                         <option value="중립형">보수형</option>
-                        <option value="공격형">위험중립형</option>
-                        <option value="공격형">적극형</option>
+                        <option value="위험중립형">위험중립형</option>
+                        <option value="적극형">적극형</option>
                         <option value="공격형">공격형</option>
-                        <option value="공격형">알수없음</option>
+                        <option value="알수없음">알수없음</option>
                     </select>
                     </div>
 
