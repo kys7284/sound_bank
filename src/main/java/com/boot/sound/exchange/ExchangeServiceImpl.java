@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import com.boot.sound.customer.CustomerDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -59,9 +60,16 @@ public class ExchangeServiceImpl {
         }
     }
     
+//    @Transactional
+//    public ExchangeRequestDTO requestExchange(ExchangeRequestDTO dto) {
+//        dao.requestExchange(dto); // dto에 exchange_request_id 채워짐
+//        return dao.selectExchangeRequestById(dto.getExchange_request_id());
+//    }
+    
     @Transactional
-    public ExchangeRequestDTO requestExchange(ExchangeRequestDTO dto) {
-        dao.requestExchange(dto); // dto에 exchange_request_id 채워짐
-        return dao.selectExchangeRequestById(dto.getExchange_request_id());
+    public CustomerDTO findbyId(String customer_id) {
+    	System.out.println("service - findbyId");
+    	
+    	return dao.findbyId(customer_id);
     }
 }
