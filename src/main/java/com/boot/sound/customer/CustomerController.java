@@ -12,16 +12,7 @@ public class CustomerController {
     @Autowired
     private CustomerService service;
 
-    @GetMapping("/idConfirmAction.do")
-    public ResponseEntity<?> checkId(@RequestParam String customer_id) {
-        // 고객이 요청한 아이디(customer_id)가 이미 사용 중인지 확인하는 서비스 호출
-        boolean isDuplicate = service.checkId(customer_id);
-        
-        // 아이디 사용 가능 여부를 기반으로 응답 메시지를 설정하여 반환
-        return ResponseEntity.ok(new IdCheckResponse(!isDuplicate,
-                isDuplicate ? "이미 사용중인 아이디입니다" : "사용 가능한 아이디입니다"));
-    }
-
+    // 계좌개설
     @PostMapping("/joinAction.do")
     public ResponseEntity<?> registerCustomer(@RequestBody CustomerDTO customer) {
         try {
@@ -57,6 +48,18 @@ public class CustomerController {
         public String getMessage() { return message; }
     }
     
+    // ID 중복확인
+    @GetMapping("/idConfirmAction.do")
+    public ResponseEntity<?> checkId(@RequestParam String customer_id) {
+        // 고객이 요청한 아이디(customer_id)가 이미 사용 중인지 확인하는 서비스 호출
+        boolean isDuplicate = service.checkId(customer_id);
+        
+        // 아이디 사용 가능 여부를 기반으로 응답 메시지를 설정하여 반환
+        return ResponseEntity.ok(new IdCheckResponse(!isDuplicate,
+                isDuplicate ? "이미 사용중인 아이디입니다" : "사용 가능한 아이디입니다"));
+    }
+
+    // 로그인
     @PostMapping("/login.do")
     public ResponseEntity<?> login(@RequestBody CustomerDTO loginInfo) {
         CustomerDTO customer = service.login(loginInfo.getCustomer_id(), loginInfo.getCustomer_password());
