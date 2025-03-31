@@ -4,11 +4,10 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boot.sound.inquire.account.AccountDAO">
 
-    <!-- 고객 ID로 입출금 계좌 조회 -->
-    <select id="accountList" parameterType="String" resultType="com.boot.sound.inquire.account.AccountDTO">
+  <select id="findAllByCustomerId" resultType="com.boot.sound.inquire.account.AccountDTO" parameterType="String">
         SELECT *
-        FROM ACCOUNT_TBL
-        WHERE CUSTOMER_ID = #{customer_id}
+        FROM account_tbl
+        WHERE customer_id = #{customer_id}
     </select>
 
 	 <insert id="insertAccount">
