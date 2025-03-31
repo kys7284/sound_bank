@@ -18,105 +18,45 @@ function AccountCheck() {
     setCustomerId(id);
 
     axios.get(`http://localhost:8081/api/accounts/allAccount/${id}`)
-      .then(res => {
-        console.log("받은 계좌 목록:", res.data);  // 🔍 확인
-        setData(res.data);
-      })
-      .catch(err => {
-        console.error('계좌 불러오기 실패:', err);
-        setData({});
-      });
+      .then(res => setData(res.data))
+      .catch(err => console.error('계좌 불러오기 실패:', err));
   }, []);
 
   const clickCard = (num) => {
     setAccNum(num);
   };
 
-  const Card = ({ item, type, index }) => {
-    let num = '';
-    let name = '';
-
-    if (type === '입출금') {
-      num = item.customer_account_number;  // ✅ 정확한 필드명
-      name = item.account_name;
-    } else if (type === '예금') {
-      num = item.dat_account_num;
-      name = item.dat_product_name;
-    } else if (type === '적금') {
-      num = item.ist_account_num;
-      name = `적금 (${item.ist_id})`;
-    } else if (type === '외환') {
-      num = item.exchange_account_number;
-      name = item.exchange_account_name || '외환계좌';
-    }
-
+  const Card = ({ item }) => {
     return (
       <div
-        key={index}
-        onClick={() => clickCard(num)}
-        className={`account-card ${accNum === num ? 'selected' : ''}`}
+        onClick={() => clickCard(item.account_number)}
+        className={`account-card ${accNum === item.account_number ? 'selected' : ''}`}
       >
-        <div><strong>{name}</strong></div>
-        <div>{num}</div>
+        <div><strong>{item.account_name}</strong></div>
+        <div>{item.account_number}</div>
       </div>
     );
   };
 
-  const Detail = ({ item, type }) => {
-    let num = '';
-    let name = '';
-    let money = 0;
-    let date = '';
-
-    if (type === '입출금') {
-      num = item.customer_account_number;
-      name = item.account_name;
-      money = item.balance || 0;
-      date = item.open_date;
-    } else if (type === '예금') {
-      num = item.dat_account_num;
-      name = item.dat_product_name;
-      money = item.dat_balance || 0;
-      date = item.dat_open_date;
-    } else if (type === '적금') {
-      num = item.ist_account_num;
-      name = `적금 (${item.ist_id})`;
-      money = item.ist_monthly_amount || 0;
-      date = item.ist_start_date;
-    } else if (type === '외환') {
-      num = item.exchange_account_number;
-      name = item.exchange_account_name || '외환계좌';
-      money = item.balance || 0;
-      date = item.created_at;
-    }
-
+  const Detail = ({ item }) => {
     return (
       <div className="account-detail">
         <h4>상세 정보</h4>
-        <p><b>이름:</b> {name}</p>
-        <p><b>계좌번호:</b> {num}</p>
-        <p><b>금액:</b> {money.toLocaleString()}원</p>
-        <p><b>개설일:</b> {new Date(date).toLocaleString()}</p>
+        <p><b>이름:</b> {item.account_name}</p>
+        <p><b>번호:</b> {item.account_number}</p>
+        <p><b>잔액:</b> {item.balance.toLocaleString()}원</p>
+        <p><b>이자율:</b> {item.interest_rate || 0}%</p>
+        <p><b>개설일:</b> {new Date(item.open_date).toLocaleDateString()}</p>
       </div>
     );
   };
-
-  const selectedItem = data[type]?.find(item => {
-    const itemNum =
-      item.customer_account_number ||
-      item.dat_account_num ||
-      item.ist_account_num ||
-      item.exchange_account_number;
-
-    return String(itemNum) === String(accNum);
-  });
 
   return (
     <div className="account-wrapper">
       <h2 className="account-title">{customer_id}님의 계좌 조회</h2>
 
       <div className="account-type-buttons">
-        {Object.keys(data).map(t => (
+        {['입출금', '예금', '적금', '외환'].map(t => (
           <button
             key={t}
             onClick={() => {
@@ -125,7 +65,7 @@ function AccountCheck() {
             }}
             className={type === t ? 'active' : ''}
           >
-            {t} ({data[t].length})
+            {t} ({(data[t] || []).length})
           </button>
         ))}
       </div>
@@ -133,14 +73,20 @@ function AccountCheck() {
       {type && data[type] && (
         <div>
           <h3>{type} 계좌</h3>
-          {data[type].map((item, idx) => (
-            <Card key={idx} item={item} type={type} index={idx} />
-          ))}
+          {data[type].length > 0 ? (
+            data[type].map(item => (
+              <Card key={item.account_number} item={item} />
+            ))
+          ) : (
+            <p>해당 타입의 계좌가 없습니다.</p>
+          )}
         </div>
       )}
 
-      {type && accNum && selectedItem && (
-        <Detail item={selectedItem} type={type} />
+      {type && accNum && (
+        <Detail
+          item={data[type].find(a => a.account_number === accNum)}
+        />
       )}
     </div>
   );
