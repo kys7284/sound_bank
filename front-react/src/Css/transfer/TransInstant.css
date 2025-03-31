@@ -1,0 +1,38 @@
+.instant-wrap {
+  max-width: 400px;
+  margin: auto;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-family: Arial;
+  background: #f9f9f9;
+}
+
+.instant-wrap h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.instant-wrap input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.instant-wrap button {
+  width: 100%;
+  padding: 12px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.instant-wrap button:hover {
+  background: #0056b3;
+}

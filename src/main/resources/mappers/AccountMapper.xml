@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.sound.inquire.account.AccountDAO">
+
+    <!-- 고객 ID로 입출금 계좌 조회 -->
+    <select id="accountList" parameterType="String" resultType="com.boot.sound.inquire.account.AccountDTO">
+        SELECT *
+        FROM ACCOUNT_TBL
+        WHERE CUSTOMER_ID = #{customer_id}
+    </select>
+
+	 <insert id="insertAccount">
+    INSERT INTO ACCOUNT_TBL (
+      ACCOUNT_NUMBER, CUSTOMER_ID, ACCOUNT_TYPE,
+      BALANCE, INTEREST_RATE, YIELD_RATE,
+      CURRENCY_TYPE, ACCOUNT_NAME, OPEN_DATE
+    )
+    VALUES (
+      #{account_number}, #{customer_id}, #{account_type},
+      #{balance}, #{interest_rate}, #{yield_rate},
+      #{currency_type}, #{account_name}, #{open_date}
+    )
+  </insert>
+  
+</mapper>
