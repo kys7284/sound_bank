@@ -29,4 +29,3 @@ public interface AccountRepository extends CrudRepository<AccountDTO, String> {
     int plusBalance(@Param("acc") String acc, @Param("money") Integer  money);
 
 }
-
