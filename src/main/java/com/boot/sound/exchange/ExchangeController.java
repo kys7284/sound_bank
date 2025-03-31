@@ -5,8 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.boot.sound.customer.CustomerDTO;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +41,24 @@ public class ExchangeController {
     }
     
     // 환전 신청
-    @PostMapping("/requestEx")
-    public ResponseEntity<ExchangeRequestDTO> requestExchange(@RequestBody ExchangeRequestDTO dto){
-        ExchangeRequestDTO result = service.requestExchange(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+//    @PostMapping("/requestEx")
+//    public ResponseEntity<ExchangeRequestDTO> requestExchange(@RequestBody ExchangeRequestDTO dto){
+//        ExchangeRequestDTO result = service.requestExchange(dto);
+//        
+//        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+//    }
+    
+    // 고객 계좌 조회
+    @GetMapping("/account/{customer_id}")
+    public List<Map<String, Object>> getAccountsByCustomerId(@PathVariable String customer_id) {
+        CustomerDTO dto = service.findbyId(customer_id);
+        System.out.println(dto);
+        Map<String, Object> result = new HashMap<>();
+        result.put("customer_id", dto.getCustomer_id());
+        result.put("account_number", dto.getCustomer_account_number());
+
+        return Collections.singletonList(result); // 리스트로 감싸기!
     }
+
+    
 }
