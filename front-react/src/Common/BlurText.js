@@ -76,6 +76,7 @@ const BlurText = ({
           key={index}
           style={{
             ...props,
+            fontSize: "inherit",
             display: 'inline-block',
             willChange: 'transform, filter, opacity',
           }}
