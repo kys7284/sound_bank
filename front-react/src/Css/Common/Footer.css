@@ -1,5 +1,4 @@
 .footer {
-  color: #ccc;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px); /* Safari 호환 */
   padding: 2rem;
@@ -12,12 +11,14 @@
 
 /* 메인 페이지에서 투명하게 */
 .footer-main {
-  background-color: rgba(0, 0, 0) !important;
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  position: fixed;
 }
 
 /* 그 외 페이지는 진하게 */
 .footer-default {
   background-color: rgb(0, 0, 0) !important;
+  position: relative;
 }
 
 .footer-wrap {
@@ -41,11 +42,13 @@
 }
 
 .footer-desc {
+  color: #fff;
   font-size: 0.9rem;
   line-height: 1.5;
 }
 
 .footer-links {
+  
   display: flex;
   gap: 3rem;
   flex: 2;
@@ -83,6 +86,7 @@
 }
 
 .footer-contact {
+  color: #fff;
   flex: 1;
   min-width: 250px;
   text-align: right;
