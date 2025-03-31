@@ -17,7 +17,7 @@ app.add_middleware(
 )
 
 # 투자성향 분석을 위한 모델 로드 (모델을 직접 학습 후 저장해야 함)
-model = load_model("investment_model.h5")
+model = load_model("../../../public/data/investment_model.h5")
 
 # 요청 데이터 모델 정의
 class InvestmentRequest(BaseModel):
@@ -48,7 +48,7 @@ if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
     
 # 펀드 추천을 위한 CSV 파일 로드
-funds = pd.read_csv("d:/DEV/workspace_springBoot_ict04/sound_bank/front-react/public/data/fundList.csv")
+funds = pd.read_csv("D:/DEV/workspace_springBoot_ict04/sound_bank/front-react/public/data/fundList.csv")
 
 # 투자성향에 따른 펀드 추천 엔드포인트
 @app.post("/recommend")
