@@ -1,6 +1,7 @@
 package com.boot.sound.exchange;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,5 +34,12 @@ public class ExchangeController {
         System.out.println("List = " + rates);
 
         return ResponseEntity.ok(rates); // 상태 코드 200과 함께 반환
+    }
+    
+    // 환전 신청
+    @PostMapping("/requestEx")
+    public ResponseEntity<ExchangeRequestDTO> requestExchange(@RequestBody ExchangeRequestDTO dto){
+        ExchangeRequestDTO result = service.requestExchange(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 }

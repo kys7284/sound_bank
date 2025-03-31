@@ -12,10 +12,13 @@ const ExCalc = ({ isOpen, onClose, exchange }) => {
         if (!item) return null; //일치하는 통화가 없으면 null 반환
 
         const rate = parseFloat(item.deal_bas_r.replace(/,/g, '')); //환율을 숫자로 변환
-        const unit = (item.cur_unit.includes("JPY") || item.cur_unit.includes("IDR")) ? 100 : 1; //일본 엔화와 인도네시아 루피아는 100으로 나누기
-        //환율을 100으로 나누어 소수점 두 자리까지 표현
+        
+        return rate; //환율 반환
 
-        return rate / unit;
+        // const unit = (item.cur_unit.includes("JPY") || item.cur_unit.includes("IDR")) ? 100 : 1; //일본 엔화와 인도네시아 루피아는 100으로 나누기
+        //환율을 100으로 나누어 소수점 두 자리까지 표현        
+        
+        // return rate / unit;
     };
 
     const calculateExchange = () => {
