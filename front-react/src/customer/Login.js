@@ -14,6 +14,10 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await axios.post('http://localhost:8081/api/login.do', form);
+
+      // 로그인 성공 후 customer_id 저장
+      localStorage.setItem('customer_id', form.customer_id);
+
       alert(res.data); // 로그인 성공 메시지
       window.location.href = '/'; // 메인 페이지 이동
     } catch (err) {
