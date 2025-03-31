@@ -11,8 +11,7 @@ import javax.persistence.*;
 public class TransInstantDTO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transfer_seq")
-    @SequenceGenerator(name = "transfer_seq", sequenceName = "TRANSFER_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TRANSFER_ID")
     private int transfer_id; // 이체 고유 번호
 
