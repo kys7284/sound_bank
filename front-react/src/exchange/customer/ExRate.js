@@ -69,8 +69,7 @@ const ExRate = () => {
     
 
   return (
-    <div> 
-      
+    <div classname={styles.container}>       
         <div className={styles.calcButtonWrapper}>
           {/* 환율 계산기 열기 버튼 */}
           <button className={styles.calcButton} onClick={() => setIsCalculatorOpen(true)}>환율 계산기 열기</button>        
@@ -98,8 +97,8 @@ const ExRate = () => {
         />        
         </div>
         {loading ? (
-          <p style={{ textAlign: "center", marginTop: "20px" }}>
-            환율 정보를 불러오는 중입니다...
+          <p style={{ textAlign: "center", marginTop: "20px", minHeight:"570px"}}>
+             💸 환율 정보를 불러오는 중입니다 💸
           </p>
         ) : (
         <table border="1" className={styles.table}>
