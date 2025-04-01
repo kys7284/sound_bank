@@ -1,4 +1,5 @@
 .account-wrapper {
+  min-height: 570px;
     padding: 20px;
     font-family: Arial, sans-serif;
   }

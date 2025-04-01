@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../../Css/loan/LoanApply.css";
 
+import { Link } from "react-router-dom";
+
 const LoanApply = (props) => {
   const [loanList, setLoanList] = useState([
     {
@@ -15,10 +17,11 @@ const LoanApply = (props) => {
     },
   ]);
 
-  const [loanCnt, setLoanCnt] = useState(0);
-  const [loan_name, setLoan_name] = useState("");
-  const [searchResult, setSearchResult] = useState(false);
+  const [loanCnt, setLoanCnt] = useState(0); // 검색된 상품 갯수
+  const [loan_name, setLoan_name] = useState(""); // 검색할 상품 이름
+  const [searchResult, setSearchResult] = useState(false); // 검색 결과
 
+  // 상품 이름 검색
   const searchName = () => {
     fetch(
       `http://localhost:8081/api/loanNameSearch/?loan_name=${encodeURIComponent(
@@ -42,6 +45,7 @@ const LoanApply = (props) => {
       .catch((error) => {
         console.error("데이터 가져오기 오류:", error);
       });
+    // 검색 된 상품 갯수값
     fetch(
       `http://localhost:8081/api/loanNameCnt/?loan_name=${encodeURIComponent(
         loan_name
@@ -64,8 +68,10 @@ const LoanApply = (props) => {
       });
   };
 
+  // 상품유형 검색 button의 value값으로 유형 검색
   const searchType = (e) => {
     const loan_type = e.target.value;
+    // 전체 상품 검색
     if (loan_type === "전체") {
       fetch("http://localhost:8081/api/loanList", {
         method: "GET",
@@ -93,11 +99,14 @@ const LoanApply = (props) => {
         })
         .then((res) => {
           setLoanCnt(res);
+          setSearchResult(false);
         })
         .catch((error) => {
           console.error("데이터 가져오기 오류:", error);
         });
-    } else {
+    }
+    // 원하는 상품 유형 검색
+    else {
       fetch(
         `http://localhost:8081/api/loanTypeSearch/?loan_type=${encodeURIComponent(
           loan_type
@@ -114,6 +123,7 @@ const LoanApply = (props) => {
         })
         .then((res) => {
           setLoanList(res);
+          setSearchResult(false);
         })
         .catch((error) => {
           console.error("데이터 가져오기 오류:", error);
@@ -134,13 +144,14 @@ const LoanApply = (props) => {
         })
         .then((res) => {
           setLoanCnt(res);
+          setSearchResult(false);
         })
         .catch((error) => {
           console.error("데이터 가져오기 오류:", error);
         });
     }
   };
-
+  // 처음 렌더링 시 전체 대출 상품 리스트 출력
   useEffect(() => {
     fetch("http://localhost:8081/api/loanList", {
       method: "GET",
@@ -153,11 +164,12 @@ const LoanApply = (props) => {
       })
       .then((res) => {
         setLoanList(res);
+        setSearchResult(false);
       })
       .catch((error) => {
         console.error("데이터 가져오기 오류:", error);
       });
-
+    // 전체 상품 갯수
     fetch("http://localhost:8081/api/loanCnt", {
       method: "GET",
     })
@@ -169,6 +181,7 @@ const LoanApply = (props) => {
       })
       .then((res) => {
         setLoanCnt(res);
+        setSearchResult(false);
       })
       .catch((error) => {
         console.error("데이터 가져오기 오류:", error);
@@ -176,10 +189,10 @@ const LoanApply = (props) => {
   }, []);
 
   return (
-    <div style={{ minHeight: 600 }} className="box">
-      <div>
+    <div style={{ minHeight: 600 }}>
+      <div className="box">
         <div className="LoanSearch">
-          상품 검색 <br />
+          <h2>상품 검색</h2> <br />
           <br />
           <div className="TextSearch">
             <input
@@ -243,7 +256,9 @@ const LoanApply = (props) => {
                   <br />
                 </div>
                 <div className="ButtonArea">
-                  <button>신청하기</button>
+                  <Link className="link" to={"/loanAgreement/" + loan.loan_id}>
+                    신청하기
+                  </Link>
                 </div>
               </div>
               <hr />

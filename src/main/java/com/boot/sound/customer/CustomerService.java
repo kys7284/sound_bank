@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.boot.sound.inquire.account.AccountDAO;
 import com.boot.sound.inquire.account.AccountDTO;
-
+import java.math.BigDecimal; 
 @Service
 public class CustomerService {
 
@@ -41,9 +41,9 @@ public class CustomerService {
         account.setAccount_number(accountNumber);
         account.setCustomer_id(customer.getCustomer_id());
         account.setAccount_type("입출금");
-        account.setBalance(0);
-        account.setInterest_rate(0.0);
-        account.setYield_rate(0.0);
+        account.setBalance(BigDecimal.valueOf(0));
+        account.setInterest_rate(BigDecimal.valueOf(0.0));
+        account.setYield_rate(BigDecimal.valueOf(0.0));
         account.setCurrency_type("KRW");
         account.setAccount_name("기본 입출금 계좌");
         account.setOpen_date(new java.util.Date());
