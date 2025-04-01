@@ -82,6 +82,22 @@ const FundTest = () => {
   // 서버로 데이터 전송 후 결과를 받아오는 함수
   const handleSubmit = async () => {
     try {
+      // 체크되지 않은 문항 찾기
+      const unansweredIndex = answers.findIndex(answer => answer === null);
+  
+      // 체크되지 않은 문항이 있을 경우 alert 표시하고 함수 실행을 중단
+      if (unansweredIndex !== -1) {
+        alert(`${unansweredIndex + 1}번 문항의 답을 체크해 주세요.`);
+
+        // 체크되지 않은 문항으로 스크롤 이동
+        const element = document.getElementById(`question-${unansweredIndex}`);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        return;
+      }
+
+      // 모든 문항이 체크된 경우 서버로 데이터 전송
       // 서버로 전송할 데이터 준비
       const payload = { answers };
       console.log("Submitting payload:", payload); // 디버깅용 로그
@@ -107,7 +123,7 @@ const FundTest = () => {
       <h2 className="fund-test-title">투자성향 분석</h2>
       <div className="fund-test-card">
         {questions.map((question, index) => (
-          <div key={index} className="fund-test-question">
+          <div key={index} id={`question-${index}`} className="fund-test-question">
             <p className="fund-test-question-title">{question.question}</p>
             {question.options.map((option, optionIndex) => (
               <div key={optionIndex} className="fund-test-option">
