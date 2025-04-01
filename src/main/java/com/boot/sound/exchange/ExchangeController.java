@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.boot.sound.customer.CustomerDTO;
+import com.boot.sound.inquire.account.AccountDTO;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -51,11 +52,12 @@ public class ExchangeController {
     // 고객 계좌 조회
     @GetMapping("/account/{customer_id}")
     public List<Map<String, Object>> getAccountsByCustomerId(@PathVariable String customer_id) {
-        CustomerDTO dto = service.findbyId(customer_id);
+        AccountDTO dto = service.findbyId(customer_id);
         System.out.println(dto);
         Map<String, Object> result = new HashMap<>();
         result.put("customer_id", dto.getCustomer_id());
-        result.put("account_number", dto.getCustomer_account_number());
+        result.put("account_number", dto.getAccount_number());
+        result.put("balance", dto.getBalance());
 
         return Collections.singletonList(result); // 리스트로 감싸기!
     }

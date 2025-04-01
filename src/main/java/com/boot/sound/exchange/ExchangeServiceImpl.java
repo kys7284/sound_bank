@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.boot.sound.customer.CustomerDTO;
+import com.boot.sound.inquire.account.AccountDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -35,7 +36,7 @@ public class ExchangeServiceImpl {
         this.restTemplate = new RestTemplate(factory);		
     }
 
-    //환율 리스트
+ // 환율 리스트
     public List<Map<String, Object>> getExchangeRates(String date) {
         try {
             if (date == null || date.isEmpty()) {
@@ -52,12 +53,33 @@ public class ExchangeServiceImpl {
 
             System.out.println("요청 URL: " + url);
 
-            String response = restTemplate.getForObject(url, String.class);
+            // 재시도 로직 적용
+            String response = fetchWithRetry(url, 3, 1000);
             return objectMapper.readValue(response, new TypeReference<List<Map<String, Object>>>() {});
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("환율 정보 조회 중 오류 발생", e);
         }
+    }
+    
+    private String fetchWithRetry(String url, int maxRetries, long delayMs) {
+        for (int attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                String response = restTemplate.getForObject(url, String.class);
+                if (response != null && !response.isEmpty()) {
+                    return response;
+                }
+                System.err.println("응답이 비어있음. 재시도 중... (" + attempt + "/" + maxRetries + ")");
+                Thread.sleep(delayMs);
+            } catch (Exception e) {
+                System.err.println("예외 발생. 재시도 중... (" + attempt + "/" + maxRetries + ")");
+                e.printStackTrace();
+                try {
+                    Thread.sleep(delayMs);
+                } catch (InterruptedException ignored) {}
+            }
+        }
+        throw new RuntimeException("환율 정보 요청 재시도 실패");
     }
     
 //    @Transactional
@@ -67,9 +89,8 @@ public class ExchangeServiceImpl {
 //    }
     
     @Transactional
-    public CustomerDTO findbyId(String customer_id) {
+    public AccountDTO findbyId(String customer_id) {
     	System.out.println("service - findbyId");
-    	
     	return dao.findbyId(customer_id);
     }
 }

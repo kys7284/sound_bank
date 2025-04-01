@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import com.boot.sound.customer.CustomerDTO;
+import com.boot.sound.inquire.account.AccountDTO;
 
 @Mapper
 @Repository
@@ -12,5 +13,5 @@ public interface ExchangeDAO {
 	public void requestExchange(ExchangeRequestDTO dto);
 	
 	// 고객 계좌 조회
-	public CustomerDTO findbyId(String customer_id);
+	public AccountDTO findbyId(String customer_id);
 }
