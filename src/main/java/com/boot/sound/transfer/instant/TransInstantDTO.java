@@ -11,8 +11,7 @@ import javax.persistence.*;
 public class TransInstantDTO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transfer_seq")
-    @SequenceGenerator(name = "transfer_seq", sequenceName = "TRANSFER_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TRANSFER_ID")
     private int transfer_id; // 이체 고유 번호
 
@@ -53,6 +52,10 @@ public class TransInstantDTO {
     @Temporal(TemporalType.TIMESTAMP) // 날짜+시간 형태로 저장 (예: 2025-03-30 10:30:00)
     private Date transfer_date; // 이체일
     
+    @Column(name = "TRANSFER_TIME")
+    @Temporal(TemporalType.TIMESTAMP) // 날짜+시간 형태로 저장 (예: 2025-03-30 10:30:00)
+    private Date transfer_time; // 이체시간
+        
     @Transient // DB에는 저장 안됨
     private String password;
 }
