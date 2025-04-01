@@ -1,6 +1,8 @@
 package com.boot.sound.inquire.account;
 
 import lombok.Data;
+
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -25,13 +27,13 @@ public class AccountDTO {
     private String account_type;             // 계좌 타입
 
     @Column(name = "BALANCE")
-    private int balance;                    // 잔액
+    private BigDecimal balance;                    // 잔액
 
     @Column(name = "INTEREST_RATE")
-    private Double interest_rate;            // 이자율 (예적금용)
+    private BigDecimal interest_rate;            // 이자율 (예적금용)
 
     @Column(name = "YIELD_RATE")
-    private Double yield_rate;               // 수익률 (펀드용)
+    private BigDecimal yield_rate;               // 수익률 (펀드용)
 
     @Column(name = "CURRENCY_TYPE")
     private String currency_type;            // 통화 (KRW, USD 등)
