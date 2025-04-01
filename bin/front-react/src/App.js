@@ -9,7 +9,6 @@ import LoanManage from "./sound_loan/customer/LoanManage";
 import LoanService from "./sound_loan/customer/LoanService";
 import LoanCustomerList from "./sound_loan/admin/LoanCustomerList";
 import LoanList from "./sound_loan/admin/LoanList";
-import ChartManage from "./sound_loan/admin/ChartManage";
 import LoanDetail from "./sound_loan/admin/LoanDetail";
 import LoanUpdate from "./sound_loan/admin/LoanUpdate";
 import Inquire from "./inquire/Inquire";
@@ -28,6 +27,7 @@ import Fund from "./fund/customer/Fund";
 import FundSearch from "./fund/customer/FundSearch";
 import FundList from "./fund/customer/FundList";
 import FundTest from "./fund/customer/FundTest";
+import FundTestResult from "./fund/customer/FundTestResult";
 import FundRecommend from "./fund/customer/FundRecommend";
 import MyFund from "./fund/customer/MyFund";
 import MyFundInfo from "./fund/customer/MyFundInfo";
@@ -56,7 +56,7 @@ import Customerservice from "./customer_center/Customerservice";
 import FAQ from "./customer_center/FAQ";
 import Chatbot from "./customer_center/Chatbot";
 import Voicebot from "./customer_center/Voicebot";
-import Authcenter from "./customer_center/Authcenter";
+
 import Bankauth from "./customer_center/Bankauth";
 import Idauth from "./customer_center/Idauth";
 import ExRate from "./exchange/customer/ExRate";
@@ -70,6 +70,14 @@ import AdminExAccountStatement from "./exchange/admin/AdminExAccountStatement";
 import AdminExLimit from "./exchange/admin/AdminExLimit";
 import AdminExSetCharge from "./exchange/admin/AdminExSetCharge";
 import LoanInsertForm from "./sound_loan/admin/LoanInsertForm";
+import LoanCalculator from "./sound_loan/customer/LoanCalculator";
+import LoanChart from "./sound_loan/customer/LoanChart";
+import LoanCreditScore from "./sound_loan/customer/LoanCreditScore";
+import Join from "./customer/Join";
+import Login from "./customer/Login";
+import Authcenter from "./customer_center/Authcenter";
+import LoanAgreement from "./sound_loan/customer/LoanAgreement";
+import LoanInfoApply from "./sound_loan/customer/LoanInfoApply";
 function App() {
   return (
     <div className="App">
@@ -121,21 +129,26 @@ function App() {
           {/* 이체(관리자) Route 끝 */}
           {/* 대출관련 Route 시작 */}
           <Route path="/loanApply" element={<LoanApply />} />
+          <Route path="/loanAgreement/:loan_id" element={<LoanAgreement />} />
+          <Route path="/loanInfoApply/:loan_id" element={<LoanInfoApply />} />
           <Route path="/loanStatus" element={<LoanStatus />} />
           <Route path="/loanManage" element={<LoanManage />} />
           <Route path="/loanService" element={<LoanService />} />
+          <Route path="/loanCalculator" element={<LoanCalculator />} />
+          <Route path="/loanChart" element={<LoanChart />} />
+          <Route path="/loanCreditScore" element={<LoanCreditScore />} />
           <Route path="/loanList" element={<LoanList />} />
           <Route path="/loanInsertForm" element={<LoanInsertForm />} />
           <Route path="/loanDetail/:loan_id" element={<LoanDetail />} />
           <Route path="/loanUpdate/:loan_id" element={<LoanUpdate />} />
           <Route path="/loanCustomerList" element={<LoanCustomerList />} />
-          <Route path="/chartManage" element={<ChartManage />} />
           {/* 대출관련 Route 종료 */}
           {/* 펀드 Route 시작 */}
           <Route path="/fund" element={<Fund />} />
           <Route path="/fundSearch" element={<FundSearch />} />
           <Route path="/fundList" element={<FundList />} />
           <Route path="/fundTest" element={<FundTest />} />
+          <Route path="/test-result" element={<FundTestResult />} />
           <Route path="/fundRecommend" element={<FundRecommend />} />
           <Route path="/myFund" element={<MyFund />} />
           <Route path="/myFundInfo" element={<MyFundInfo />} />
@@ -162,7 +175,7 @@ function App() {
           {/* 외환 계좌 신청 */}
           <Route path="/ex_set_limit" element={<ExRequestSetLimit />} />{" "}
           {/* 외환 계좌 한도 설정 */}
-          <Route path="/ex_change_list" element={<ExList />} />{" "}
+          <Route path="/exchange_list" element={<ExList />} />{" "}
           {/* 환전내역 조회 */}
           <Route
             path="/ex_account_management"
@@ -196,6 +209,10 @@ function App() {
           <Route path="/bankauth" element={<Bankauth />} />
           <Route path="/idauth" element={<Idauth />} />
           {/* 고객센터 Route 끝 */}
+          {/* 계좌개설 / 로그인 Route 시작 */}
+          <Route path="/join" element={<Join />} />
+          <Route path="/login" element={<Login />} />
+          {/* 계좌개설 / 로그인 Route 끝 */}
         </Routes>
         <Footer />
       </BrowserRouter>
