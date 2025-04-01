@@ -24,7 +24,7 @@ const FundTestResult = () => {
             <div className="fund-test-result-buttons">
                 <button
                     className="fund-test-result-button"
-                    onClick={() => navigate("/fundRecommend")}
+                    onClick={() => navigate("/fundRecommend", { state: { result } })}
                 >
                     나에게 맞는 <br>
                     </br>펀드 추천받기
