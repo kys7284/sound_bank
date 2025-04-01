@@ -1,0 +1,88 @@
+/* 전체 div */
+.box {
+  width: 800px;
+  margin-left: 30%;
+  text-align: center;
+}
+
+/* 상품유형 검색 버튼 영역 */
+.TypeBtn {
+  display: flex;
+  height: 50px;
+  width: 800px;
+  margin-top: 10%;
+}
+/* 상품유형 검색 버튼 */
+.TypeBtn button {
+  height: 50px;
+  width: 150px;
+}
+/* 상품 검색 영역 */
+.LoanSearch {
+  width: 600px;
+}
+/* 상품목록 출력 영역 */
+.container {
+  padding: 20px;
+  font-family: sans-serif;
+  width: 800px;
+  margin: 10px;
+}
+/* 대출상품 정보 영역 */
+.InfoArea {
+  text-align: left;
+  margin-bottom: 10px;
+  flex-basis: 60%;
+}
+/* 대출 한도 출력 영역 */
+.AmontArea {
+  text-align: right;
+  color: black;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 10%;
+  margin-left: 20%;
+  margin-bottom: 10px;
+}
+/* 신청하기 버튼 영역 */
+.ButtonArea {
+  text-align: right;
+  margin-top: 20%;
+  margin-left: -20%;
+}
+/* 상품유형 검색 영역 */
+.BtnSearch {
+  display: flex;
+}
+/* 전체 버튼 css 통일 */
+
+.TextSearch button,
+.BtnSearch button {
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-left: 50px;
+  background-color: black;
+}
+
+.ButtonArea button:hover,
+.TextSearch button:hover,
+.BtnSearch button:hover {
+  color: black;
+  background-color: skyblue;
+}
+
+.LoanDisplay {
+  display: flex;
+}
+.link {
+  display: flex;
+  padding: 5px 10px;
+  background-color: black;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: black;
+  cursor: "pointer";
+  margin-left: 50px;
+}
