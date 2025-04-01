@@ -1,0 +1,112 @@
+.footer {
+  color: #ccc;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari 호환 */
+  padding: 2rem;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  z-index: 1050;
+  font-family: "Arial", sans-serif;
+}
+
+/* 메인 페이지에서 투명하게 */
+.footer-main {
+  background-color: rgba(0, 0, 0) !important;
+}
+
+/* 그 외 페이지는 진하게 */
+.footer-default {
+  background-color: rgba(0, 0, 0) !important;
+}
+
+.footer-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.footer-info {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-logo {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.footer-desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.footer-links {
+  display: flex;
+  gap: 3rem;
+  flex: 2;
+  min-width: 300px;
+}
+
+.link-group {
+  flex: 1;
+}
+
+.link-title {
+  font-size: 1.1rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.link-group ul {
+  list-style: none;
+  padding: 0;
+}
+
+.link-group li {
+  margin-bottom: 0.5rem;
+}
+
+.link-group a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.link-group a:hover {
+  color: #fff;
+}
+
+.footer-contact {
+  flex: 1;
+  min-width: 250px;
+  text-align: right;
+  margin-top: 50px;
+}
+
+.footer-contact p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .footer-wrap {
+    max-height: 100px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-links {
+    max-height: 100px;
+    gap: 2rem;
+  }
+
+  .footer-contact {
+    text-align: center;
+  }
+}

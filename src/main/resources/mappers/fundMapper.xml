@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace="com.boot.sound.fund.FundRepository">
+
+	<!-- 펀드상품 목록 -->
+	<select id="fundList" resultType="com.boot.sound.fund.FundDTO">
+		SELECT * FROM FUND_TBL
+ 		ORDER BY FUND_ID ASC
+	</select>
+	
+	<!-- 펀드상품 등록 -->
+	<insert id="insertFund" parameterType="com.boot.sound.fund.FundDTO">
+		INSERT INTO FUND_TBL(FUND_ID,FUND_NAME,FUND_COMPANY,FUND_TYPE,FUND_GRADE,FUND_FEE_RATE,FUND_UPFRONT_FEE,RETURN_1M,RETURN_3M,RETURN_6M,RETURN_12M)
+		VALUES((SELECT NVL(MAX(FUND_ID)+1,1) FROM FUND_TBL)
+								,#{FUND_NAME}
+								,#{FUND_COMPANY}
+								,#{FUND_TYPE}
+								,#{FUND_GRADE}
+								,#{FUND_FEE_RATE}
+								,#{FUND_UPFRONT_FEE})
+	</insert>
+	
+	<!-- 펀드상품 상세보기 (1건 조회)-->
+	<select id="findById" resultType="com.boot.sound.fund.FundDTO">
+		SELECT * FROM FUND_TBL
+		WHERE FUND_ID = #{FUND_ID}
+	</select>
+	
+	<!-- 펀드상품 수정 -->
+	<update id="updateFund" parameterType="com.boot.sound.fund.FundDTO">
+		UPDATE FUND_TBL
+		SET FUND_NAME = #{FUND_NAME}
+		,	FUND_COMPANY = #{FUND_COMPANY}
+		,	FUND_TYPE	= #{FUND_TYPE}
+		,	FUND_GRADE = #{FUND_GRADE}
+		,	FUND_FEE_RATE = #{FUND_FEE_RATE}
+		,	FUND_UPFRONT_FEE = #{FUND_UPFRONT_FEE}
+		,	RETURN_1M = #{RETURN_1M}
+		,	RETURN_3M = #{RETURN_3M}
+		,	RETURN_6M = #{RETURN_6M}
+		,	RETURN_12M = #{RETURN_12M}
+	WHERE FUND_ID = #{FUND_ID}
+	</update>
+	
+	<!-- 펀드상품 삭제 -->
+	<delete id="deleteFund" parameterType="com.boot.sound.fund.FundDTO">
+		DELETE FROM FUND_TBL
+		WHERE FUND_ID = #{FUND_ID}
+	</delete>
+
+</mapper>   
