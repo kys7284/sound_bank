@@ -46,7 +46,7 @@ function AccountCheck() {
         <p><b>번호:</b> {item.account_number}</p>
         <p><b>잔액:</b> {item.balance.toLocaleString()}원</p>
         <p><b>이자율:</b> {item.interest_rate || 0}%</p>
-        <p><b>개설일:</b> {new Date(item.open_date).toLocaleDateString()}</p>
+        <p><b>개설일:</b> {new Date(item.open_date).toLocaleString()}</p>
       </div>
     );
   };
