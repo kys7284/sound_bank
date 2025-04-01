@@ -13,8 +13,7 @@ import java.util.Date;
 public class TransActionDTO {
 
  @Id
- @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_seq")
- @SequenceGenerator(name = "transaction_seq", sequenceName = "TRANSACTION_SEQ", allocationSize = 1)
+ @GeneratedValue(strategy = GenerationType.IDENTITY)
  @Column(name = "TRANSACTION_ID")
  private int transaction_id; // 기본키 (거래번호)
 
