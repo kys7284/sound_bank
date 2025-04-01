@@ -3,10 +3,8 @@ package com.boot.sound.fund;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 @Mapper
-@Repository
 public interface FundRepository {
 
 	// 펀드상품 목록
