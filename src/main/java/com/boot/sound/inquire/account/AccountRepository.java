@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -20,12 +21,12 @@ public interface AccountRepository extends CrudRepository<AccountDTO, String> {
     @Modifying
     @Transactional
     @Query("UPDATE AccountDTO a SET a.balance = a.balance - :money WHERE a.account_number = :acc AND a.balance >= :money")
-    int minusBalance(@Param("acc") String acc, @Param("money") Integer  money);
+    int minusBalance(@Param("acc") String acc, @Param("money") BigDecimal money);
 
     // 입금 - 잔액 증가
     @Modifying
     @Transactional
     @Query("UPDATE AccountDTO a SET a.balance = a.balance + :money WHERE a.account_number = :acc")
-    int plusBalance(@Param("acc") String acc, @Param("money") Integer  money);
+    int plusBalance(@Param("acc") String acc, @Param("money") BigDecimal money);
 
 }
