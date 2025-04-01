@@ -64,7 +64,7 @@ const ExRequest = () => {
   };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "40px auto", fontFamily: "sans-serif" }}>
+    <div style={{ maxWidth: "650px", margin: "40px auto", fontFamily: "sans-serif", minHeight:"570px"}}>
       <h2>💱 환전 신청</h2>
 
       {/* 계좌 선택 */}
