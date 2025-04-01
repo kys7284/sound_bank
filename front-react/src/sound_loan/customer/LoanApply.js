@@ -216,11 +216,14 @@ const LoanApply = (props) => {
               <button onClick={searchType} value={"신용 대출"}>
                 신용대출
               </button>
-              <button onClick={searchType} value={"예/적금 담보대출"}>
-                예적금담보대출
+              <button onClick={searchType} value={"담보 대출"}>
+                담보 대출
               </button>
-              <button onClick={searchType} value={"무보증무담보대출"}>
-                무보증무담보대출
+              <button onClick={searchType} value={"전세 대출"}>
+                전세 대출
+              </button>
+              <button onClick={searchType} value={"자동차 대출"}>
+                자동차 대출
               </button>
             </div>
           </div>
