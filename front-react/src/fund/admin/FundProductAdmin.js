@@ -178,7 +178,6 @@ const FundProductAdmin = () => {
         <table className="fund-table">
           <thead>
             <tr>
-              <th>펀드ID</th>
               <th>펀드명</th>
               <th>운용사명</th>
               <th>펀드유형</th>
@@ -194,7 +193,6 @@ const FundProductAdmin = () => {
           <tbody>
             {funds.map((fund, index) => (
               <tr key={index}>
-                <td>{fund["펀드 ID"]}</td>
                 <td>{fund["상품명"]}</td>
                 <td>{fund["운용사명"]}</td>
                 <td>{fund["펀드유형"]}</td>
@@ -206,8 +204,7 @@ const FundProductAdmin = () => {
                 <td>{fund["12개월누적수익률(퍼센트)"]}</td>
                 <td>
                 <div className="action-buttons">
-                  <button onClick={() => handleUpdateFund(fund)}>수정</button>
-                  <button onClick={() => handleDeleteFund(fund)}>삭제</button>
+                  <button onClick={() => handleUpdateFund(fund)}>펀드상품 등록하기</button>
                 </div>
                 </td>
               </tr>

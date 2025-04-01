@@ -22,7 +22,7 @@ import lombok.ToString;
 public class FundDTO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)  // 자동 증가 (Oracle의 경우 IDENTITY 사용 가능)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)  // 자동 증가
 	@Column(name = "FUND_ID", nullable = false,  updatable = false, length = 10)	//updatable=false : 한 번 저장된 후 수정할 수 없도록 제한
 	private Long fundId;          // 펀드 ID
 	

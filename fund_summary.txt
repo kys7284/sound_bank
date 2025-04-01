@@ -50,7 +50,7 @@ npm start
 
 (실행 안되면 pip install --upgrade tenserflow==2.11.0)
 
-
+*** react를 껐다 켜서 AI테스트 진행하려면 항상 python Investment_AI.py 명령어로 http://127.0.0.1:8000 서버를 켜줘야 한다 ***
 << 관리자 >>
 AI data training 실행순서 :
 
