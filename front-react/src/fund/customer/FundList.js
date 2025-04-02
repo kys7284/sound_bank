@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Chart } from 'react-google-charts';
-import Draggable from 'react-draggable';
-import Papa from 'papaparse';
 import '../../Css/fund/Fund.css';
 
 const FundList = () => {
@@ -55,6 +53,51 @@ const FundList = () => {
     setSelectedCategory(event.target.value);
   };
 
+  // 수정 =>  모달 전체 드래그 처리 (표 제외)
+  useEffect(() => {
+    const popup = popupRef.current;
+    if (!popup) return;
+
+    const handleMouseDown = (e) => {
+      const target = e.target;
+
+      // 수정 =>  표 내부 클릭 시 드래그 막기
+      if (
+        target.tagName === 'TD' ||
+        target.tagName === 'TH' ||
+        target.closest('table')
+      ) {
+        return;
+      }
+
+      const shiftX = e.clientX - popup.getBoundingClientRect().left;
+      const shiftY = e.clientY - popup.getBoundingClientRect().top;
+
+      const moveAt = (clientX, clientY) => {
+        popup.style.left = `${clientX - shiftX}px`;
+        popup.style.top = `${clientY - shiftY}px`;
+      };
+
+      const onMouseMove = (e) => {
+        moveAt(e.clientX, e.clientY);
+      };
+
+      document.addEventListener('mousemove', onMouseMove);
+
+      document.addEventListener('mouseup', () => {
+        document.removeEventListener('mousemove', onMouseMove);
+      }, { once: true });
+    };
+
+    popup.addEventListener('mousedown', handleMouseDown);
+    popup.ondragstart = () => false;
+
+    return () => {
+      popup.removeEventListener('mousedown', handleMouseDown);
+    };
+  }, [showPopup]);
+
+
   const handleClosePopup = () => {
     setShowPopup(false);
   };
@@ -93,45 +136,6 @@ const FundList = () => {
     acc[fund.fund_company][fund.fund_type].push(fund);
     return acc;
   }, {});
-
-  const handleMouseDown = (e) => {
-    const popup = popupRef.current;
-    if (!popup) return;
-
-    const shiftX = e.clientX - popup.getBoundingClientRect().left;
-    const shiftY = e.clientY - popup.getBoundingClientRect().top;
-
-    const moveAt = (pageX, pageY) => {
-      popup.style.left = `${pageX - shiftX}px`;
-      popup.style.top = `${pageY - shiftY}px`;
-    };
-
-    const onMouseMove = (e) => {
-      moveAt(e.pageX, e.pageY);
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-
-    const onMouseUp = () => {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-
-    document.addEventListener('mouseup', onMouseUp);
-  };
-
-  useEffect(() => {
-    const popup = popupRef.current;
-    if (popup) {
-      popup.addEventListener('mousedown', handleMouseDown);
-      popup.ondragstart = () => false;
-    }
-    return () => {
-      if (popup) {
-        popup.removeEventListener('mousedown', handleMouseDown);
-      }
-    };
-  }, [showPopup]);
 
   return (
     <div className="Fund">
@@ -194,8 +198,10 @@ const FundList = () => {
         {showPopup && (
           <div className="popup" ref={popupRef}>
             <div className="popup-content">
-              <span className="close" onClick={handleClosePopup}>&times;</span>
-              <h3>Selected Funds Return Rate Comparison</h3>
+              <div className="popup-header">
+                <h3>펀드 수익률 비교 차트</h3>
+                <span className="close" onClick={handleClosePopup}>&times;</span>
+              </div>
               <Chart
                 width={'100%'}
                 height={'400px'}

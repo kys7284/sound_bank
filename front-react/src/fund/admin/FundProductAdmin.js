@@ -167,112 +167,121 @@ const FundProductAdmin = () => {
       {/* 펀드 등록 팝업 */}
       {isPopupOpen && (
         <div className="popup-container">
-          <div className="popup">
-            <h3>펀드 등록</h3>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSaveFund();
-              }}
-            >
-              <div>
-                <label>펀드 이름:</label>
-                <input
-                  type="text"
-                  name="fund_name"
-                  value={formData.fund_name}
-                  onChange={handleChange}
-                  required
-                />
+          <div className="popup-content">
+            <div className="popup-header">
+              <h3>펀드 등록</h3>
+              <span className="close" onClick={handleClosePopup}>
+                &times;
+              </span>
+            </div>
+            <div className="popup-body">  
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSaveFund();
+                }}
+              >
+                <div>
+                  <label>펀드 이름:</label>
+                  <input
+                    type="text"
+                    name="fund_name"
+                    value={formData.fund_name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <label>운용사명:</label>
+                  <input
+                    type="text"
+                    name="fund_company"
+                    value={formData.fund_company}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <label>펀드 유형:</label>
+                  <input
+                    type="text"
+                    name="fund_type"
+                    value={formData.fund_type}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <label>펀드 등급:</label>
+                  <input
+                    type="number"
+                    name="fund_grade"
+                    value={formData.fund_grade}
+                    onChange={handleChange}
+                    min="1"
+                    max="10"
+                  />
+                </div>
+                <div>
+                  <label>총보수 (%):</label>
+                  <input
+                    type="number"
+                    name="fund_fee_rate"
+                    value={formData.fund_fee_rate}
+                    onChange={handleChange}
+                    step="0.01"
+                  />
+                </div>
+                <div>
+                  <label>1개월 수익률 (%):</label>
+                  <input
+                    type="number"
+                    name="return_1m"
+                    value={formData.return_1m}
+                    onChange={handleChange}
+                    step="0.01"
+                  />
+                </div>
+                <div>
+                  <label>3개월 수익률 (%):</label>
+                  <input
+                      type="number"
+                      name="return_3m"
+                      value={formData.return_3m}
+                      onChange={handleChange}
+                      step="0.01"
+                    />
+                  </div>
+                  <div>
+                    <label>6개월 수익률 (%):</label>
+                    <input
+                      type="number"
+                      name="return_6m"
+                      value={formData.return_6m}
+                      onChange={handleChange}
+                      step="0.01"
+                    />
+                  </div>
+                  <div>
+                    <label>12개월 수익률 (%):</label>
+                    <input
+                      type="number"
+                      name="return_12m"
+                      value={formData.return_12m}
+                      onChange={handleChange}
+                      step="0.01"
+                    />
+                  </div>
+                  <div className="action-buttons">
+                    <button type="submit">저장</button>
+                    <button type="button" onClick={handleClosePopup}>
+                      닫기
+                    </button>
+                  </div>
+                </form>
               </div>
-              <div>
-                <label>운용사명:</label>
-                <input
-                  type="text"
-                  name="fund_company"
-                  value={formData.fund_company}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <label>펀드 유형:</label>
-                <input
-                  type="text"
-                  name="fund_type"
-                  value={formData.fund_type}
-                  onChange={handleChange}
-                />
-              </div>
-              <div>
-                <label>펀드 등급:</label>
-                <input
-                  type="number"
-                  name="fund_grade"
-                  value={formData.fund_grade}
-                  onChange={handleChange}
-                  min="1"
-                  max="10"
-                />
-              </div>
-              <div>
-                <label>총보수 (%):</label>
-                <input
-                  type="number"
-                  name="fund_fee_rate"
-                  value={formData.fund_fee_rate}
-                  onChange={handleChange}
-                  step="0.01"
-                />
-              </div>
-              <div>
-                <label>1개월 수익률 (%):</label>
-                <input
-                  type="number"
-                  name="return_1m"
-                  value={formData.return_1m}
-                  onChange={handleChange}
-                  step="0.01"
-                />
-              </div>
-              <div>
-                <label>3개월 수익률 (%):</label>
-                <input
-                  type="number"
-                  name="return_3m"
-                  value={formData.return_3m}
-                  onChange={handleChange}
-                  step="0.01"
-                />
-              </div>
-              <div>
-                <label>6개월 수익률 (%):</label>
-                <input
-                  type="number"
-                  name="return_6m"
-                  value={formData.return_6m}
-                  onChange={handleChange}
-                  step="0.01"
-                />
-              </div>
-              <div>
-                <label>12개월 수익률 (%):</label>
-                <input
-                  type="number"
-                  name="return_12m"
-                  value={formData.return_12m}
-                  onChange={handleChange}
-                  step="0.01"
-                />
-              </div>
-              <button type="submit">저장</button>
-              <button type="button" onClick={handleClosePopup}>
-                닫기
-              </button>
-            </form>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };
