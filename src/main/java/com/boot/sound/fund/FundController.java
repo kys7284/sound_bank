@@ -33,10 +33,9 @@ public class FundController {
     	logger.info("<<< contoller - save >>>");
     	
     	return new ResponseEntity<>(service.saveFund(funds), HttpStatus.CREATED);	// 201 상태값 리턴
-    	
     }
     
-    // 등록된 펀드 상품 목록 조회
+    // 등록된 펀드 상품 목록 조회 GetMapping => http://localhost:8081/api/registeredFunds
     @GetMapping("/registeredFunds")
     public List<FundDTO> getRegisteredFunds() {
         return service.getRegisteredFunds();
@@ -48,7 +47,6 @@ public class FundController {
     	logger.info("<<< contoller - findById >>>");
     	
     	return new ResponseEntity<FundDTO>(service.fundDetail(fund_id), HttpStatus.OK);	// 200
-    	
     }
     
  	// 펀드상품 수정 @PutMapping => http://localhost:8081/api/fundUpdate/{fund_id} (펀드상품번호)
