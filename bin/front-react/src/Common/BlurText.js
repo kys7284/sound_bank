@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { React, useRef, useEffect, useState } from 'react';
 import { useSprings, animated } from '@react-spring/web';
 
 const BlurText = ({
@@ -76,6 +76,7 @@ const BlurText = ({
           key={index}
           style={{
             ...props,
+            fontSize: "inherit",
             display: 'inline-block',
             willChange: 'transform, filter, opacity',
           }}

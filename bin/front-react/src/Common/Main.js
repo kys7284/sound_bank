@@ -11,17 +11,17 @@ const Main = () => {
   //  배너에 사용할 이미지/텍스트 데이터 배열
   const data = [
     {
-      image: "./Images/main1.png",
+      image: "./Images/main/main1.png",
       title: "음성 AI로 혁신하는 뱅킹",
       desc: "효율성과 편의를 극대화한 차세대 금융 경험. 음성 AI로 모든 서비스를 정밀하게 관리하세요.",
     },
     {
-      image: "./Images/main2.png",
+      image: "./Images/main/main2.png",
       title: "사운드뱅크, 새로운 대출 상품 출시",
       desc: "간편한 대출 심사와 낮은 이자로 새로운 금융 서비스를 만나보세요.",
     },
     {
-      image: "./Images/main3.png",
+      image: "./Images/main/main3.png",
       title: "예적금 금리 인상! 지금 가입하세요",
       desc: "높은 금리의 예적금을 지금 바로 확인하고 가입해 보세요.",
     },

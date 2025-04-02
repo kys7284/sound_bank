@@ -134,8 +134,10 @@ const LoanUpdate = () => {
                   value={loan.loan_type}
                 >
                   <option value={null}>유형을 선택하세요</option>
-                  <option value={"신용 대출"}>신용대출</option>
-                  <option vlaue={"예/적금 담보대출"}>예/적금 담보대출</option>
+                  <option value={"신용 대출"}>신용 대출</option>
+                  <option vlaue={"담보 대출"}>담보 대출</option>
+                  <option vlaue={"전세 대출"}>전세 대출</option>
+                  <option vlaue={"자동차 대출"}>자동차 대출</option>
                 </select>
               </td>
             </tr>
