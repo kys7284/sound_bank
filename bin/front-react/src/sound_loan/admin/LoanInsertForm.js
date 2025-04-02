@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../Css/loan/Loan.css";
-import LoanSideBar from "./LoanSideBar";
 
 const LoanInsertForm = (props) => {
   const navigate = useNavigate();
@@ -87,7 +86,6 @@ const LoanInsertForm = (props) => {
 
   return (
     <div className="loanInsert">
-      <LoanSideBar />
       <form ref={formRef}>
         <table className="insertTable">
           <thead>
@@ -119,8 +117,10 @@ const LoanInsertForm = (props) => {
               <td>
                 <select name="loan_type" onChange={changeValue}>
                   <option value={null}>유형을 선택하세요</option>
-                  <option value={"신용 대출"}>신용대출</option>
-                  <option vlaue={"예/적금 담보대출"}>예/적금 담보대출</option>
+                  <option value={"신용 대출"}>신용 대출</option>
+                  <option vlaue={"담보 대출"}>담보 대출</option>
+                  <option vlaue={"전세 대출"}>전세 대출</option>
+                  <option vlaue={"자동차 대출"}>자동차 대출</option>
                 </select>
               </td>
             </tr>

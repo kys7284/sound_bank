@@ -1,5 +1,7 @@
 package com.boot.sound.exchange;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +16,10 @@ public interface ExchangeDAO {
 	
 	// 고객 계좌 조회
 	public AccountDTO findbyId(String customer_id);
+	
+	// 계좌 비밀번호 확인
+	public int pwdChk(Map<String, Object> map);
+	
+	// 계좌 생성 요청
+	public int accountRequest(ExchangeAccountRequestDTO dto);
 }

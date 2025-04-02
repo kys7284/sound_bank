@@ -13,19 +13,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 펀드상품 등록 -->
     <insert id="insertFund" parameterType="com.boot.sound.fund.FundDTO">
-        INSERT INTO fund_tbl(fund_id, fund_name, fund_company, fund_type, fund_grade, fund_fee_rate, fund_upfront_fee, return_1m, return_3m, return_6m, return_12m)
-        VALUES((SELECT IFNULL(MAX(fund_id)+1,1) FROM fund_tbl),
-                                #{fund_name},
-                                #{fund_company},
-                                #{fund_type},
-                                #{fund_grade},
-                                #{fund_fee_rate},
-                                #{fund_upfront_fee},
-                                #{return_1m},
-                                #{return_3m},
-                                #{return_6m},
-                                #{return_12m})
-    </insert>
+	    INSERT INTO fund_tbl(fund_name, fund_company, fund_type, fund_grade, fund_fee_rate, fund_upfront_fee, return_1m, return_3m, return_6m, return_12m)
+	    VALUES (
+	        #{fund_name},
+	        #{fund_company},
+	        #{fund_type},
+	        #{fund_grade},
+	        #{fund_fee_rate},
+	        #{fund_upfront_fee},
+	        #{return_1m},
+	        #{return_3m},
+	        #{return_6m},
+	        #{return_12m}
+	    )
+	</insert>
     
     <!-- 펀드상품 상세보기 (1건 조회) -->
     <select id="findById" resultType="com.boot.sound.fund.FundDTO">
