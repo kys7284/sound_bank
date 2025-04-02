@@ -20,18 +20,31 @@ const FundProductAdmin = () => {
   // CSV 파일에서 펀드 목록 가져오기
   const fetchFundsFromCSV = async () => {
     try {
+      // 1. CSV 파일에서 펀드 목록 가져오기
       const response = await fetch("/data/fundList.csv"); // public 디렉토리의 CSV 파일 경로
       const csvText = await response.text(); // CSV 파일의 텍스트 데이터 가져오기
+      
+      // 2. 등록된 펀드 상품 목록 가져오기
+      const registeredFundsResponse = await fetch("http://localhost:8081/api/registeredFunds");
+      const registeredFunds = await registeredFundsResponse.json();
+      const registeredFundNames = registeredFunds.map((fund) => fund.fund_name);
 
-      // CSV 데이터를 파싱하여 JSON 형식으로 변환
+      // 3. CSV 데이터를 파싱하여 JSON 형식으로 변환
       Papa.parse(csvText, {
         header: true, // 첫 번째 행을 헤더로 사용
         skipEmptyLines: true, // 빈 줄 건너뛰기
         complete: (results) => {
           console.log("CSV Data:", results.data); // 파싱된 데이터 확인
-          setFunds(results.data); // 테이블에 표시할 데이터 저장
+          
+          // 4. 등록된 상품을 제외한 목록 필터링
+          const filteredFunds = results.data.filter(
+            (fund) => !registeredFundNames.includes(fund["상품명"])
+          );
+
+          setFunds(filteredFunds); // 테이블에 표시할 데이터 저장 - 필터링된 데이터로 상태 업데이트
         },
       });
+      
     } catch (error) {
       console.error("Error fetching CSV file:", error); // 오류 발생 시 콘솔에 출력
     }
@@ -44,6 +57,7 @@ const FundProductAdmin = () => {
 
   // 팝업창 열기
   const handleOpenPopup = (fund) => {
+    console.log("Selected Fund:", fund); // 선택된 펀드 확인
     setFormData({
       fund_name: fund["상품명"] || "",
       fund_company: fund["운용사명"] || "",
@@ -96,9 +110,17 @@ const FundProductAdmin = () => {
       }
 
       console.log("펀드 등록 성공");
+      alert("펀드상품 등록 성공!");
+
+      // 등록된 펀드를 목록에서 제거
+      setFunds((prevFunds) =>
+        prevFunds.filter((fund) => fund["상품명"] !== formData.fund_name)
+      );
+
       handleClosePopup(); // 팝업창 닫기
     } catch (error) {
       console.error("Error saving fund:", error);
+      alert("펀드 등록 중 오류가 발생했습니다.");
     }
   };
 
@@ -124,7 +146,7 @@ const FundProductAdmin = () => {
         </thead>
         <tbody>
           {funds.map((fund, index) => (
-            <tr key={index}>
+            <tr key={`${fund["상품명"]}-${index}`}>
               <td>{fund["상품명"]}</td>
               <td>{fund["운용사명"]}</td>
               <td>{fund["펀드유형"]}</td>
