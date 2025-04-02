@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/exchange")
-@CrossOrigin(origins = "http://localhost:3000") // React 프론트엔드 주소
+@CrossOrigin // React 프론트엔드 주소
 public class ExchangeController {
 
     @Autowired

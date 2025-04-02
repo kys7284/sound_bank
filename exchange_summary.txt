@@ -22,3 +22,13 @@ keytool -importcert -alias thawte-tls-rsa-ca-g1 ^
  -storepass changeit
 
 3) STS4 , VSCode 껏다켜기
+
+keytool -importcert -alias digicert-root-g2 ^
+ -file "D:\DEV\workspace_springBoot\sound_bank\DigiCert Global Root G2.crt" ^
+ -keystore "D:\DEV\install\9.spring tool suite4\sts-4.21.0.RELEASE\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.9.v20231028-0858\jre\lib\security\cacerts" ^
+ -storepass changeit
+
+keytool -importcert -alias thawte-tls-rsa-ca-g1 ^
+ -file "D:\DEV\workspace_springBoot\sound_bank\Thawte TLS RSA CA G1.crt" ^
+ -keystore "D:\DEV\install\9.spring tool suite4\sts-4.21.0.RELEASE\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.9.v20231028-0858\jre\lib\security\cacerts" ^
+ -storepass changeit
