@@ -3,29 +3,19 @@ import Papa from "papaparse"; // CSV 파싱 라이브러리
 import "../../Css/fund/Fund.css"; // 스타일 파일 추가
 
 const FundProductAdmin = () => {
-  const [funds, setFunds] = useState([]); // 테이블에 표시할 펀드 목록
-  const [selectedFund, setSelectedFund] = useState(null); // 선택된 펀드
+  const [funds, setFunds] = useState([]); // CSV 파일에서 가져온 펀드 목록
   const [formData, setFormData] = useState({
-    FUND_ID: 1, // 펀드 ID는 자동 생성
-    FUND_NAME: "",
-    FUND_COMPANY: "",
-    FUND_TYPE: "",
-    FUND_GRADE: "",
-    FUND_FEE_RATE: "",
-    RETURN_1M: 0,
-    RETURN_3M: 0,
-    RETURN_6M: 0,
-    RETURN_12M: 0,
-  }); // 등록/수정 폼 데이터
-
-  const [isDragging, setIsDragging] = useState(false); // 드래그 상태
-  const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 }); // 모달 위치
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 }); // 드래그 오프셋
-
-  // 컴포넌트가 처음 렌더링될 때 CSV 파일에서 펀드 목록을 가져옴
-  useEffect(() => {
-    fetchFundsFromCSV();
-  }, []);
+    fund_name: "",
+    fund_company: "",
+    fund_type: "",
+    fund_grade: "",
+    fund_fee_rate: "",
+    return_1m: 0,
+    return_3m: 0,
+    return_6m: 0,
+    return_12m: 0,
+  }); // 팝업창에서 입력할 폼 데이터
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // 팝업창 상태
 
   // CSV 파일에서 펀드 목록 가져오기
   const fetchFundsFromCSV = async () => {
@@ -47,210 +37,116 @@ const FundProductAdmin = () => {
     }
   };
 
+  // 컴포넌트가 처음 렌더링될 때 CSV 파일에서 펀드 목록을 가져옴
+  useEffect(() => {
+    fetchFundsFromCSV();
+  }, []);
+
+  // 팝업창 열기
+  const handleOpenPopup = (fund) => {
+    setFormData({
+      fund_name: fund["상품명"] || "",
+      fund_company: fund["운용사명"] || "",
+      fund_type: fund["펀드유형"] || "",
+      fund_grade: fund["펀드등급"] || "",
+      fund_fee_rate: fund["총보수(퍼센트)"] || "",
+      return_1m: fund["1개월누적수익률(퍼센트)"] || 0,
+      return_3m: fund["3개월누적수익률(퍼센트)"] || 0,
+      return_6m: fund["6개월누적수익률(퍼센트)"] || 0,
+      return_12m: fund["12개월누적수익률(퍼센트)"] || 0,
+    });
+    setIsPopupOpen(true); // 팝업창 열기
+  };
+
+  // 팝업창 닫기
+  const handleClosePopup = () => {
+    setIsPopupOpen(false); // 팝업창 닫기
+    setFormData({
+      fund_name: "",
+      fund_company: "",
+      fund_type: "",
+      fund_grade: "",
+      fund_fee_rate: "",
+      return_1m: 0,
+      return_3m: 0,
+      return_6m: 0,
+      return_12m: 0,
+    }); // 폼 초기화
+  };
+
   // 폼 데이터 변경 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // 펀드 선택 (수정 시 사용)
-  const handleUpdateFund = (fund) => {
-    setSelectedFund(fund);
-    setFormData({
-      FUND_ID: fund["펀드 ID"],
-      FUND_NAME: fund["상품명"],
-      FUND_COMPANY: fund["운용사명"],
-      FUND_TYPE: fund["펀드유형"],
-      FUND_GRADE: fund["펀드등급"],
-      FUND_FEE_RATE: fund["총보수(퍼센트)"],
-      RETURN_1M: fund["1개월누적수익률(퍼센트)"],
-      RETURN_3M: fund["3개월누적수익률(퍼센트)"],
-      RETURN_6M: fund["6개월누적수익률(퍼센트)"],
-      RETURN_12M: fund["12개월누적수익률(퍼센트)"],
-    });
-  };
-
-  // 펀드 삭제 함수
-  const handleDeleteFund = (fundToDelete) => {
-  // 선택된 펀드를 제외한 나머지 펀드 목록으로 상태 업데이트
-    const updatedFunds = funds.filter((fund) => fund !== fundToDelete);
-    setFunds(updatedFunds); // 상태 업데이트
-  setModalPosition({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 150 }); // 모달 초기 위치 설정
-  };  
-
-  // 팝업 닫기 함수
-  const handleClosePopup = () => {
-    setSelectedFund(null); // 선택된 펀드 초기화
-    setFormData({
-      FUND_ID: 0,
-      FUND_NAME: "",
-      FUND_COMPANY: "",
-      FUND_TYPE: "",
-      FUND_GRADE: "",
-      FUND_FEE_RATE: "",
-      RETURN_1M: 0,
-      RETURN_3M: 0,
-      RETURN_6M: 0,
-      RETURN_12M: 0,
-    }); // 폼 초기화
-  };
-
-  const handleMouseDown = (e) => {
-    // 입력 필드에서 발생한 이벤트는 무시
-    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") {
-      return;
-    }
-    setIsDragging(true);
-    setDragOffset({
-      x: e.clientX - modalPosition.x,
-      y: e.clientY - modalPosition.y,
-    });
-  };
-
-  const handleMouseMove = (e) => {
-    if (isDragging) {
-      setModalPosition({
-        x: e.clientX - dragOffset.x,
-        y: e.clientY - dragOffset.y,
-      });
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  // 펀드 등록/수정
+  // 펀드 등록
   const handleSaveFund = async () => {
     try {
-      if (selectedFund) {
-        const formattedData = {
-          FUND_ID: formData.FUND_ID,
-          FUND_NAME: formData.FUND_NAME,
-          FUND_COMPANY: formData.FUND_COMPANY,
-          FUND_TYPE: formData.FUND_TYPE,
-          FUND_GRADE: formData.FUND_GRADE,
-          FUND_FEE_RATE: formData.FUND_FEE_RATE,
-          RETURN_1M: formData.RETURN_1M,
-          RETURN_3M: formData.RETURN_3M,
-          RETURN_6M: formData.RETURN_6M,
-          RETURN_12M: formData.RETURN_12M,
-        };
-  
-        const response = await fetch(`/api/fund/${selectedFund["FUND_ID"]}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formattedData),
-        });
-  
-        if (response.ok) {
-          console.log("수정 성공");
-          fetchFundsFromCSV(); // 수정 후 목록 갱신
-          setSelectedFund(null); // 선택 초기화
-          setFormData({
-            FUND_ID: 0,
-            FUND_NAME: "",
-            FUND_COMPANY: "",
-            FUND_TYPE: "",
-            FUND_GRADE: "",
-            FUND_FEE_RATE: "",
-            RETURN_1M: 0,
-            RETURN_3M: 0,
-            RETURN_6M: 0,
-            RETURN_12M: 0,
-          }); // 폼 초기화
-        } else {
-          console.error("수정 실패");
-        }
+      const response = await fetch("http://localhost:8081/api/fundSave", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("펀드 등록 실패");
       }
+
+      console.log("펀드 등록 성공");
+      handleClosePopup(); // 팝업창 닫기
     } catch (error) {
       console.error("Error saving fund:", error);
     }
   };
 
-    return (
-      <div className="fund-product-manage-container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
-        <h2>펀드 상품 관리</h2>
+  return (
+    <div className="fund-product-admin-container">
+      <h2>펀드 상품 관리</h2>
 
-        {/* 펀드 목록 테이블 */}
-        <table className="fund-table">
-          <thead>
-            <tr>
-              <th>펀드ID</th>
-              <th>펀드명</th>
-              <th>운용사명</th>
-              <th>펀드유형</th>
-              <th>펀드등급</th>
-              <th>총보수 (%)</th>
-              <th>1개월 수익률 (%)</th>
-              <th>3개월 수익률 (%)</th>
-              <th>6개월 수익률 (%)</th>
-              <th>12개월 수익률 (%)</th>
-              <th></th>
+      {/* 펀드 목록 테이블 */}
+      <table className="fund-table">
+        <thead>
+          <tr>
+            <th>펀드명</th>
+            <th>운용사명</th>
+            <th>펀드유형</th>
+            <th>펀드등급</th>
+            <th>총보수 (%)</th>
+            <th>1개월 수익률 (%)</th>
+            <th>3개월 수익률 (%)</th>
+            <th>6개월 수익률 (%)</th>
+            <th>12개월 수익률 (%)</th>
+            <th>선택</th>
+          </tr>
+        </thead>
+        <tbody>
+          {funds.map((fund, index) => (
+            <tr key={index}>
+              <td>{fund["상품명"]}</td>
+              <td>{fund["운용사명"]}</td>
+              <td>{fund["펀드유형"]}</td>
+              <td>{fund["펀드등급"]}</td>
+              <td>{fund["총보수(퍼센트)"]}</td>
+              <td>{fund["1개월누적수익률(퍼센트)"]}</td>
+              <td>{fund["3개월누적수익률(퍼센트)"]}</td>
+              <td>{fund["6개월누적수익률(퍼센트)"]}</td>
+              <td>{fund["12개월누적수익률(퍼센트)"]}</td>
+              <td>
+                <button onClick={() => handleOpenPopup(fund)}>등록</button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {funds.map((fund, index) => (
-              <tr key={index}>
-                <td>{fund["펀드 ID"]}</td>
-                <td>{fund["상품명"]}</td>
-                <td>{fund["운용사명"]}</td>
-                <td>{fund["펀드유형"]}</td>
-                <td>{fund["펀드등급"]}</td>
-                <td>{fund["총보수(퍼센트)"]}</td>
-                <td>{fund["1개월누적수익률(퍼센트)"]}</td>
-                <td>{fund["3개월누적수익률(퍼센트)"]}</td>
-                <td>{fund["6개월누적수익률(퍼센트)"]}</td>
-                <td>{fund["12개월누적수익률(퍼센트)"]}</td>
-                <td>
-                <div className="action-buttons">
-                  <button onClick={() => handleUpdateFund(fund)}>수정</button>
-                  <button onClick={() => handleDeleteFund(fund)}>삭제</button>
-                </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          ))}
+        </tbody>
+      </table>
 
-        {/* 펀드 수정 팝업폼 */}
-        {selectedFund && (
-          <div
-            className="fund-form-container"
-            style={{
-              position: "absolute",
-              top: modalPosition.y,
-              left: modalPosition.x,
-              width: "400px",
-              backgroundColor: "white",
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              padding: "20px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-              cursor: isDragging ? "grabbing" : "grab",
-            }}
-            onMouseDown={handleMouseDown}
-          >
-            {/* 닫기 버튼 */}
-            <button
-              className="close-button"
-              onClick={handleClosePopup}
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                background: "none",
-                border: "none",
-                fontSize: "16px",
-                fontColor: "#61dafb",
-                cursor: "pointer",
-              }}
-            >
-              X
-            </button>
-            <h3>펀드 수정</h3>
+      {/* 펀드 등록 팝업 */}
+      {isPopupOpen && (
+        <div className="popup-container">
+          <div className="popup">
+            <h3>펀드 등록</h3>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -258,21 +154,11 @@ const FundProductAdmin = () => {
               }}
             >
               <div>
-                <label>펀드 ID:</label>
-                <input
-                  type="number"
-                  name="FUND_ID"
-                  value={formData.FUND_ID}
-                  onChange={handleChange}
-                  disabled // 수정 시 펀드 ID는 읽기 전용
-                />
-              </div>
-              <div>
                 <label>펀드 이름:</label>
                 <input
                   type="text"
-                  name="FUND_NAME"
-                  value={formData.FUND_NAME}
+                  name="fund_name"
+                  value={formData.fund_name}
                   onChange={handleChange}
                   required
                 />
@@ -281,8 +167,8 @@ const FundProductAdmin = () => {
                 <label>운용사명:</label>
                 <input
                   type="text"
-                  name="FUND_COMPANY"
-                  value={formData.FUND_COMPANY}
+                  name="fund_company"
+                  value={formData.fund_company}
                   onChange={handleChange}
                   required
                 />
@@ -291,8 +177,8 @@ const FundProductAdmin = () => {
                 <label>펀드 유형:</label>
                 <input
                   type="text"
-                  name="FUND_TYPE"
-                  value={formData.FUND_TYPE}
+                  name="fund_type"
+                  value={formData.fund_type}
                   onChange={handleChange}
                 />
               </div>
@@ -300,8 +186,8 @@ const FundProductAdmin = () => {
                 <label>펀드 등급:</label>
                 <input
                   type="number"
-                  name="FUND_GRADE"
-                  value={formData.FUND_GRADE}
+                  name="fund_grade"
+                  value={formData.fund_grade}
                   onChange={handleChange}
                   min="1"
                   max="10"
@@ -311,18 +197,62 @@ const FundProductAdmin = () => {
                 <label>총보수 (%):</label>
                 <input
                   type="number"
-                  name="FUND_FEE_RATE"
-                  value={formData.FUND_FEE_RATE}
+                  name="fund_fee_rate"
+                  value={formData.fund_fee_rate}
+                  onChange={handleChange}
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label>1개월 수익률 (%):</label>
+                <input
+                  type="number"
+                  name="return_1m"
+                  value={formData.return_1m}
+                  onChange={handleChange}
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label>3개월 수익률 (%):</label>
+                <input
+                  type="number"
+                  name="return_3m"
+                  value={formData.return_3m}
+                  onChange={handleChange}
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label>6개월 수익률 (%):</label>
+                <input
+                  type="number"
+                  name="return_6m"
+                  value={formData.return_6m}
+                  onChange={handleChange}
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label>12개월 수익률 (%):</label>
+                <input
+                  type="number"
+                  name="return_12m"
+                  value={formData.return_12m}
                   onChange={handleChange}
                   step="0.01"
                 />
               </div>
               <button type="submit">저장</button>
+              <button type="button" onClick={handleClosePopup}>
+                닫기
+              </button>
             </form>
           </div>
-        )}
-      </div>
-    );
-  };            
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default FundProductAdmin;

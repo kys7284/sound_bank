@@ -10,8 +10,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	</select>
  
  	<insert id="loanInsert">
- 		INSERT INTO LOAN_TBL(LOAN_ID,LOAN_NAME,LOAN_MAX_AMOUNT,LOAN_MIN_AMOUNT,INTEREST_RATE,LOAN_TERM,LOAN_INFO,LOAN_TYPE)
-		VALUES((SELECT NVL(MAX(LOAN_ID)+1,1) FROM LOAN_TBL),#{loan_name},#{loan_max_amount},#{loan_min_amount},#{interest_rate},#{loan_term},#{loan_info},#{loan_type})
+ 		INSERT INTO LOAN_TBL(LOAN_NAME,LOAN_MAX_AMOUNT,LOAN_MIN_AMOUNT,INTEREST_RATE,LOAN_TERM,LOAN_INFO,LOAN_TYPE)
+		VALUES( #{loan_name},#{loan_max_amount},#{loan_min_amount},#{interest_rate},#{loan_term},#{loan_info},#{loan_type})
  	</insert>
 
 	<select id="loanDetail" parameterType="int">

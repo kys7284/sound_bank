@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../../Css/loan/LoanService.css";
 
 const LoanCalculator = () => {
   const [principal, setPrincipal] = useState(""); //  대출 원금
@@ -104,25 +105,25 @@ const LoanCalculator = () => {
   };
 
   return (
-    <div>
-      <div>
-        대출 금액(원) :{" "}
+    <div className="calculator">
+      <div className="calItem">
+        대출 금액(원)
         <input
           type="text"
           value={principal}
           onChange={(e) => setPrincipal(formatNumber(e.target.value))}
         />
       </div>
-      <div>
-        대출 이자율(10%) :{" "}
-        <input type="number" onChange={(e) => setRate(e.target.value)} />
+      <div className="calItem">
+        대출 이자율
+        <input type="text" onChange={(e) => setRate(e.target.value)} />
+      </div>
+      <div className="calItem">
+        상환 기간(년)
+        <input type="text" onChange={(e) => setYear(e.target.value)} />
       </div>
       <div>
-        상환 기간 (년) :{" "}
-        <input type="number" onChange={(e) => setYear(e.target.value)} />
-      </div>
-      <div>
-        상환 방법 :{" "}
+        상환 방법
         <select
           onChange={(e) => {
             setRepaymentMethod(e.target.value);
@@ -133,7 +134,9 @@ const LoanCalculator = () => {
           <option value="만기 일시상환">만기 일시상환</option>
         </select>
       </div>
-      <button onClick={InterestCalculator}>계산하기</button>
+      <div>
+        <button onClick={InterestCalculator}>계산하기</button>
+      </div>
       <h3>상환 방식 : {repaymentMethod}</h3>
       <h3>월별 납입 내역:</h3>
       <ul>
