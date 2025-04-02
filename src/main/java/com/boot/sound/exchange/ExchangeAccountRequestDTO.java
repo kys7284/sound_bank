@@ -1,5 +1,7 @@
 package com.boot.sound.exchange;
 
+import java.sql.Timestamp;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,5 +38,10 @@ public class ExchangeAccountRequestDTO {
 	
 	@JsonProperty("EXCHANGE_ACCOUNT_PWD")
     private int EXCHANGE_ACCOUNT_PWD;
-    
+
+	@JsonProperty("REQUEST_DATE")
+	private Timestamp REQUEST_DATE; 
+	
+	@JsonProperty("STATUS")
+	private String STATUS;
 }
