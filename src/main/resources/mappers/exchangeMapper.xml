@@ -11,6 +11,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where customer_id = #{customer_id}
 	</select>
 	
+	<!-- 계좌 비밀번호 확인 -->
+	<select id="pwdChk" parameterType="map" resultType="int">
+	  SELECT COUNT(*)
+	  FROM account_tbl
+	  WHERE account_number = #{account_number}
+	    AND account_pwd = #{account_pwd}
+	</select>
+	
 	<!-- 환전 신청 -->
 	<insert id="requestExchange" parameterType="com.boot.sound.exchange.ExchangeRequestDTO" useGeneratedKeys="false">
 		INSERT INTO EXCHANGE_REQUEST (
@@ -35,5 +43,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    RETURNING EXCHANGE_REQUEST_ID INTO #{exchange_request_id}
 	</insert>
 	
+	<!-- 계좌 생성 요청 -->
+	<insert id="accountRequest" parameterType="com.boot.sound.exchange.ExchangeAccountRequestDTO">
+    INSERT INTO exchange_account_request (
+        CUSTOMER_ID,
+        WITHDRAW_ACCOUNT_NUMBER,
+        CURRENCY_TYPE,
+        EXCHANGE_ACCOUNT_PWD
+	 	) VALUES (
+	        #{CUSTOMER_ID},
+	        #{WITHDRAW_ACCOUNT_NUMBER},
+	        #{CURRENCY_TYPE},
+	        #{EXCHANGE_ACCOUNT_PWD}
+    	)
+	</insert>
 	
 </mapper>   

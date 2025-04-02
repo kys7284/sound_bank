@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ExchangeServiceImpl {
 
     private final String apiKey = "TzsQ31CAai0yWB3qXIhrtFyxqpxNO7H6";
+    
     // 리디렉션 처리 가능한 HttpClient 설정
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -62,8 +63,9 @@ public class ExchangeServiceImpl {
         }
     }
     
+    // 재요청 메서드
     private String fetchWithRetry(String url, int maxRetries, long delayMs) {
-        for (int attempt = 1; attempt <= maxRetries; attempt++) {
+        for (int attempt = 1; attempt <= maxRetries; attempt++) { // 
             try {
                 String response = restTemplate.getForObject(url, String.class);
                 if (response != null && !response.isEmpty()) {
@@ -80,17 +82,28 @@ public class ExchangeServiceImpl {
             }
         }
         throw new RuntimeException("환율 정보 요청 재시도 실패");
-    }
+    }  
     
-//    @Transactional
-//    public ExchangeRequestDTO requestExchange(ExchangeRequestDTO dto) {
-//        dao.requestExchange(dto); // dto에 exchange_request_id 채워짐
-//        return dao.selectExchangeRequestById(dto.getExchange_request_id());
-//    }
-    
-    @Transactional
+    // 계좌 조회
+    @Transactional(readOnly = true)
     public AccountDTO findbyId(String customer_id) {
     	System.out.println("service - findbyId");
+    	
     	return dao.findbyId(customer_id);
     }
+    
+    // 계좌 비밀번호 검증
+    @Transactional(readOnly = true)
+    public int accountPwdChk(Map<String, Object> map) {
+        System.out.println("service - accountPwdChk");
+    	return dao.pwdChk(map);
+    }
+    
+    // 계좌 생성 요청
+    @Transactional
+    public int requestAccount(ExchangeAccountRequestDTO dto) {
+    	
+    	return dao.accountRequest(dto);
+    }
+
 }
