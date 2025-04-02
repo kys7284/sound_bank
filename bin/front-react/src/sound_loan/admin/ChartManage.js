@@ -1,7 +1,7 @@
 import React from "react";
 
 const ChartManage = () => {
-  return <div></div>;
+  return <div style={{ minHeight: 600 }}></div>;
 };
 
 export default ChartManage;
