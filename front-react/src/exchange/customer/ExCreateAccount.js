@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "../../Css/exchange/ExCreateAccount.module.css";
+import { useNavigate } from "react-router-dom"; 
 
 const ExCreateAccount = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [accounts, setAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState("");
@@ -56,7 +58,11 @@ const ExCreateAccount = () => {
       const res = await axios.post("http://localhost:8081/api/exchange/account/request", ExchangeAccountRequestDTO);
   
       alert("계좌 개설 요청이 완료되었습니다.");
-      // 성공 시 페이지 이동 또는 완료 메시지
+      // 성공 시 페이지 이동
+      if (res.status === 201) {
+        alert("계좌 개설 요청이 완료되었습니다.");
+        navigate("/admin_ex_request_list"); // ✅ 계좌 신청 현황 페이지로 이동
+      }
     } catch (err) {
       console.error("계좌 개설 요청 실패", err);
       alert("요청에 실패했습니다.");
