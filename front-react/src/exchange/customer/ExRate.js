@@ -9,7 +9,8 @@ const ExRate = () => {
     const [exchange, setExchange] = useState([]);
     const [date, setDate] = useState("");
     const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
-    
+    const [loading, setLoading] = useState(false);
+
     // 날짜 포맷 함수
     const formatDate = (dateObj) => {
       const offset = dateObj.getTimezoneOffset();
@@ -21,7 +22,8 @@ const ExRate = () => {
     const fetchExchangeRates = (selectedDate) => {
       const formattedDate = formatDate(new Date(selectedDate));
       console.log("조회할 날짜:", formattedDate);
-    
+      setLoading(true); // 로딩 시작
+
       axios.get('http://localhost:8081/api/exchange/rates', {
         params: { date: formattedDate }
       })
@@ -37,6 +39,10 @@ const ExRate = () => {
           console.error("에러", err);
           alert("환율 정보를 불러오는 중 오류가 발생했습니다.");
           setExchange([]);
+        })
+        .finally(() => {
+          setLoading(false); // 로딩 종료
+          console.log("로딩 종료");
         });
     };
     
@@ -63,8 +69,7 @@ const ExRate = () => {
     
 
   return (
-    <div> 
-      
+    <div classname={styles.container}>       
         <div className={styles.calcButtonWrapper}>
           {/* 환율 계산기 열기 버튼 */}
           <button className={styles.calcButton} onClick={() => setIsCalculatorOpen(true)}>환율 계산기 열기</button>        
@@ -91,7 +96,11 @@ const ExRate = () => {
             exchange={exchange}
         />        
         </div>
-
+        {loading ? (
+          <p style={{ textAlign: "center", marginTop: "20px", minHeight:"570px"}}>
+             💸 환율 정보를 불러오는 중입니다 💸
+          </p>
+        ) : (
         <table border="1" className={styles.table}>
             <thead>
                 <tr>
@@ -120,7 +129,7 @@ const ExRate = () => {
                 ))}
             </tbody>
         </table>         
-
+        )}
     </div>
 );
 };
