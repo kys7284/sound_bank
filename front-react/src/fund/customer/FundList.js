@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Chart } from 'react-google-charts';
-import Papa from 'papaparse';
 import '../../Css/fund/Fund.css';
 
 const FundList = () => {
   const [data, setData] = useState([]);
-  const [funds, setFunds] = useState([]);
+  const [funds, setFunds] = useState([]); // 등록된 펀드 상품만 저장
   const [selectedFunds, setSelectedFunds] = useState([]);
   const [expandedManagers, setExpandedManagers] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -13,18 +12,21 @@ const FundList = () => {
   const popupRef = useRef(null);
 
   useEffect(() => {
-    fetch('/data/fundList.csv')
-      .then(response => response.text())
-      .then(csvText => {
-        Papa.parse(csvText, {
-          header: true,
-          complete: (results) => {
-            console.log('CSV Data:', results.data); // 데이터 로드 확인
-            setFunds(results.data);
-          }
-        });
-      });
-  }, []);
+    fetch('http://localhost:8081/api/registeredFunds')  // 등록된 펀드 상품 API 호출
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch registered funds');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log('Registered Funds:', data); // 데이터 로드 확인
+      setFunds(data); // 등록된 펀드 상품으로 상태 업데이트
+    })
+    .catch((error) => {
+      console.error('Error fetching registered funds:', error);
+    });
+}, []);
 
   const handleFundClick = (fundName) => {
     setSelectedFunds(prevSelectedFunds => {
@@ -40,7 +42,7 @@ const FundList = () => {
   const handleManagerClick = (managerName) => {
     setExpandedManagers(prevExpandedManagers => {
       if (prevExpandedManagers.includes(managerName)) {
-        return prevExpandedManagers.filter(name => name !== managerName);
+        return prevExpandedManagers.filter((name) => name !== managerName);
       } else {
         return [...prevExpandedManagers, managerName];
       }
@@ -51,6 +53,51 @@ const FundList = () => {
     setSelectedCategory(event.target.value);
   };
 
+  // 수정 =>  모달 전체 드래그 처리 (표 제외)
+  useEffect(() => {
+    const popup = popupRef.current;
+    if (!popup) return;
+
+    const handleMouseDown = (e) => {
+      const target = e.target;
+
+      // 수정 =>  표 내부 클릭 시 드래그 막기
+      if (
+        target.tagName === 'TD' ||
+        target.tagName === 'TH' ||
+        target.closest('table')
+      ) {
+        return;
+      }
+
+      const shiftX = e.clientX - popup.getBoundingClientRect().left;
+      const shiftY = e.clientY - popup.getBoundingClientRect().top;
+
+      const moveAt = (clientX, clientY) => {
+        popup.style.left = `${clientX - shiftX}px`;
+        popup.style.top = `${clientY - shiftY}px`;
+      };
+
+      const onMouseMove = (e) => {
+        moveAt(e.clientX, e.clientY);
+      };
+
+      document.addEventListener('mousemove', onMouseMove);
+
+      document.addEventListener('mouseup', () => {
+        document.removeEventListener('mousemove', onMouseMove);
+      }, { once: true });
+    };
+
+    popup.addEventListener('mousedown', handleMouseDown);
+    popup.ondragstart = () => false;
+
+    return () => {
+      popup.removeEventListener('mousedown', handleMouseDown);
+    };
+  }, [showPopup]);
+
+
   const handleClosePopup = () => {
     setShowPopup(false);
   };
@@ -58,15 +105,16 @@ const FundList = () => {
   useEffect(() => {
     if (selectedFunds.length > 0) {
       const chartData = [
-        ['기간', ...selectedFunds.map(fund => `${fund} 수익률`)]
+        ['기간', ...selectedFunds.map((fund) => `${fund} 수익률`)], // 헤더 생성
       ];
 
       const periods = ['1개월', '3개월', '6개월', '12개월'];
-      periods.forEach(period => {
-        const row = [period];
-        selectedFunds.forEach(fund => {
-          const fundData = funds.find(row => row.상품명 === fund);
-          row.push(parseFloat(fundData[`${period}누적수익률(퍼센트)`]));
+      periods.forEach((period) => {
+        const row = [period]; // 첫 번째 열은 기간
+        selectedFunds.forEach((fund) => {
+          const fundData = funds.find((row) => row.fund_name === fund);
+          const value = fundData ? parseFloat(fundData[`return_${period.replace('개월', 'm')}`]) : 0; // 값이 없으면 0으로 설정
+          row.push(value);
         });
         chartData.push(row);
       });
@@ -79,52 +127,15 @@ const FundList = () => {
   }, [selectedFunds, funds]);
 
   const groupedFunds = funds.reduce((acc, fund) => {
-    if (!acc[fund.운용사명]) {
-      acc[fund.운용사명] = {};
+    if (!acc[fund.fund_company]) {
+      acc[fund.fund_company] = {};
     }
-    if (!acc[fund.운용사명][fund.펀드유형]) {
-      acc[fund.운용사명][fund.펀드유형] = [];
+    if (!acc[fund.fund_company][fund.fund_type]) {
+      acc[fund.fund_company][fund.fund_type] = [];
     }
-    acc[fund.운용사명][fund.펀드유형].push(fund);
+    acc[fund.fund_company][fund.fund_type].push(fund);
     return acc;
   }, {});
-
-  const handleMouseDown = (e) => {
-    const popup = popupRef.current;
-    const shiftX = e.clientX - popup.getBoundingClientRect().left;
-    const shiftY = e.clientY - popup.getBoundingClientRect().top;
-
-    const moveAt = (pageX, pageY) => {
-      popup.style.left = pageX - shiftX + 'px';
-      popup.style.top = pageY - shiftY + 'px';
-    };
-
-    const onMouseMove = (e) => {
-      moveAt(e.pageX, e.pageY);
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-
-    const onMouseUp = () => {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-
-    document.addEventListener('mouseup', onMouseUp);
-  };
-
-  useEffect(() => {
-    const popup = popupRef.current;
-    if (popup) {
-      popup.addEventListener('mousedown', handleMouseDown);
-      popup.ondragstart = () => false;
-    }
-    return () => {
-      if (popup) {
-        popup.removeEventListener('mousedown', handleMouseDown);
-      }
-    };
-  }, [showPopup]);
 
   return (
     <div className="Fund">
@@ -163,17 +174,17 @@ const FundList = () => {
                         {groupedFunds[manager][selectedCategory].map((fund, fundIndex) => (
                           <tr
                             key={fundIndex}
-                            onClick={() => handleFundClick(fund.상품명)}
-                            className={selectedFunds.includes(fund.상품명) ? 'selected' : ''}
+                            onClick={() => handleFundClick(fund.fund_name)}
+                            className={selectedFunds.includes(fund.fund_name) ? 'selected' : ''}
                           >
-                            <td>{fund.상품명}</td>
-                            <td>{fund['1개월누적수익률(퍼센트)']}</td>
-                            <td>{fund['3개월누적수익률(퍼센트)']}</td>
-                            <td>{fund['6개월누적수익률(퍼센트)']}</td>
-                            <td>{fund['12개월누적수익률(퍼센트)']}</td>
-                            <td>{fund.펀드등급}</td>
-                            <td>{fund['선취수수료(퍼센트)']}</td>
-                            <td>{fund['총보수(퍼센트)']}</td>
+                            <td>{fund.fund_name}</td>
+                            <td>{fund.return_1m}</td>
+                            <td>{fund.return_3m}</td>
+                            <td>{fund.return_6m}</td>
+                            <td>{fund.return_12m}</td>
+                            <td>{fund.fund_grade}</td>
+                            <td>{fund.fund_upfront_fee}</td>
+                            <td>{fund.fund_fee_rate}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -187,8 +198,10 @@ const FundList = () => {
         {showPopup && (
           <div className="popup" ref={popupRef}>
             <div className="popup-content">
-              <span className="close" onClick={handleClosePopup}>&times;</span>
-              <h3>Selected Funds Return Rate Comparison</h3>
+              <div className="popup-header">
+                <h3>펀드 수익률 비교 차트</h3>
+                <span className="close" onClick={handleClosePopup}>&times;</span>
+              </div>
               <Chart
                 width={'100%'}
                 height={'400px'}
