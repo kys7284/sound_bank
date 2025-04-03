@@ -16,10 +16,14 @@ public class DepositService {
 	
 	// 예금 리스트
 	@Transactional(readOnly=true)
-	public List<DepositDTO> DepositList() {
-		System.out.println("서비스 - DepositList");
-		return dao.DepositList();
+	public List<DepositDTO> depositList() {
+		System.out.println("서비스 - depositList");
+		return dao.depositList();
 	}
+	
+	// 예금 거래내역 리스트
+	
+	
 	
 	
 	
