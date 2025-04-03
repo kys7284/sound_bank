@@ -31,16 +31,17 @@ const LoanList = (props) => {
       })
       .catch((error) => {
         console.error("데이터 가져오기 오류:", error);
-        // 사용자에게 오류 메시지를 표시하거나 다른 오류 처리 로직을 추가할 수 있습니다.
       });
   }, []);
 
   return (
     <div className="loanList">
-      <table className="listTable">
+      <table className="insertTable">
         <thead>
           <tr>
-            <h2>대출 상품 목록</h2>
+            <th colSpan={9}>
+              <h2>대출 상품 목록</h2>
+            </th>
           </tr>
           <tr>
             <th>대출 아이디</th>

@@ -22,39 +22,39 @@ import lombok.ToString;
 public class FundDTO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)  // 자동 증가 (Oracle의 경우 IDENTITY 사용 가능)
-	@Column(name = "FUND_ID", nullable = false,  updatable = false, length = 10)	//updatable=false : 한 번 저장된 후 수정할 수 없도록 제한
-	private Long fundId;          // 펀드 ID
+	@GeneratedValue(strategy = GenerationType.IDENTITY)  // 자동 증가
+	@Column(name = "fund_id", nullable = false,  updatable = false)	//updatable=false : 한 번 저장된 후 수정할 수 없도록 제한
+	private Long fund_id;          // 펀드 ID
 	
-	@Column(name = "FUND_NAME", nullable = false, length = 255)
-    private String fundName;      // 펀드명
+	@Column(name = "fund_name", nullable = false, length = 255)
+    private String fund_name;      // 펀드명
 	
-	@Column(name = "FUND_COMPANY", nullable = false, length = 255)
-    private String fundCompany;   // 운용사명
+	@Column(name = "fund_company", nullable = false, length = 255)
+    private String fund_company;   // 운용사명
 	
-	@Column(name = "FUND_TYPE", length = 100)
-    private String fundType;      // 펀드 유형 (주식형, 채권형 등)
+	@Column(name = "fund_type", length = 100)
+    private String fund_type;      // 펀드 유형 (주식형, 채권형 등)
 	
-	@Column(name = "FUND_GRADE",  precision = 1)
-    private Integer fundGrade;    // 펀드 등급 (1~5)
+	@Column(name = "fund_grade",  precision = 1)
+    private Integer fund_grade;    // 펀드 등급 (1~5)
 	
-	@Column(name = "FUND_FEE_RATE", precision = 5, scale = 2)
-    private Double fundFeeRate;   // 총보수 (%)
+	@Column(name = "fund_fee_rate", precision = 5, scale = 2)
+    private Double fund_fee_rate;   // 총보수 (%)
 	
-	@Column(name = "FUND_UPFRONT_FEE", precision = 5, scale = 2)
-    private Double fundUpfrontFee;// 선취 수수료 (%)
+	@Column(name = "fund_upfront_fee", precision = 5, scale = 2)
+    private Double fund_upfront_fee;// 선취 수수료 (%)
 	
-	@Column(name = "RETURN_1M", precision = 6, scale = 3)
-    private Double return1M;      // 1개월 누적 수익률 (%)
+	@Column(name = "return_1m", precision = 6, scale = 3)
+    private Double return_1m;      // 1개월 누적 수익률 (%)
 	
-	@Column(name = "RETURN_3M", precision = 6, scale = 3)
-    private Double return3M;      // 3개월 누적 수익률 (%)
+	@Column(name = "return_3m", precision = 6, scale = 3)
+    private Double return_3m;      // 3개월 누적 수익률 (%)
 	
-	@Column(name = "RETURN_6M", precision = 6, scale = 3)
-    private Double return6M;      // 6개월 누적 수익률 (%)
+	@Column(name = "return_6m", precision = 6, scale = 3)
+    private Double return_6m;      // 6개월 누적 수익률 (%)
 	
-	@Column(name = "RETURN_12M", precision = 6, scale = 3)
-    private Double return12M;     // 12개월 누적 수익률 (%)
+	@Column(name = "return_12m", precision = 6, scale = 3)
+    private Double return_12m;     // 12개월 누적 수익률 (%)
 
 }
 

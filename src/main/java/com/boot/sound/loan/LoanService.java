@@ -86,4 +86,11 @@ public class LoanService {
 		System.out.println("서비스 - loanNameSearch()");
 		return dao.loanNameCnt(loan_name);
 	}
+	
+	// 대출실행 필수동의내역 저장
+	@Transactional
+	public int consentInsert(LoanConsentDTO dto) {
+		System.out.println("서비스 - consentInsert()");
+		return dao.consentInsert(dto);
+	}
 }

@@ -44,7 +44,7 @@ public class CustomerDTO {
     private String customer_job;
 
     @Column(name = "CUSTOMER_ACCOUNT_NUMBER", nullable = false)
-    private Long customer_account_number;
+    private String customer_account_number;
 
     @Column(name = "CUSTOMER_BIRTHDAY", length = 20)
     private String customer_birthday;

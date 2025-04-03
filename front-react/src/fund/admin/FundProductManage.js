@@ -1,75 +1,55 @@
 import React, { useState, useEffect } from "react";
-import Papa from "papaparse"; // CSV 파싱 라이브러리
 import "../../Css/fund/Fund.css"; // 스타일 파일 추가
 
 const FundProductManage = () => {
   const [dropdownFunds, setDropdownFunds] = useState([]); // 드롭다운에 표시할 펀드 목록
   const [formData, setFormData] = useState({
-    FUND_ID: 1, // 펀드 ID는 자동 생성
-    FUND_NAME: "",
-    FUND_COMPANY: "",
-    FUND_TYPE: "",
-    FUND_GRADE: "",
-    FUND_FEE_RATE: "",
-    RETURN_1M: 0,
-    RETURN_3M: 0,
-    RETURN_6M: 0,
-    RETURN_12M: 0,
-  }); // 등록/수정 폼 데이터
+    fund_id: "", // 소문자로 변경
+    fund_name: "",
+    fund_company: "",
+    fund_type: "",
+    fund_grade: "",
+    fund_fee_rate: "",
+    return_1m: 0,
+    return_3m: 0,
+    return_6m: 0,
+    return_12m: 0,
+  });
 
-  // 컴포넌트가 처음 렌더링될 때 CSV 파일에서 펀드 목록을 가져옴
-  useEffect(() => {
-    fetchFundsFromCSV();
-  }, []);
-
-  // CSV 파일에서 펀드 목록 가져오기
-  const fetchFundsFromCSV = async () => {
+  // 펀드 목록 조회
+  const fetchFundsFromAPI = async () => {
     try {
-      const response = await fetch("/data/fundList.csv"); // public 디렉토리의 CSV 파일 경로
-      const csvText = await response.text(); // CSV 파일의 텍스트 데이터 가져오기
-
-      // CSV 데이터를 파싱하여 JSON 형식으로 변환
-      Papa.parse(csvText, {
-        header: true, // 첫 번째 행을 헤더로 사용
-        skipEmptyLines: true, // 빈 줄 건너뛰기
-        complete: (results) => {
-          console.log("CSV Data:", results.data); // 파싱된 데이터 확인
-          // CSV 데이터의 컬럼 순서에 맞게 매핑
-          const mappedData = results.data.map((fund, index) => ({
-            FUND_ID: index + 1,
-            FUND_NAME: fund["상품명"],
-            FUND_COMPANY: fund["운용사명"],
-            FUND_TYPE: fund["펀드유형"],
-            FUND_GRADE: fund["펀드등급"],
-            FUND_FEE_RATE: fund["총보수(퍼센트)"],
-            RETURN_1M: fund["1개월누적수익률(퍼센트)"],
-            RETURN_3M: fund["3개월누적수익률(퍼센트)"],
-            RETURN_6M: fund["6개월누적수익률(퍼센트)"],
-            RETURN_12M: fund["12개월누적수익률(퍼센트)"],
-          }));
-          setDropdownFunds(mappedData); // 드롭다운에 표시할 데이터 저장
-        },
-      });
+      const response = await fetch("http://localhost:8081/api/registeredFunds");
+      if (!response.ok) {
+        throw new Error("Failed to fetch fund list");
+      }
+      const data = await response.json();
+      setDropdownFunds(data); // 드롭다운에 표시할 데이터 저장
     } catch (error) {
-      console.error("Error fetching CSV file:", error); // 오류 발생 시 콘솔에 출력
+      console.error("Error fetching fund list:", error);
     }
   };
 
+  // useEffect에서 API 호출
+  useEffect(() => {
+    fetchFundsFromAPI();
+  }, []);
+
   // 드롭다운에서 펀드 선택
   const handleDropdownChange = (e) => {
-    const selected = dropdownFunds.find((fund) => fund.FUND_NAME === e.target.value);
+    const selected = dropdownFunds.find((fund) => fund.fund_name === e.target.value);
     if (selected) {
       setFormData({
-        FUND_ID: selected.FUND_ID,
-        FUND_NAME: selected.FUND_NAME,
-        FUND_COMPANY: selected.FUND_COMPANY,
-        FUND_TYPE: selected.FUND_TYPE,
-        FUND_GRADE: selected.FUND_GRADE,
-        FUND_FEE_RATE: selected.FUND_FEE_RATE,
-        RETURN_1M: selected.RETURN_1M,
-        RETURN_3M: selected.RETURN_3M,
-        RETURN_6M: selected.RETURN_6M,
-        RETURN_12M: selected.RETURN_12M,
+        fund_id: Number(selected.fund_id), // 숫자로 변환
+        fund_name: selected.fund_name,
+        fund_company: selected.fund_company,
+        fund_type: selected.fund_type,
+        fund_grade: selected.fund_grade,
+        fund_fee_rate: selected.fund_fee_rate,
+        return_1m: selected.return_1m,
+        return_3m: selected.return_3m,
+        return_6m: selected.return_6m,
+        return_12m: selected.return_12m,
       });
     }
   };
@@ -80,26 +60,55 @@ const FundProductManage = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // 펀드 등록/수정
-  const handleSaveFund = async () => {
+  // 펀드 수정
+  const handleUpdateFund = async () => {
     try {
-      console.log("저장할 펀드 데이터:", formData);
-      // 등록/수정 로직 추가 (예: API 호출)
+      const response = await fetch(`http://localhost:8081/api/fundUpdate/${formData.fund_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update fund");
+      }
+
+      console.log("펀드 수정 성공");
+      fetchFundsFromAPI(); // 목록 갱신
+    } catch (error) {
+      console.error("Error updating fund:", error);
+    }
+  };
+
+  // 펀드 삭제
+  const handleDeleteFund = async () => {
+    try {
+      const response = await fetch(`http://localhost:8081/api/fund/${formData.fund_id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete fund");
+      }
+
+      console.log("펀드 삭제 성공");
+      fetchFundsFromAPI(); // 목록 갱신
       setFormData({
-        FUND_ID: "",
-        FUND_NAME: "",
-        FUND_COMPANY: "",
-        FUND_TYPE: "",
-        FUND_GRADE: "",
-        FUND_FEE_RATE: "",
-        RETURN_1M: 0,
-        RETURN_3M: 0,
-        RETURN_6M: 0,
-        RETURN_12M: 0,
-        return12M: 0,
+        fund_id: "",
+        fund_name: "",
+        fund_company: "",
+        fund_type: "",
+        fund_grade: "",
+        fund_fee_rate: "",
+        return_1m: 0,
+        return_3m: 0,
+        return_6m: 0,
+        return_12m: 0,
       }); // 폼 초기화
     } catch (error) {
-      console.error("Error saving fund:", error);
+      console.error("Error deleting fund:", error);
     }
   };
 
@@ -107,22 +116,22 @@ const FundProductManage = () => {
     <div className="fund-product-manage-container">
       <h2>펀드 상품 관리</h2>
 
-      {/* 펀드 등록/수정 폼 */}
+      {/* 펀드 수정/삭제 폼 */}
       <div className="fund-form-container">
-        <h3>펀드 등록/수정</h3>
+        <h3>펀드 수정/삭제</h3>
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSaveFund();
+            handleUpdateFund();
           }}
         >
           <div>
             <label>펀드 ID:</label>
             <input
               type="text"
-              name="fundId"
-              value={formData.fundId}
-              readOnly // FUND_ID는 읽기 전용
+              name="fund_id"
+              value={formData.fund_id}
+              readOnly // fund_id는 읽기 전용
             />
           </div>
 
@@ -133,8 +142,8 @@ const FundProductManage = () => {
                 펀드를 선택하세요
               </option>
               {dropdownFunds.map((fund, index) => (
-                <option key={index} value={fund.FUND_NAME}>
-                  {fund.FUND_NAME}
+                <option key={index} value={fund.fund_name}>
+                  {fund.fund_name}
                 </option>
               ))}
             </select>
@@ -143,8 +152,8 @@ const FundProductManage = () => {
             <label>펀드 이름:</label>
             <input
               type="text"
-              name="FUND_NAME"
-              value={formData.FUND_NAME}
+              name="fund_name"
+              value={formData.fund_name}
               onChange={handleChange}
               required
             />
@@ -153,8 +162,8 @@ const FundProductManage = () => {
             <label>운용사명:</label>
             <input
               type="text"
-              name="FUND_COMPANY"
-              value={formData.FUND_COMPANY}
+              name="fund_company"
+              value={formData.fund_company}
               onChange={handleChange}
               required
             />
@@ -163,8 +172,8 @@ const FundProductManage = () => {
             <label>펀드 유형:</label>
             <input
               type="text"
-              name="FUND_TYPE"
-              value={formData.FUND_TYPE}
+              name="fund_type"
+              value={formData.fund_type}
               onChange={handleChange}
             />
           </div>
@@ -172,8 +181,8 @@ const FundProductManage = () => {
             <label>펀드 등급:</label>
             <input
               type="number"
-              name="FUND_GRADE"
-              value={formData.FUND_GRADE}
+              name="fund_grade"
+              value={formData.fund_grade}
               onChange={handleChange}
               min="1"
               max="10"
@@ -183,8 +192,8 @@ const FundProductManage = () => {
             <label>총보수 (%):</label>
             <input
               type="number"
-              name="FUND_FEE_RATE"
-              value={formData.FUND_FEE_RATE}
+              name="fund_fee_rate"
+              value={formData.fund_fee_rate}
               onChange={handleChange}
               step="0.01"
             />
@@ -193,8 +202,8 @@ const FundProductManage = () => {
             <label>1개월 수익률 (%):</label>
             <input
               type="number"
-              name="RETURN_1M"
-              value={formData.RETURN_1M}
+              name="return_1m"
+              value={formData.return_1m}
               readOnly
             />
           </div>
@@ -202,8 +211,8 @@ const FundProductManage = () => {
             <label>3개월 수익률 (%):</label>
             <input
               type="number"
-              name="RETURN_3M"
-              value={formData.RETURN_3M}
+              name="return_3m"
+              value={formData.return_3m}
               readOnly
             />
           </div>
@@ -211,8 +220,8 @@ const FundProductManage = () => {
             <label>6개월 수익률 (%):</label>
             <input
               type="number"
-              name="RETURN_6M"
-              value={formData.RETURN_6M}
+              name="return_6m"
+              value={formData.return_6m}
               readOnly
             />
           </div>
@@ -220,12 +229,13 @@ const FundProductManage = () => {
             <label>12개월 수익률 (%):</label>
             <input
               type="number"
-              name="RETURN_12M"
-              value={formData.RETURN_12M}
+              name="return_12m"
+              value={formData.return_12m}
               readOnly
             />
           </div>
-          <button type="submit">저장</button>
+          <button type="submit">수정</button>
+          <button type="button" onClick={handleDeleteFund}>삭제</button>
         </form>
       </div>
     </div>

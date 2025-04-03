@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace="com.boot.sound.exchange.ExchangeDAO">
+	
+	<!-- 고객계좌목록 불러오기 -->
+	<select id="findbyId" parameterType="String" resultType="com.boot.sound.inquire.account.AccountDTO">
+		select * from account_tbl
+		where customer_id = #{customer_id}
+	</select>
+	
+	<!-- 계좌 비밀번호 확인 -->
+	<select id="pwdChk" parameterType="map" resultType="int">
+	  SELECT COUNT(*)
+	  FROM account_tbl
+	  WHERE account_number = #{account_number}
+	    AND account_pwd = #{account_pwd}
+	</select>
+	
+	<!-- 환전 신청 -->
+	<insert id="requestExchange" parameterType="com.boot.sound.exchange.ExchangeRequestDTO" useGeneratedKeys="false">
+		INSERT INTO EXCHANGE_REQUEST (
+        CUSTOMER_ID,
+        EXCHANGE_ACCOUNT_ID,
+        TO_CURRENCY,
+        FROM_CURRENCY,
+        REQUESTED_AMOUNT,
+        STATUS,
+        REQUEST_DATE,
+        PROCESSED_DATE
+	    ) VALUES (
+	        #{customer_id},
+	        #{exchange_account_id},
+	        #{to_currency},
+	        #{from_currency},
+	        #{requested_amount},
+	        #{status},
+	        #{request_date},
+	        #{processed_date}
+	    )
+	    RETURNING EXCHANGE_REQUEST_ID INTO #{exchange_request_id}
+	</insert>
+	
+	<!-- 계좌 생성 요청 -->
+	<insert id="accountRequest" parameterType="com.boot.sound.exchange.ExchangeAccountRequestDTO">
+    INSERT INTO exchange_account_request (
+        CUSTOMER_ID,
+        WITHDRAW_ACCOUNT_NUMBER,
+        CURRENCY_TYPE,
+        EXCHANGE_ACCOUNT_PWD
+	 	) VALUES (
+	        #{CUSTOMER_ID},
+	        #{WITHDRAW_ACCOUNT_NUMBER},
+	        #{CURRENCY_TYPE},
+	        #{EXCHANGE_ACCOUNT_PWD}
+    	)
+	</insert>
+	
+</mapper>   
