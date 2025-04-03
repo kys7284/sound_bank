@@ -40,4 +40,7 @@ public interface LoanDAO  {
 	// 대출이름 검색 결과 카운트
 	public int loanNameCnt(String loan_name);
 	
+	// 대출실행 필수동의내역 저장
+	public int consentInsert(LoanConsentDTO dto);
+	
 }

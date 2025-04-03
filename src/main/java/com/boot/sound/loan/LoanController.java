@@ -94,6 +94,13 @@ public class LoanController {
 		return new ResponseEntity<>(service.loanNameCnt(loan_name),HttpStatus.CREATED);
 	}
 	
+	// 대출 신청전 동의서 동의내역 관리 http://localhost:8081/api/consertInsert
+	@PostMapping("/consertInsert")
+	public ResponseEntity<?> consentInsert(@RequestBody LoanConsentDTO dto){
+		System.out.println("컨트롤 - consentInsert()");
+		return new ResponseEntity<>(service.consentInsert(dto),HttpStatus.CREATED);
+	}
+	
 	
 	
 }

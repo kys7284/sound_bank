@@ -10,8 +10,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	</select>
  
  	<insert id="loanInsert">
- 		INSERT INTO LOAN_TBL(LOAN_ID,LOAN_NAME,LOAN_MAX_AMOUNT,LOAN_MIN_AMOUNT,INTEREST_RATE,LOAN_TERM,LOAN_INFO,LOAN_TYPE)
-		VALUES((SELECT NVL(MAX(LOAN_ID)+1,1) FROM LOAN_TBL),#{loan_name},#{loan_max_amount},#{loan_min_amount},#{interest_rate},#{loan_term},#{loan_info},#{loan_type})
+ 		INSERT INTO LOAN_TBL(LOAN_NAME,LOAN_MAX_AMOUNT,LOAN_MIN_AMOUNT,INTEREST_RATE,LOAN_TERM,LOAN_INFO,LOAN_TYPE)
+		VALUES( #{loan_name},#{loan_max_amount},#{loan_min_amount},#{interest_rate},#{loan_term},#{loan_info},#{loan_type})
  	</insert>
 
 	<select id="loanDetail" parameterType="int">
@@ -59,6 +59,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	SELECT COUNT(*) FROM LOAN_TBL
 	WHERE loan_name LIKE '%${loan_name}%'
 	</select>
+	
+	<insert id="consentInsert" parameterType="com.boot.sound.loan.LoanConsentDTO">
+		INSERT INTO LOAN_AGREE_STATUS_TBL(agree_status_id,loan_id,consent_to_use,consent_to_view)
+		VALUES ((SELECT NVL(MAX(agree_status_id)+1,1) FROM LOAN_AGREE_STATUS_TBL),#{loan_id},#{consent_to_use},#{consent_to_view})
+	</insert>
  
  
  </mapper>

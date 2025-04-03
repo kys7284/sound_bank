@@ -1,4 +1,8 @@
 /* Home.css */
+html {
+  font-size: 16px;
+}
+
 .home {
     background: black;
     min-height: 1000px;
@@ -32,19 +36,19 @@
     text-align: left; /* 중앙 정렬 대신 왼쪽 정렬 */
     color: white;
     margin-right: 45%; /* 왼쪽으로 이동 (화면 너비의 5% 정도) */
-    margin-top: -8%; /* 위로 이동 (화면 높이의 10% 정도) */
-    max-width: 480px; /* 텍스트가 너무 넓게 퍼지지 않도록 */
+    margin-top: -12%; /* 위로 이동 (화면 높이의 10% 정도) */
+    max-width: 560px; /* 텍스트가 너무 넓게 퍼지지 않도록 */
 
   }
   .title {
-    font-size: 3.9rem;
+    font-size: 3.9rem !important;
     font-weight: bold;
-    line-height: 1.2;
+    line-height: 1.2 !important
   }
   
   .desc {
-    margin-top: 1.2rem;
-    font-size: 1.9rem;
+    margin-top: 1.2rem !important;
+    font-size: 1.9rem !important;
     color: #ccc;
     font-weight: bold;
   }
