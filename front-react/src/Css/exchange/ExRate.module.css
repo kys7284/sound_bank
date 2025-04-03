@@ -1,12 +1,13 @@
 .tableContainer {
     padding: 10px;
   }
-  
+
   .table {
     border-collapse: collapse;
     width: 50%;
     margin: 0 auto;
     overflow-x: auto;
+    margin-bottom: 130px; /* ✅ 푸터와의 간격 확보 */
   }
   
   .table th,
