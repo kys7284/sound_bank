@@ -18,8 +18,12 @@ const AdminExAccountRequestList = () => {
   }, []);
 
   const handleApprove = (requestId) => {
-    // 추후 구현
-    alert(`승인: ${requestId}`);
+    axios
+      .post("http://localhost:8081/api/exAdmin/account/approve")
+      .then((res) => {
+        
+      })
+    alert(`승인처리 되었습니다 : ${requestId}`);
   };
 
   const handleReject = (requestId) => {
