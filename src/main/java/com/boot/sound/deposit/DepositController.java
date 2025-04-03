@@ -11,23 +11,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/deposits")
+@RequestMapping("/api")
 @CrossOrigin
 public class DepositController {
 	
        @Autowired
-       private DepositService depositservice;
+       private DepositService service;
        
        
-   	@GetMapping("/DepositList")
-   	public ResponseEntity<?> loanList(){
+   	@GetMapping("/depositList")
+   	public ResponseEntity<?> depositList(){
    		System.out.println("depositList()");
-   		return new ResponseEntity<>(depositservice.DepositList(),HttpStatus.OK);
+   		return new ResponseEntity<>(service.depositList(), HttpStatus.OK);
    		
    	};
 		
 		
-
+    
 	
 
 }

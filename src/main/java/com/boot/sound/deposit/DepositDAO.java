@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface DepositDAO {
 
 	// 예금 리스트
-	public List<DepositDTO> DepositList();
+	public List<DepositDTO> depositList();
 	
 	
 }

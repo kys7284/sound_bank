@@ -76,6 +76,7 @@ import LoanCreditScore from "./sound_loan/customer/LoanCreditScore";
 import Join from "./customer/Join";
 import Login from "./customer/Login";
 import Authcenter from "./customer_center/Authcenter";
+import DepositJoin from "./productSubscription/DepositJoin";
 function App() {
   return (
     <div className="App">
@@ -92,6 +93,7 @@ function App() {
           {/* 조회/입출금 Route 끝 */}
           {/* 상품가입 Route 시작 */}
           <Route path="/fixedDeposit" element={<FixedDeposit />} />
+          <Route path="/DepositJoin/:name" element={<DepositJoin />} /> {/* ID를 URL 파라미터로 전달 */}
           <Route path="/installmentSavings" element={<InstallmentSavings />} />
           <Route path="/precautions" element={<Precautions />} />
           {/* 상품가입 Route 끝 */}
