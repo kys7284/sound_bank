@@ -23,7 +23,7 @@ public class FundDTO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  // 자동 증가
-	@Column(name = "fund_id", nullable = false,  updatable = false, length = 10)	//updatable=false : 한 번 저장된 후 수정할 수 없도록 제한
+	@Column(name = "fund_id", nullable = false,  updatable = false)	//updatable=false : 한 번 저장된 후 수정할 수 없도록 제한
 	private Long fund_id;          // 펀드 ID
 	
 	@Column(name = "fund_name", nullable = false, length = 255)
