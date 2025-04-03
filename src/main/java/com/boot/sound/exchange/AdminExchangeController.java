@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/api/exAdmin")
@@ -26,5 +29,14 @@ public class AdminExchangeController {
 		
 		return new ResponseEntity<>(service.exAccountList(),HttpStatus.OK);
 	}
+
+	@PostMapping("/account/approve")
+	public ResponseEntity<?> approveAccount(@RequestBody long REQUEST_ID) {
+		System.out.println("Controller - approveAccount");
+		System.out.println("REQUEST_ID = " + REQUEST_ID);
+		
+		return new ResponseEntity<>(service.approveAccount(REQUEST_ID),HttpStatus.OK);
+	}
+	
 
 }

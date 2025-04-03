@@ -19,4 +19,21 @@
     ORDER BY REQUEST_DATE DESC
   </select>
 
+  <!-- 외환 계좌 개설 요청 상세 조회 -->
+  <select id="findById" parameterType="int" resultType="com.boot.sound.exchange.ExchangeAccountRequestDTO">
+    SELECT 
+      REQUEST_ID,
+      CUSTOMER_ID,
+      WITHDRAW_ACCOUNT_NUMBER,
+      CURRENCY_TYPE,
+      EXCHANGE_ACCOUNT_PWD,
+      STATUS,
+      REQUEST_DATE
+    FROM exchange_account_request
+    WHERE REQUEST_ID = #{REQUEST_ID}
+  </select>
+
+  <insert id="approveAccount" >
+
+  </insert>
 </mapper>
