@@ -9,7 +9,6 @@ import LoanManage from "./sound_loan/customer/LoanManage";
 import LoanService from "./sound_loan/customer/LoanService";
 import LoanCustomerList from "./sound_loan/admin/LoanCustomerList";
 import LoanList from "./sound_loan/admin/LoanList";
-import ChartManage from "./sound_loan/admin/ChartManage";
 import LoanDetail from "./sound_loan/admin/LoanDetail";
 import LoanUpdate from "./sound_loan/admin/LoanUpdate";
 import Inquire from "./inquire/Inquire";
