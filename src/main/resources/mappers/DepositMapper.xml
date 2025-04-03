@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+ <mapper namespace="com.boot.sound.loan.LoanDAO">
+ 
+ 
+ 	    <!-- 예금/적금 계좌 전체 조회 -->
+    <select id="getAllDeposits" resultType="com.example.soundbank.dto.DepositDTO">
+        SELECT 
+            dat_account_num AS datAccountNum,
+            dat_customer_name AS datCustomerName,
+            dat_balance AS datBalance,
+            dat_account_type AS datAccountType,
+            dat_open_date AS datOpenDate
+        FROM 
+            DEPOSIT_ACCOUNT_TBL
+    </select>
+ 
+ 
+ </mapper>
