@@ -31,7 +31,7 @@ function AccountCheck() {
   const Card = ({ item }) => {
     return (
       <div
-        // 카드 클릭 시 계좌번호 넘김
+        // 카드 클릭 시 계좌번호 넘김task
         onClick={() => clickCard(item.account_number)}
         // 선택된 계좌는 클래스에 selected 추가
         className={`account-card ${accNum === item.account_number ? 'selected' : ''}`}
