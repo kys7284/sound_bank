@@ -60,15 +60,35 @@ public class FundController {
  	// 펀드상품 삭제 DeleteMapping => http://localhost:8081/api/fund/{fund_id} (펀드상품번호)
     @DeleteMapping("/fund/{fund_id}")
     public ResponseEntity<String> deleteFund(@PathVariable Long fund_id) {
+        logger.info("<<< controller - deleteFund >>>");
+
         service.deleteFund(fund_id);
         return ResponseEntity.ok("펀드 삭제 성공");
     }
 
-    // 투자 성향 테스트 등록
-    @PostMapping("fundTest/save")
+    // 투자 성향 테스트 등록 및 고객 정보 업데이트
+    @PostMapping("test-result/save")
     public ResponseEntity<?> saveFundTestResult(@RequestBody FundTestDTO test) {
-        service.saveFundTestResult(test);
-        return ResponseEntity.ok("투자 성향 결과가 저장되었습니다.");
+        logger.info("<<< controller - saveFundTestResult >>>");
+
+        // 1. 투자 성향 테스트 결과 저장
+        service.saveAndUpdateTest(test);
+
+        // 2. 응답 반환
+        return ResponseEntity.ok("투자 성향 결과가 저장되고 고객 정보가 업데이트되었습니다.");
     }
+
+    @GetMapping("/fundRecommend/{customer_id}")
+    public ResponseEntity<List<FundDTO>> recommendFunds(@PathVariable String customer_id, @PathVariable String fund_risk_type) {
+        logger.info("<<< controller - recommendFunds >>>");
+
+        // 1. 고객의 투자 성향 가져오기
+        String riskType = service.getCustomerRiskType(customer_id);
+
+        // 2. 투자 성향에 맞는 펀드 목록 가져오기
+        List<FundTestDTO> recommendedFunds = service.getFundsByRiskType(fund_risk_type);
+
+        return ResponseEntity.ok(recommendedFunds);
+}
     
 }

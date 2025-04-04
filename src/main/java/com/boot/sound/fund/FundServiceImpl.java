@@ -55,11 +55,28 @@ public class FundServiceImpl {
         }
     }
 	
-	// 투자 성향 테스트 등록
+	// 투자 성향 테스트 등록과 업데이트
 	@Transactional
-	public int saveFundTestResult(FundTestDTO test) {
-		System.out.println("서비스 - saveFundTestResult");
-		return fundRepository.insertTestResult(test);
+	public void saveAndUpdateTest(FundTestDTO test) {
+		System.out.println("서비스 - saveAndUpdateTest");
+		
+		// 1. 투자 성향 테스트 결과 삽입
+		fundRepository.insertTestResult(test);
+		
+		// 2. 고객 정보 업데이트
+		fundRepository.updateRiskType(test.getCustomer_id(),
+				test.getFund_risk_type());
+	}
+
+	// 고객의 투자 성향에 따른 펀드상품 추천
+	@Transactional(readOnly = true)
+	public String getCustomerRiskType(String customer_id) {
+		return fundRepository.getCustomerRiskType(customer_id);
+	}
+
+	@Transactional(readOnly = true)
+	public List<FundDTO> getFundsByRiskType(String fund_risk_type) {
+		return fundRepository.getFundsByRiskType(fund_risk_type);
 	}
 
 }
