@@ -99,7 +99,7 @@ public class ExchangeServiceImpl {
     	return dao.pwdChk(map);
     }
     
-    // 계좌 생성 요청
+    // 지갑 생성 요청
     @Transactional
     public int requestAccount(ExchangeAccountRequestDTO dto) {
     	

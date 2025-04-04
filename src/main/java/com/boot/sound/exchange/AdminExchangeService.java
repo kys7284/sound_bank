@@ -50,7 +50,7 @@ public class AdminExchangeService {
 		account.setCurrency_type("KRW");
 		account.setAccount_name("기본 입출금 계좌");
 		account.setOpen_date(new java.util.Date());
-		account.serAccountpassword(req.getACCOUNT_PASSWORD());
+		account.setAccount_pwd(req.getEXCHANGE_ACCOUNT_PWD());
 		account.setStatus("ACTIVE"); 
 		return dao.approveAccount(REQUEST_ID);
 	}
