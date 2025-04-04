@@ -76,10 +76,19 @@ import LoanCreditScore from "./sound_loan/customer/LoanCreditScore";
 import Join from "./customer/Join";
 import Login from "./customer/Login";
 import Authcenter from "./customer_center/Authcenter";
+
+import SecurityBlocker from "./Common/SecurityBlocker";
+import Charge from "./customer_center/Charge";
+import Businesshour from "./customer_center/Businesshour";
+import AdminNotice from "./customer_center/AdminNotice";
+import Notice from "./customer_center/Notice";
+
+
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+      <SecurityBlocker/>   {/* F12 방지 블록방지 */}
         {" "}
         {/* Header.js의 Link연동을 위해서 BrowserRouter추가해야됨 */}
         <Header />
@@ -176,13 +185,18 @@ function App() {
           <Route path="/admin_ex_set_charge"element={<AdminExSetCharge />}/>{" "}{/* 고객별 환전 수수료 조정 */}
           {/* 외환 Route 끝 */}
           {/* 고객센터 Route 시작 */}
-          <Route path="/customerservice" element={<Customerservice />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/chatbot" element={<Chatbot />} />
-          <Route path="/voicebot" element={<Voicebot />} />
-          <Route path="/authcenter" element={<Authcenter />} />
-          <Route path="/bankauth" element={<Bankauth />} />
-          <Route path="/idauth" element={<Idauth />} />
+          <Route path="/customerservice" element={<Customerservice />} /> {/* 고객센터 헤더 */}
+          <Route path="/faq" element={<FAQ />} />                         {/* 자주하는 질문  */}
+          <Route path="/chatbot" element={<Chatbot />} />                 {/* 누르는 상담 (챗봇) */}
+          <Route path="/voicebot" element={<Voicebot />} />               {/* 말하는 상담 (음성봇) */}
+          <Route path="/authcenter" element={<Authcenter />} />           {/* 인증 센터  */}
+          <Route path="/bankauth" element={<Bankauth />} />               {/* 통장 인증 */}
+          <Route path="/idauth" element={<Idauth />} />                   {/* 주민등록증인증 (OCR) */}
+          <Route path="/notice" element={<Notice />} />                 {/* 공지사항(고객용) */}
+          <Route path="/admin/notice" element={<AdminNotice />} />      {/* 공지사항(관리자용) */}
+          <Route path="/business_hour" elemen={<Businesshour/>} />       {/* 이용 시간 */}
+          <Route path="/charge" element={<Charge />} />                   {/* 금리 안내 */}
+          
           {/* 고객센터 Route 끝 */}
 
           {/* 계좌개설 / 로그인 Route 시작 */}
