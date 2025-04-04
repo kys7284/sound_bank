@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +18,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Entity
 @Table(name="exchange_wallet")
 public class ExchangeWalletDTO {
     
@@ -41,7 +39,7 @@ public class ExchangeWalletDTO {
     private Timestamp created_at; // 생성일
     
     @Column(name = "UPDATED_AT")
-    private Timestamp update_at; // 수정일
+    private Timestamp updated_at; // 수정일
     
     @Column(name = "STATUS")
     private String status; // 상태 (ACTIVE, INACTIVE)

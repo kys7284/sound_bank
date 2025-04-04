@@ -4,58 +4,66 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
  
 <mapper namespace="com.boot.sound.exchange.ExchangeDAO">
-	
-	<!-- 고객계좌목록 불러오기 -->
-	<select id="findbyId" parameterType="String" resultType="com.boot.sound.inquire.account.AccountDTO">
-		select * from account_tbl
-		where customer_id = #{customer_id}
-	</select>
-	
-	<!-- 계좌 비밀번호 확인 -->
-	<select id="pwdChk" parameterType="map" resultType="int">
-	  SELECT COUNT(*)
-	  FROM account_tbl
+	<!-- 계좌 조회 -->
+	<select id="findAccountByNumber" parameterType="String" resultType="com.boot.sound.inquire.account.AccountDTO">
+	  SELECT * FROM account_tbl
 	  WHERE account_number = #{account_number}
-	    AND account_pwd = #{account_pwd}
 	</select>
 	
-	<!-- 환전 신청 -->
-	<insert id="requestExchange" parameterType="com.boot.sound.exchange.ExchangeRequestDTO" useGeneratedKeys="false">
-		INSERT INTO EXCHANGE_REQUEST (
-        CUSTOMER_ID,
-        EXCHANGE_ACCOUNT_ID,
-        TO_CURRENCY,
-        FROM_CURRENCY,
-        REQUESTED_AMOUNT,
-        STATUS,
-        REQUEST_DATE,
-        PROCESSED_DATE
-	    ) VALUES (
-	        #{customer_id},
-	        #{exchange_account_id},
-	        #{to_currency},
-	        #{from_currency},
-	        #{requested_amount},
-	        #{status},
-	        #{request_date},
-	        #{processed_date}
-	    )
-	    RETURNING EXCHANGE_REQUEST_ID INTO #{exchange_request_id}
+	<!-- 계좌 잔액 업데이트 -->
+	<update id="updateAccountBalance" parameterType="com.boot.sound.inquire.account.AccountDTO">
+	  UPDATE account_tbl
+	  SET balance = #{balance}
+	  WHERE account_number = #{account_number}
+	</update>
+	
+	<!-- 지갑 존재 여부 확인 -->
+	<select id="findByCustomerAndCurrency" resultType="int">
+	  SELECT COUNT(*) FROM exchange_wallet
+	  WHERE customer_id = #{customer_id}
+	    AND currency_code = #{currency_code}
+	</select>
+	
+	<!-- 지갑 생성 -->
+	<insert id="insertWallet" useGeneratedKeys="true" keyProperty="wallet_id">
+	  INSERT INTO exchange_wallet (customer_id, currency_code, balance, status)
+	  VALUES (#{customer_id}, #{currency_code}, #{balance}, #{status})
 	</insert>
 	
-	<!-- 계좌 생성 요청 -->
-	<insert id="accountRequest" parameterType="com.boot.sound.exchange.ExchangeAccountRequestDTO">
-    INSERT INTO exchange_account_request (
-        CUSTOMER_ID,
-        WITHDRAW_ACCOUNT_NUMBER,
-        CURRENCY_TYPE,
-        EXCHANGE_ACCOUNT_PWD
-	 	) VALUES (
-	        #{CUSTOMER_ID},
-	        #{WITHDRAW_ACCOUNT_NUMBER},
-	        #{CURRENCY_TYPE},
-	        #{EXCHANGE_ACCOUNT_PWD}
-    	)
+	<!-- 지갑 잔액 업데이트 -->
+	<update id="updateWalletBalance" parameterType="com.boot.sound.exchange.ExchangeWalletDTO">
+	  UPDATE exchange_wallet
+	  SET balance = #{balance}, updated_at = CURRENT_TIMESTAMP
+	  WHERE customer_id = #{customer_id}
+	    AND currency_code = #{currency_code}
+	</update>
+	
+	<!-- 환전 내역 저장 -->
+	<insert id="chargeWallet" parameterType="com.boot.sound.exchange.ExchangeTransactionDTO">
+	  INSERT INTO exchange_transaction (
+	    customer_id, withdraw_account_number, to_currency,
+	    request_amount, exchanged_amount, exchange_rate
+	  )
+	  VALUES (
+	    #{customer_id}, #{withdraw_account_number}, #{to_currency},
+	    #{request_amount}, #{exchanged_amount}, #{exchange_rate}
+	  )
 	</insert>
 	
+	<!-- 방금 거래한 환전 내역 조회 -->
+	<select id="findTransById" resultType="com.boot.sound.exchange.ExchangeTransactionDTO">
+	  SELECT * FROM exchange_transaction
+	  WHERE customer_id = #{customer_id}
+	  ORDER BY exchange_transaction_date DESC
+	  LIMIT 1
+	</select>
+	
+	<!-- 기존 지갑 잔액조회 -->
+	<select id="findWalletByCustomerAndCurrency" resultType="com.boot.sound.exchange.ExchangeWalletDTO">
+	   SELECT * FROM exchange_wallet
+	   WHERE customer_id = #{customer_id}
+	     AND currency_code = #{currency_code}
+	</select>
+  
+  
 </mapper>   
