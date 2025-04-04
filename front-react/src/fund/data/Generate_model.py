@@ -94,9 +94,9 @@ test_loss, test_accuracy = model.evaluate(X_test, y_test)
 print(f"Test Accuracy: {test_accuracy}")
 
 # 13. 모델 저장
-model.save("../../../public/data/investment_model.h5")
+model.save("../../../public/data/investment_model.h5", include_optimizer=False)
 print("모델이 저장되었습니다.")
 
 # 14. 모델 로드 (테스트용)
-model = load_model("../../../public/data/investment_model.h5")
+model = load_model("../../../public/data/investment_model.h5", compile=False)
 print("모델이 로드되었습니다.")

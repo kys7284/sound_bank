@@ -54,5 +54,12 @@ public class FundServiceImpl {
             throw new IllegalArgumentException("삭제할 펀드가 존재하지 않습니다.");
         }
     }
+	
+	// 투자 성향 테스트 등록
+	@Transactional
+	public int saveFundTestResult(FundTestDTO test) {
+		System.out.println("서비스 - saveFundTestResult");
+		return fundRepository.insertTestResult(test);
+	}
 
 }

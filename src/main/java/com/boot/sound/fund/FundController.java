@@ -63,5 +63,12 @@ public class FundController {
         service.deleteFund(fund_id);
         return ResponseEntity.ok("펀드 삭제 성공");
     }
+
+    // 투자 성향 테스트 등록
+    @PostMapping("fundTest/save")
+    public ResponseEntity<?> saveFundTestResult(@RequestBody FundTestDTO test) {
+        service.saveFundTestResult(test);
+        return ResponseEntity.ok("투자 성향 결과가 저장되었습니다.");
+    }
     
 }

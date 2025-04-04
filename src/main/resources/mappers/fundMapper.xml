@@ -60,5 +60,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         DELETE FROM fund_tbl
         WHERE fund_id = #{fund_id, jdbcType=BIGINT}
     </delete>
+    
+    <!-- 투자 성향 테스트 결과 등록 -->
+    <insert id="insertTestResult" parameterType="com.boot.sound.fund.FundTestDTO">
+	    INSERT INTO fund_test_tbl(customer_id, fund_test_date, fund_risk_type)
+	    VALUES (
+	        #{customer_id},
+	        DEFAULT,
+	        #{fund_risk_type}
+	    )
+	</insert>
 
 </mapper>
