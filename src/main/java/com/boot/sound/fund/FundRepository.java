@@ -25,4 +25,7 @@ public interface FundRepository {
 	// 펀드상품 1건 조회
 	public FundDTO findById(Long fund_id);
 	
+	// 투자 성향 테스트 등록
+	public int insertTestResult(FundTestDTO test);
+	
 }
