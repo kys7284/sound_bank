@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,6 +23,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Data
+@Table(name="exchange_transaction")
 public class ExchangeTransactionDTO {
 	
 	@JsonProperty("exchange_transaction_id")
@@ -56,10 +58,10 @@ public class ExchangeTransactionDTO {
 //  EXCHANGE_TRANSACTION_ID BIGINT AUTO_INCREMENT PRIMARY KEY,           -- 거래 ID
 //  CUSTOMER_ID VARCHAR(20) NOT NULL,                  -- 고객 ID
 //  WITHDRAW_ACCOUNT_NUMBER VARCHAR(20) NOT NULL,      -- 출금 계좌번호
-//  TO_CURRENCY VARCHAR(10) NOT NULL,                  -- 입금 지갑 통화
-//  REQUEST_AMOUNT DECIMAL(18,2) NOT NULL,             -- 원화 기준 환전 금액
+//  TO_CURRENCY VARCHAR(10) NOT NULL,                  -- 변환할 통화 ex)USD
+//  REQUEST_AMOUNT DECIMAL(18,2) NOT NULL,             -- 충전 금액(원)
 //  EXCHANGED_AMOUNT DECIMAL(18,2) NOT NULL,           -- 환전된 외화 금액
-//  EXCHANGE_RATE DECIMAL(10,4) NOT NULL,              -- 적용 환율
+//  EXCHANGE_RATE DECIMAL(10,4) NOT NULL,              -- 적용 환율 
 //  EXCHANGE_TRANSACTION_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,       -- 거래 일시
 //
 //  -- FK 연결

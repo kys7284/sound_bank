@@ -84,12 +84,22 @@ public class ExchangeServiceImpl {
         throw new RuntimeException("환율 정보 요청 재시도 실패");
     }    
     
+    // 고객 계좌 조회
+    @Transactional(readOnly = true)
+    public AccountDTO findById(String customer_id){
+
+        System.out.println("service - findById");
+
+        return dao.findAccountById(customer_id);
+    }
+
     // 지갑 충전/지갑이 존재하지않을시 자동으로 지갑 생성. 
     @Transactional
     public ExchangeTransactionDTO chargeWallet(ExchangeTransactionDTO dto) {
+        
         String customer_id = dto.getCustomer_id();               // 고객 ID
         String currency_code = dto.getTo_currency();             // 외화 통화
-        BigDecimal request_amount = dto.getRequest_amount();     // 원화 기준 환전 금액
+        BigDecimal request_amount = dto.getRequest_amount();     // 환전 금액
         BigDecimal exchanged_amount = dto.getExchanged_amount(); // 환전된 외화 금액
 
         // 1. 출금 계좌 확인
@@ -99,14 +109,14 @@ public class ExchangeServiceImpl {
         }
 
         // 2. 계좌 잔액 확인 및 차감
-        if (account.getBalance().compareTo(request_amount) < 0) {
-            throw new RuntimeException("계좌 잔액이 부족합니다.");
+        if (account.getBalance().compareTo(request_amount) <= 0) { // account의 잔액이 0보다 작거나 같을때
+            throw new RuntimeException("계좌 잔액이 부족합니다."); // 예외처리
         }
-        account.setBalance(account.getBalance().subtract(request_amount));
-        dao.updateAccountBalance(account);
+        account.setBalance(account.getBalance().subtract(request_amount)); // 계좌에 있는 금액에서 환전신청 금액을 뺀다.
+        dao.updateAccountBalance(account); 
 
         // 3. 지갑 존재 여부 확인
-        int exists = dao.findByCustomerAndCurrency(customer_id, currency_code);
+        int exists = dao.findByCustomerAndCurrency(customer_id, currency_code); // 지갑 테이블에서 
 
         if (exists == 0) {
             // 지갑이 없으면 생성 + 환전 금액만큼 초기 잔액 설정

@@ -48,18 +48,19 @@ public class ExchangeController {
         return ResponseEntity.ok(rates); // 상태 코드 200과 함께 반환
     }  
     
-//    // 고객 계좌 조회
-//    @GetMapping("/account/{customer_id}")
-//    public List<Map<String, Object>> getAccountsByCustomerId(@PathVariable String customer_id) {
-//        AccountDTO dto = service.findbyId(customer_id);
-//        System.out.println(dto);
-//        Map<String, Object> result = new HashMap<>();
-//        result.put("customer_id", dto.getCustomer_id());
-//        result.put("account_number", dto.getAccount_number());
-//        result.put("balance", dto.getBalance());
-//
-//        return Collections.singletonList(result); // 리스트로 감싸기!
-//    }
+    // 출금 계좌 조회
+    @GetMapping("/account/{customer_id}")
+    public List<Map<String, Object>> getAccountsByCustomerId(@PathVariable String customer_id) {
+        AccountDTO dto = service.findById(customer_id);
+        System.out.println(dto);
+    
+        Map<String, Object> result = new HashMap<>();
+        result.put("customer_id", dto.getCustomer_id());
+        result.put("account_number", dto.getAccount_number());
+        result.put("balance", dto.getBalance());
+
+        return Collections.singletonList(result); // 리스트로 감싸기!
+   }
 //    
 //    // 계좌 비밀번호 확인
 //    @PostMapping("/account/pwdChk")
@@ -79,11 +80,16 @@ public class ExchangeController {
     
     // 환전요청
     @PostMapping("/walletCharge")
+    @CrossOrigin
     public ResponseEntity<ExchangeTransactionDTO> chargeWallet(@RequestBody ExchangeTransactionDTO req) {
         ExchangeTransactionDTO result = service.chargeWallet(req);
+        
         System.out.println("결과 = " + result);
+
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
+
+    
     
            
 }

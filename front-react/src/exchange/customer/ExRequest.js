@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const ExRequest = () => {
-  const [rates, setRates] = useState([]);
-  const [selectedCurrency, setSelectedCurrency] = useState("");
-  const [krwAmount, setKrwAmount] = useState("");
-  const [exchangedAmount, setExchangedAmount] = useState("");
-  const [result, setResult] = useState(null);
+  const [rates, setRates] = useState([]); // 환율
+  const [selectedCurrency, setSelectedCurrency] = useState(""); // 선택한 통화
+  const [krwAmount, setKrwAmount] = useState("");  // 원화 금액
+  const [exchangedAmount, setExchangedAmount] = useState(""); // 환전 금액
+  const [result, setResult] = useState(null);  // 결과
 
-  const [accounts, setAccounts] = useState([]);
-  const [selectedAccountId, setSelectedAccountId] = useState("");
+  const [accounts, setAccounts] = useState([]); // 계좌 목록
+  const [selectedAccount, setSelectedAccount] = useState(null); // 선택된 계좌 객체
 
-  const customerId = "milk"; // 추후 로그인 정보로 대체 가능
+  const customer_id = "milk"; // 로그인 정보로 대체 예정
 
   // 환율 데이터 불러오기
   useEffect(() => {
@@ -24,10 +24,10 @@ const ExRequest = () => {
   // 사용자 계좌 목록 불러오기
   useEffect(() => {
     axios
-      .get(`http://localhost:8081/api/exchange/account/${customerId}`)
+      .get(`http://localhost:8081/api/exchange/account/${customer_id}`)
       .then((res) => setAccounts(res.data))
       .catch((err) => console.error("계좌 목록 불러오기 실패", err));
-  }, [customerId]);
+  }, [customer_id]);
 
   // 실시간 환전 금액 계산
   useEffect(() => {
@@ -43,16 +43,21 @@ const ExRequest = () => {
 
   // 환전 신청
   const handleSubmit = () => {
+    if (!selectedAccount) {
+      alert("출금 계좌를 선택해주세요.");
+      return;
+    }
+
     const dto = {
-      customer_id: customerId,
-      exchange_account_id: parseInt(selectedAccountId),
-      from_currency: "KRW",
-      to_currency: selectedCurrency,
-      requested_amount: parseInt(krwAmount),
+      customer_id: customer_id,
+      currency_code: selectedCurrency,
+      request_amount: parseInt(krwAmount),
+      exchanged_amount: parseFloat(exchangedAmount),
+      withdraw_account_number: selectedAccount.account_number,
     };
 
     axios
-      .post("http://localhost:8080/api/exchange/requestEx", dto)
+      .post("http://localhost:8081/api/exchange/walletCharge", dto)
       .then((res) => {
         console.log("신청 결과:", res.data);
         setResult(res.data);
@@ -64,35 +69,32 @@ const ExRequest = () => {
   };
 
   return (
-    <div style={{ maxWidth: "650px", margin: "40px auto", fontFamily: "sans-serif", minHeight:"570px"}}>
+    <div style={{ maxWidth: "650px", margin: "40px auto", fontFamily: "sans-serif", minHeight: "570px" }}>
       <h2>💱 환전 신청</h2>
 
       {/* 계좌 선택 */}
       <label>출금 계좌</label>
       <select
-        value={selectedAccountId}
-        onChange={(e) => setSelectedAccountId(e.target.value)}
+        onChange={(e) => {
+          const acc = accounts.find(a => a.account_number === e.target.value);
+          setSelectedAccount(acc);
+        }}
         style={{ display: "block", marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
       >
         <option value="">-- 계좌 선택 --</option>
         {accounts.map((acc) => (
-          <option key={acc.customer_id} value={acc.customer_id}>
+          <option key={acc.account_number} value={acc.account_number}>
             {acc.account_number}
           </option>
         ))}
       </select>
 
       {/* 선택된 계좌의 잔액 표시 */}
-      {selectedAccountId && (() => {
-        const selectedAccount = accounts.find(
-          (acc) => acc.customer_id.toString() === selectedAccountId.toString()
-        );
-        return selectedAccount ? (
-          <p style={{ marginBottom: "1rem" }}>
-            💰 <strong>잔액: ₩{Number(selectedAccount.balance).toLocaleString()}</strong>
-          </p>
-        ) : null;
-      })()}
+      {selectedAccount && (
+        <p style={{ marginBottom: "1rem" }}>
+          💰 <strong>잔액: ₩{Number(selectedAccount.balance).toLocaleString()}</strong>
+        </p>
+      )}
 
       {/* 통화 선택 */}
       <label>환전 대상 통화</label>
@@ -104,7 +106,7 @@ const ExRequest = () => {
         <option value="">-- 통화 선택 --</option>
         {rates.map((r) => (
           <option key={r.cur_unit} value={r.cur_unit}>
-            {r.cur_unit} ({r.cur_nm})
+            {r.cur_unit} ({r.cur_nm}) 살 때: {r.tts}
           </option>
         ))}
       </select>
@@ -138,7 +140,7 @@ const ExRequest = () => {
           cursor: "pointer",
           marginTop: "1rem",
         }}
-        disabled={!selectedAccountId || !selectedCurrency || !krwAmount}
+        disabled={!selectedAccount || !selectedCurrency || !krwAmount}
       >
         환전 신청
       </button>
@@ -147,12 +149,8 @@ const ExRequest = () => {
       {result && (
         <div style={{ marginTop: "2rem", backgroundColor: "#f9f9f9", padding: "1rem", borderRadius: "8px" }}>
           <h3>✅ 신청 완료</h3>
-          <p>신청 ID: {result.exchange_request_id}</p>
-          <p>신청 시간: {new Date(result.request_date).toLocaleString()}</p>
-          <p>
-            {result.requested_amount.toLocaleString()} KRW → {result.to_currency}
-          </p>
-          <p>신청 상태: {result.status}</p>
+          <p>환전 금액: {result.request_amount.toLocaleString()} KRW → {result.exchanged_amount} {result.to_currency}</p>
+          <p>거래 시간: {new Date(result.exchange_transaction_date).toLocaleString()}</p>
         </div>
       )}
     </div>
