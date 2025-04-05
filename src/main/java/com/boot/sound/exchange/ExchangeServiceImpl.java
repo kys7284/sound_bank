@@ -1,7 +1,9 @@
 package com.boot.sound.exchange;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.boot.sound.customer.CustomerDTO;
+import com.boot.sound.exchange.api.ExchangeRateApiClient;
 import com.boot.sound.inquire.account.AccountDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,11 +29,12 @@ public class ExchangeServiceImpl {
 
    
     private final ExchangeDAO dao;
+    private final ExchangeRateApiClient apiClient;
     
-    public ExchangeServiceImpl(ExchangeDAO dao) {
+    public ExchangeServiceImpl(ExchangeDAO dao, ExchangeRateApiClient apiClient) {
     	
     	this.dao = dao;
-    	
+    	this.apiClient = apiClient;
     	HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
     	factory.setHttpClient(HttpClients.custom().disableRedirectHandling().build());
         this.restTemplate = new RestTemplate(factory);		
@@ -82,28 +85,104 @@ public class ExchangeServiceImpl {
             }
         }
         throw new RuntimeException("환율 정보 요청 재시도 실패");
-    }  
+    }    
     
-    // 계좌 조회
+    // 고객 계좌 조회
     @Transactional(readOnly = true)
-    public AccountDTO findbyId(String customer_id) {
-    	System.out.println("service - findbyId");
-    	
-    	return dao.findbyId(customer_id);
-    }
-    
-    // 계좌 비밀번호 검증
-    @Transactional(readOnly = true)
-    public int accountPwdChk(Map<String, Object> map) {
-        System.out.println("service - accountPwdChk");
-    	return dao.pwdChk(map);
-    }
-    
-    // 계좌 생성 요청
-    @Transactional
-    public int requestAccount(ExchangeAccountRequestDTO dto) {
-    	
-    	return dao.accountRequest(dto);
+    public AccountDTO findById(String customer_id){
+
+        System.out.println("service - findById");
+
+        return dao.findAccountById(customer_id);
     }
 
+    // 지갑 충전/지갑이 존재하지않을시 자동으로 지갑 생성. 
+    @Transactional
+    public ExchangeTransactionDTO chargeWallet(ExchangeTransactionDTO dto) {
+        
+        String customer_id = dto.getCustomer_id();               // 고객 ID
+        String currency_code = dto.getTo_currency();             // 외화 통화
+        BigDecimal request_amount = dto.getRequest_amount();     // 환전 금액
+        BigDecimal exchanged_amount = dto.getExchanged_amount(); // 환전된 외화 금액
+
+        // 1. 출금 계좌 확인
+        AccountDTO account = dao.findAccountByNumber(dto.getWithdraw_account_number());
+        if (account == null) {
+            throw new RuntimeException("출금 계좌를 찾을 수 없습니다.");
+        }
+
+        // 2. 계좌 잔액 확인 및 차감
+        if (account.getBalance().compareTo(request_amount) < 0) { // account의 잔액이 0보다 작거나 같을때
+            throw new RuntimeException("계좌 잔액이 부족합니다."); // 예외처리
+        }
+        account.setBalance(account.getBalance().subtract(request_amount)); // 계좌에 있는 금액에서 환전신청 금액을 뺀다.
+        dao.updateAccountBalance(account); 
+
+        // 3. 지갑 존재 여부 확인
+        int exists = dao.findByCustomerAndCurrency(customer_id, currency_code); // 지갑 테이블에서 
+
+        if (exists == 0) {
+            // 지갑이 없으면 생성 + 환전 금액만큼 초기 잔액 설정
+            ExchangeWalletDTO wallet = new ExchangeWalletDTO();
+            wallet.setCustomer_id(customer_id);
+            wallet.setCurrency_code(currency_code);
+            wallet.setBalance(exchanged_amount);
+            wallet.setStatus("ACTIVE");
+            dao.insertWallet(wallet);
+        } else {
+            // 지갑이 있으면 기존 잔액 조회 후 더해서 업데이트
+            ExchangeWalletDTO wallet = dao.findWalletByCustomerAndCurrency(customer_id, currency_code);
+            if (wallet == null) {
+                throw new RuntimeException("지갑 조회 실패");
+            }
+
+            BigDecimal newBalance = wallet.getBalance().add(exchanged_amount);
+            wallet.setBalance(newBalance);
+            dao.updateWalletBalance(wallet);
+        }
+
+
+        // 환전 거래 내역 저장
+        int result = dao.chargeWallet(dto);
+        if (result <= 0) {
+            throw new RuntimeException("환전 거래 등록 실패");
+        }
+
+        // 방금 등록한 거래 내역 반환
+        return dao.findTransById(customer_id);
+    }      
+    
+    // 환율 DB에 저장
+    @Transactional
+    public int saveExchangeRates() {
+    	
+        List<ExchangeRateDTO> rateList = apiClient.getExchangeRateDTOsForToday(); // API 호출
+    	
+        int successCount = 0;
+
+        for (ExchangeRateDTO dto : rateList) {
+            try {
+                Map<String, Object> rate = new HashMap<>();
+                rate.put("base_date", LocalDate.now());
+                rate.put("currency_code", dto.getCurrency_code());
+                rate.put("currency_name", dto.getCurrency_name());
+
+                rate.put("base_rate", toDecimal(dto.getBase_rate()));
+                rate.put("buy_rate", toDecimal(dto.getBuy_rate()));
+                rate.put("sell_rate", toDecimal(dto.getSell_rate()));
+
+                successCount += dao.insertExchangeRate(rate);
+            } catch (Exception e) {
+                System.out.println("환율 저장 실패: " + dto.getCurrency_code());
+                e.printStackTrace();
+            }
+        }
+
+        return successCount;
+    }
+    
+    private BigDecimal toDecimal(String raw) {
+        if (raw == null || raw.isBlank()) return BigDecimal.ZERO;
+        return new BigDecimal(raw.replace(",", "").trim());
+    }
 }
