@@ -29,13 +29,16 @@ public class ExchangeTransactionDTO {
 	@JsonProperty("exchange_transaction_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-    private Long exchange_transaction_id;	// 거래 ID
+    private Long exchange_transaction_id;	// 거래 ID(PK)
 
+	@JsonProperty("exchange_rate_id")
+    private Long exchangeRate_id;             // 환율 정보 (FK)
+	
     @JsonProperty("customer_id")
-    private String customer_id;
+    private String customer_id;				// 사용자 ID (FK)
 
     @JsonProperty("withdraw_account_number")
-    private String withdraw_account_number;
+    private String withdraw_account_number;	// 계좌번호(FK)
 
     @JsonProperty("to_currency")
     private String to_currency;
@@ -51,6 +54,9 @@ public class ExchangeTransactionDTO {
 
     @JsonProperty("exchange_transaction_date")
     private LocalDateTime exchange_transaction_date;
+    
+    
+
 }
 //-- 지갑 충전(환전)
 //drop table exchange_transaction;

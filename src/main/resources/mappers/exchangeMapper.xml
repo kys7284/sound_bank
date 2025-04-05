@@ -69,5 +69,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM ACCOUNT_TBL
 		WHERE CUSTOMER_ID = #{customer_id} 
 	</select>
-
+	
+	<!-- 날짜별로 DB에 환율 자동저장 -->
+	<insert id="insertExchangeRate" parameterType="map">
+	    INSERT INTO exchange_rate (
+	        base_date,
+	        currency_code,
+	        currency_name,
+	        base_rate,
+	        buy_rate,
+	        sell_rate
+	    )
+	    VALUES (
+	        #{base_date},
+	        #{currency_code},
+	        #{currency_name},
+	        #{base_rate},
+	        #{buy_rate},
+	        #{sell_rate}
+	    )
+	</insert>
 </mapper>   
