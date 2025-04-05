@@ -3,6 +3,7 @@ package com.boot.sound.exchange;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import com.boot.sound.exchange.api.ExchangeRateApiClient;
 import com.boot.sound.inquire.account.AccountDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,11 +29,12 @@ public class ExchangeServiceImpl {
 
    
     private final ExchangeDAO dao;
+    private final ExchangeRateApiClient apiClient;
     
-    public ExchangeServiceImpl(ExchangeDAO dao) {
+    public ExchangeServiceImpl(ExchangeDAO dao, ExchangeRateApiClient apiClient) {
     	
     	this.dao = dao;
-    	
+    	this.apiClient = apiClient;
     	HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
     	factory.setHttpClient(HttpClients.custom().disableRedirectHandling().build());
         this.restTemplate = new RestTemplate(factory);		
@@ -109,7 +112,7 @@ public class ExchangeServiceImpl {
         }
 
         // 2. 계좌 잔액 확인 및 차감
-        if (account.getBalance().compareTo(request_amount) <= 0) { // account의 잔액이 0보다 작거나 같을때
+        if (account.getBalance().compareTo(request_amount) < 0) { // account의 잔액이 0보다 작거나 같을때
             throw new RuntimeException("계좌 잔액이 부족합니다."); // 예외처리
         }
         account.setBalance(account.getBalance().subtract(request_amount)); // 계좌에 있는 금액에서 환전신청 금액을 뺀다.
@@ -147,6 +150,39 @@ public class ExchangeServiceImpl {
 
         // 방금 등록한 거래 내역 반환
         return dao.findTransById(customer_id);
+    }      
+    
+    // 환율 DB에 저장
+    @Transactional
+    public int saveExchangeRates() {
+    	
+        List<ExchangeRateDTO> rateList = apiClient.getExchangeRateDTOsForToday(); // API 호출
+    	
+        int successCount = 0;
+
+        for (ExchangeRateDTO dto : rateList) {
+            try {
+                Map<String, Object> rate = new HashMap<>();
+                rate.put("base_date", LocalDate.now());
+                rate.put("currency_code", dto.getCurrency_code());
+                rate.put("currency_name", dto.getCurrency_name());
+
+                rate.put("base_rate", toDecimal(dto.getBase_rate()));
+                rate.put("buy_rate", toDecimal(dto.getBuy_rate()));
+                rate.put("sell_rate", toDecimal(dto.getSell_rate()));
+
+                successCount += dao.insertExchangeRate(rate);
+            } catch (Exception e) {
+                System.out.println("환율 저장 실패: " + dto.getCurrency_code());
+                e.printStackTrace();
+            }
+        }
+
+        return successCount;
     }
     
+    private BigDecimal toDecimal(String raw) {
+        if (raw == null || raw.isBlank()) return BigDecimal.ZERO;
+        return new BigDecimal(raw.replace(",", "").trim());
+    }
 }

@@ -40,5 +40,8 @@ public interface ExchangeDAO {
     // 기존 지갑 잔액조회
     public ExchangeWalletDTO findWalletByCustomerAndCurrency(@Param("customer_id") String customer_id,
             @Param("currency_code") String currency_code);
+    
+    // 환율 DB에 저장
+    public int insertExchangeRate(Map<String, Object> rate);
 }
 
