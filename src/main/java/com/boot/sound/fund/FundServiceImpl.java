@@ -76,7 +76,7 @@ public class FundServiceImpl {
 
 	@Transactional(readOnly = true)
 	public List<FundDTO> getFundsByRiskType(String fund_risk_type) {
-		return fundRepository.getFundsByRiskType(fund_risk_type);
+		return fundRepository.recommendedFunds(fund_risk_type);
 	}
 
 }

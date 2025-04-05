@@ -6,6 +6,7 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 from fastapi.middleware.cors import CORSMiddleware
 
+# ----------- 투자성향 예측을 위한 샘플 데이터 전처리 및 모델 학습 -----------
 app = FastAPI()
 
 # CORS 설정 추가
