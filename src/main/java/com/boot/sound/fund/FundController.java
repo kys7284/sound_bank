@@ -86,7 +86,7 @@ public class FundController {
         String riskType = service.getCustomerRiskType(customer_id);
 
         // 2. 투자 성향에 맞는 펀드 목록 가져오기
-        List<FundTestDTO> recommendedFunds = service.getFundsByRiskType(fund_risk_type);
+        List<FundDTO> recommendedFunds = service.getFundsByRiskType(fund_risk_type);
 
         return ResponseEntity.ok(recommendedFunds);
 }

@@ -36,7 +36,7 @@ public interface FundRepository {
     String getCustomerRiskType(@Param("customer_id") String customer_id);
 
     // 고객의 투자 성향에 맞는 펀드 목록 조회
-    List<FundDTO> getFundsByRiskType(@Param("fund_risk_type") String fund_risk_type);
+    List<FundDTO> recommendedFunds(@Param("fund_risk_type") String fund_risk_type);
 
 
 	
