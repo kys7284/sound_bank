@@ -622,9 +622,7 @@ const Header = () => {
               <div
                 className="dropdown-items-container"
                 onMouseEnter={() => handleDropdownMouseEnter("forex-menu")}
-                onMouseLeave={(event) =>
-                  handleDropdownMouseLeave(event, "forex-menu")
-                }
+                onMouseLeave={(event) => handleDropdownMouseLeave(event, "forex-menu")}
               >
                 {/* customer 시작 */}
                 <div className="deposit-saving-row">
@@ -650,27 +648,27 @@ const Header = () => {
                         환전신청하기
                       </NavDropdown.Item>
                     </li>
+                    <li>
+                      <NavDropdown.Item
+                        className="sub-item"
+                        as={Link}
+                        to="/admin_ex_request_list"
+                      >
+                        환전 신청 현황
+                      </NavDropdown.Item>
+                    </li>
                   </ul>
                   <ul>
                     <NavDropdown.Item as={Link} to="#">
-                      계좌 관리
+                      지갑 관리
                     </NavDropdown.Item>
                     <li>
                       <NavDropdown.Item
                         className="sub-item"
                         as={Link}
-                        to="/ex_create_account"
+                        to="/exchange_wallet_status"
                       >
-                        외환 계좌 신청
-                      </NavDropdown.Item>
-                    </li>
-                    <li>
-                      <NavDropdown.Item
-                        className="sub-item"
-                        as={Link}
-                        to="/ex_set_limit"
-                      >
-                        외환 계좌 한도 설정
+                        MY 지갑
                       </NavDropdown.Item>
                     </li>
                     <li>
@@ -688,7 +686,7 @@ const Header = () => {
                         as={Link}
                         to="/ex_account_management"
                       >
-                        외환 계좌 해지
+                        외환 지갑 해지
                       </NavDropdown.Item>
                     </li>
                   </ul>
@@ -697,25 +695,15 @@ const Header = () => {
                   {/* admin 시작 */}
                   <ul>
                     <NavDropdown.Item as={Link} to="#">
-                      {" "}
-                      (관리자){" "}
+                      (관리자)
                     </NavDropdown.Item>
-                    <li>
-                      <NavDropdown.Item
-                        className="sub-item"
-                        as={Link}
-                        to="/admin_ex_request_list"
-                      >
-                        외환 계좌 신청 현황
-                      </NavDropdown.Item>
-                    </li>
                     <li>
                       <NavDropdown.Item
                         className="sub-item"
                         as={Link}
                         to="/admin_ex_management"
                       >
-                        계좌정지,해지,상태변경
+                        지갑상태변경
                       </NavDropdown.Item>
                     </li>
                     <li>
@@ -727,21 +715,13 @@ const Header = () => {
                         환전한도 설정
                       </NavDropdown.Item>
                     </li>
-                    <li>
-                      <NavDropdown.Item
-                        className="sub-item"
-                        as={Link}
-                        to="/admin_ex_set_charge"
-                      >
-                        고객별 환전 수수료 조정
-                      </NavDropdown.Item>
-                    </li>
                   </ul>
                   {/* admin 끝 */}
                 </div>
               </div>
             </NavDropdown>
             {/* 외환메뉴 끝 */}
+
 
             {/* 고객센터 메뉴 */}
             <NavDropdown
