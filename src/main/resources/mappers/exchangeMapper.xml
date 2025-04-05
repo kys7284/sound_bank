@@ -58,12 +58,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  LIMIT 1
 	</select>
 	
-	<!-- 기존 지갑 잔액조회 -->
+	<!-- 지갑 여부조회 -->
 	<select id="findWalletByCustomerAndCurrency" resultType="com.boot.sound.exchange.ExchangeWalletDTO">
 	   SELECT * FROM exchange_wallet
 	   WHERE customer_id = #{customer_id}
 	     AND currency_code = #{currency_code}
 	</select>
   
-  
+	<select id="findAccountById" parameterType="String" resultType="com.boot.sound.inquire.account.AccountDTO">
+		SELECT * FROM ACCOUNT_TBL
+		WHERE CUSTOMER_ID = #{customer_id} 
+	</select>
+
 </mapper>   

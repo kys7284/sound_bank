@@ -22,6 +22,9 @@ public interface ExchangeDAO {
     public int findByCustomerAndCurrency(@Param("customer_id") String customer_id,
                                   @Param("currency_code") String currency_code);
 
+    // 고객 계좌 조회    
+    public AccountDTO findAccountById(String customer_id);
+
     // 지갑 생성
     public int insertWallet(ExchangeWalletDTO dto);
 
