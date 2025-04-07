@@ -20,7 +20,15 @@ public class LoanConsentDTO {
 	@Id
 	private int agree_status_id;
 	private int loan_id;
-	private String consent_to_use;
-	private String consent_to_view;
+	private String customer_id;
+	private String consent_use1;
+	private String consent_use2;
+	private String consent_use3;
+	private String consent_use4;
+	private String consent_view1;
+	private String consent_view2;
+	private String consent_view3;
+	private String consent_view4;
+	
 	
 }

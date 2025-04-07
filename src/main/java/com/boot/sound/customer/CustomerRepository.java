@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomerRepository extends JpaRepository<CustomerDTO, String> {
 
-	@Query("SELECT c.customer_password FROM CustomerDTO c WHERE c.customer_id = :id")
-	String findPasswordById(@Param("id") String id);
+	@Query("SELECT c.customer_password FROM CustomerDTO c WHERE c.customer_id = :customer_id")
+	String findPasswordById(@Param("customer_id") String customer_id);
 }
