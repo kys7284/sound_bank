@@ -25,6 +25,13 @@ public class FundServiceImpl {
 		System.out.println("서비스 - saveFund");
 		return fundRepository.insertFund(dto);
 	}
+
+	@Transactional
+    public void saveRegisteredFunds(List<FundDTO> funds) {
+        for (FundDTO fund : funds) {
+            fundRepository.insertFund(fund);
+        }
+    }
 	
 	// 등록된 펀드 상품 목록 조회
 	@Transactional

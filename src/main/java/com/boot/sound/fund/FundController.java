@@ -35,10 +35,18 @@ public class FundController {
     	return new ResponseEntity<>(service.saveFund(funds), HttpStatus.CREATED);	// 201 상태값 리턴
     }
     
+    // 관리자가 등록한 펀드 저장 PostMapping => http://localhost:8081/api/saveRegisteredFunds
+    @PostMapping("/saveRegisteredFunds")
+    public ResponseEntity<String> saveRegisteredFunds(@RequestBody List<FundDTO> funds) {
+        service.saveRegisteredFunds(funds);
+        return ResponseEntity.ok("Registered funds saved successfully");
+    }
+
     // 등록된 펀드 상품 목록 조회 GetMapping => http://localhost:8081/api/registeredFunds
     @GetMapping("/registeredFunds")
-    public List<FundDTO> getRegisteredFunds() {
-        return service.getRegisteredFunds();
+    public ResponseEntity<List<FundDTO>> getRegisteredFunds() {
+        List<FundDTO> funds = service.getRegisteredFunds();
+        return ResponseEntity.ok(funds);
     }
     
     // 펀드상품 상세보기 => http://localhost:8081/api/fundDetail/{fund_id} (펀드상품번호)
@@ -79,16 +87,18 @@ public class FundController {
     }
 
     @GetMapping("/fundRecommend/{customer_id}")
-    public ResponseEntity<List<FundDTO>> recommendFunds(@PathVariable String customer_id, @PathVariable String fund_risk_type) {
+    public ResponseEntity<List<FundDTO>> recommendFunds(@PathVariable String customer_id) {
         logger.info("<<< controller - recommendFunds >>>");
-
+    
         // 1. 고객의 투자 성향 가져오기
         String riskType = service.getCustomerRiskType(customer_id);
+        logger.info("Customer Risk Type: {}", riskType);
 
         // 2. 투자 성향에 맞는 펀드 목록 가져오기
-        List<FundDTO> recommendedFunds = service.getFundsByRiskType(fund_risk_type);
-
+        List<FundDTO> recommendedFunds = service.getFundsByRiskType(riskType);
+        logger.info("Recommended Funds: {}", recommendedFunds);
+        
         return ResponseEntity.ok(recommendedFunds);
+    }
 }
     
-}
