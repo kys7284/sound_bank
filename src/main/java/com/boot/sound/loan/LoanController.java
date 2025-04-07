@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.boot.sound.customer.CustomerDTO;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
@@ -97,6 +99,7 @@ public class LoanController {
 	// 대출 신청전 동의서 동의내역 관리 http://localhost:8081/api/consertInsert
 	@PostMapping("/consertInsert")
 	public ResponseEntity<?> consentInsert(@RequestBody LoanConsentDTO dto){
+		
 		System.out.println("컨트롤 - consentInsert()");
 		return new ResponseEntity<>(service.consentInsert(dto),HttpStatus.CREATED);
 	}
