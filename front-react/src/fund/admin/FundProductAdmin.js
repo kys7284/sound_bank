@@ -41,6 +41,7 @@ const FundProductAdmin = () => {
             (fund) => !registeredFundNames.includes(fund["상품명"])
           );
 
+          // 5. 등록된 펀드 목록 저장
           setFunds(filteredFunds); // 테이블에 표시할 데이터 저장 - 필터링된 데이터로 상태 업데이트
         },
       });
@@ -113,9 +114,11 @@ const FundProductAdmin = () => {
       alert("펀드상품 등록 성공!");
 
       // 등록된 펀드를 목록에서 제거
-      setFunds((prevFunds) =>
-        prevFunds.filter((fund) => fund["상품명"] !== formData.fund_name)
-      );
+      const updatedFunds = funds.filter((fund) => fund["상품명"] !== formData.fund_name);
+      setFunds(updatedFunds);
+
+      // 등록된 펀드 목록 저장
+      saveRegisteredFunds(updatedFunds);
 
       handleClosePopup(); // 팝업창 닫기
     } catch (error) {
@@ -123,6 +126,25 @@ const FundProductAdmin = () => {
       alert("펀드 등록 중 오류가 발생했습니다.");
     }
   };
+
+  // 등록된 펀드 목록 저장
+  const saveRegisteredFunds = async (funds) => {
+    try {
+        const response = await fetch("http://localhost:8081/api/saveRegisteredFunds", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(funds),
+        });
+        if (!response.ok) {
+            throw new Error("Failed to save registered funds");
+        }
+        console.log("Registered funds saved successfully");
+    } catch (error) {
+        console.error("Error saving registered funds:", error);
+    }
+};
 
   return (
     <div className="fund-product-admin-container">

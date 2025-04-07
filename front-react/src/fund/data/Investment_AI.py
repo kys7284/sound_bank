@@ -5,6 +5,7 @@ import pandas as pd
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 from fastapi.middleware.cors import CORSMiddleware
+import requests  # API 호출을 위한 라이브러리
 
 # ----------- 투자성향 예측을 위한 샘플 데이터 전처리 및 모델 학습 -----------
 app = FastAPI()
@@ -22,7 +23,7 @@ model = load_model("../../../public/data/investment_model.h5")
 
 # 요청 데이터 모델 정의
 class InvestmentRequest(BaseModel):
-    answers: list
+    answers: list # 사용자가 입력한 투자 성향 질문에 대한 답변 리스트
 
 # 투자성향을 예측하는 엔드포인트
 @app.post("/predict")
@@ -44,13 +45,19 @@ async def predict(data: InvestmentRequest):
         print(f"Error during prediction: {e}")  # 예외 출력
         raise HTTPException(status_code=500, detail=str(e))
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+# ----------- 학습된 투자성향 예측 모델로 펀드목록 추천 -----------
+# 관리자가 등록한 펀드 데이터를 가져오는 함수
+def fetch_registered_funds():
+    try:
+        # API 호출을 통해 관리자가 등록한 펀드 데이터를 가져옴
+        response = requests.get("http://localhost:8081/api/registeredFunds")
+        response.raise_for_status()  # HTTP 오류 발생 시 예외 발생
+        funds = pd.DataFrame(response.json())  # JSON 데이터를 Pandas DataFrame으로 변환
+        return funds
+    except Exception as e:
+        print(f"Error fetching registered funds: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch registered funds.")
     
-# 펀드 추천을 위한 CSV 파일 로드
-funds = pd.read_csv("D:/DEV/workspace_springBoot_ict04/sound_bank/front-react/public/data/fundList.csv")
-
 # 투자성향에 따른 펀드 추천 엔드포인트
 @app.post("/recommend")
 async def recommend(data: InvestmentRequest):
@@ -60,6 +67,9 @@ async def recommend(data: InvestmentRequest):
         prediction = model.predict(answers)
         investment_type = int(np.argmax(prediction))  # 예측된 투자성향
 
+        # 관리자가 등록한 펀드 데이터 가져오기
+        funds = fetch_registered_funds()
+        
         # 투자성향에 따른 펀드 필터링
         if investment_type == 0:  # 안정형
             recommended_funds = funds[funds["펀드등급"] <= 2]
@@ -81,4 +91,9 @@ async def recommend(data: InvestmentRequest):
         }
     except Exception as e:
         print(f"Error during recommendation: {e}")
-        raise HTTPException(status_code=500, detail=str(e))    
+        raise HTTPException(status_code=500, detail=str(e))   
+    
+if __name__ == "__main__":
+    import uvicorn  # FastAPI 애플리케이션을 실행하기 위해 uvicorn 서버를 시작하는 역할
+    uvicorn.run(app, host="127.0.0.1", port=8000)    
+    
