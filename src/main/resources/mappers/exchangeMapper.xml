@@ -41,11 +41,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 환전 내역 저장 -->
 	<insert id="chargeWallet" parameterType="com.boot.sound.exchange.ExchangeTransactionDTO">
 	  INSERT INTO exchange_transaction (
-	    customer_id, withdraw_account_number, to_currency,
+	    customer_id, withdraw_account_number, currency_code,
 	    request_amount, exchanged_amount, exchange_rate
 	  )
 	  VALUES (
-	    #{customer_id}, #{withdraw_account_number}, #{to_currency},
+	    #{customer_id}, #{withdraw_account_number}, #{currency_code},
 	    #{request_amount}, #{exchanged_amount}, #{exchange_rate}
 	  )
 	</insert>
@@ -89,4 +89,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        #{sell_rate}
 	    )
 	</insert>
+	
+	<select id="getListById" parameterType="String" resultType="com.boot.sound.exchange.ExchangeTransactionDTO">
+		SELECT *
+        FROM exchange_transaction
+        WHERE customer_id = #{customer_id}
+        ORDER BY exchange_transaction_date DESC
+	</select>
+	
 </mapper>   

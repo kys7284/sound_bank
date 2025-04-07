@@ -28,7 +28,7 @@ import com.boot.sound.inquire.account.AccountDTO;
 public class ExchangeController {
 
     @Autowired
-    private ExchangeServiceImpl service;
+    private ExchangeService service;
 
     // 날짜별 환율 조회 API
     @GetMapping("/rates")
@@ -61,35 +61,27 @@ public class ExchangeController {
 
         return Collections.singletonList(result); // 리스트로 감싸기!
    }
-//    
-//    // 계좌 비밀번호 확인
-//    @PostMapping("/account/pwdChk")
-//    public ResponseEntity<String> accountPwdChk(@RequestBody Map<String, Object> map) {
-//        
-//    	System.out.println(map);
-//        
-//    	int result = service.accountPwdChk(map);
-//    	System.out.println("result = " + result);
-//
-//    	if (result == 1) {
-//            return ResponseEntity.ok("비밀번호 확인 성공");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
-//        }
-//    }
     
     // 환전요청
     @PostMapping("/walletCharge")
     @CrossOrigin
     public ResponseEntity<ExchangeTransactionDTO> chargeWallet(@RequestBody ExchangeTransactionDTO req) {
-        ExchangeTransactionDTO result = service.chargeWallet(req);
+        System.out.println(req);
+    	ExchangeTransactionDTO result = service.chargeWallet(req);
         
         System.out.println("결과 = " + result);
 
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
-    
+    @GetMapping("/exchangeList/{customer_id}")
+    public ResponseEntity<?> exchangeList(@PathVariable String customer_id){
+    	System.out.println("controller - exchangeList");
+    	
+    	List<ExchangeTransactionDTO> list = service.exchangeList(customer_id);
+    	
+    	return new ResponseEntity<>(list,HttpStatus.OK);
+    }
     
            
 }
