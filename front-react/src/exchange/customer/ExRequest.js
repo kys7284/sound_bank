@@ -49,16 +49,18 @@ const ExRequest = () => {
     }
 
     const dto = {
-      customer_id: customer_id,
-      currency_code: selectedCurrency,
-      request_amount: parseInt(krwAmount),
-      exchanged_amount: parseFloat(exchangedAmount),
-      withdraw_account_number: selectedAccount.account_number,
+      customer_id: customer_id,                           // 고객 ID
+      to_currency: selectedCurrency,                      // 환전할 통화
+      currency_code: selectedCurrency,                // 통화 코드        
+      request_amount: parseInt(krwAmount),          // 환전할 금액 (KRW)
+      exchanged_amount: parseFloat(exchangedAmount),  // 환전 금액
+      withdraw_account_number: selectedAccount.account_number,  // 출금 계좌 번호
+      exchange_rate : parseFloat(rates.find(r => r.cur_unit === selectedCurrency).deal_bas_r.replace(",", "")), // 환율
     };
-
+    console.log("신청DTO:",dto);
     axios
-      .post("http://localhost:8081/api/exchange/walletCharge", dto)
-      .then((res) => {
+      .post("http://localhost:8081/api/exchange/walletCharge", dto)      
+      .then((res) => {        
         console.log("신청 결과:", res.data);
         setResult(res.data);
       })

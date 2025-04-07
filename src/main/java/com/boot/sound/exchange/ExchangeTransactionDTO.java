@@ -40,8 +40,8 @@ public class ExchangeTransactionDTO {
     @JsonProperty("withdraw_account_number")
     private String withdraw_account_number;	// 계좌번호(FK)
 
-    @JsonProperty("to_currency")
-    private String to_currency;
+    @JsonProperty("currency_code")
+    private String currency_code;  // 통화코드
 
     @JsonProperty("request_amount")
     private BigDecimal request_amount;
@@ -55,7 +55,8 @@ public class ExchangeTransactionDTO {
     @JsonProperty("exchange_transaction_date")
     private LocalDateTime exchange_transaction_date;
     
-    
+//    @JsonProperty("currency_code")
+//    private String currency_code;
 
 }
 //-- 지갑 충전(환전)

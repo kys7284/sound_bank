@@ -29,7 +29,7 @@ public class ExchangeWalletDTO {
     @Column(name = "CUSTOMER_ID")
     private String customer_id; // 고객 ID
     
-    @Column(name = "CURRENCY_CODE")
+    @Column(name = "currency_code")
     private String currency_code; // 통화 코드 (예: KRW, USD 등)
     
     @Column(name = "BALANCE")
