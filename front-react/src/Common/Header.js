@@ -7,7 +7,7 @@ import {
   Navbar,
   NavDropdown,
 } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import "../Css/Common/Header.css";
@@ -15,6 +15,7 @@ import "../Css/Common/Header.css";
 const Header = () => {
   // 현재 열려 있는 드롭다운 메뉴 ID를 저장
   const [showDropdown, setShowDropdown] = useState(null);
+  const navigate = useNavigate();
 
   // 드롭다운 메뉴 DOM 참조 저장 (마우스 벗어날 때 처리를 위해)
   const dropdownRefs = useRef({});
@@ -52,9 +53,13 @@ const Header = () => {
       setShowDropdown(null);
     }
   };
-
+  const [loginStatus, setLoginStatus] = useState(false);
   // 드롭다운 요소 참조 저장 + 클릭 외부 감지해서 드롭다운 닫기
   useEffect(() => {
+    // 컴포넌트가 마운트될 때 localStorage에서 customer_id를 확인하여 로그인 상태 설정
+    const customerId = localStorage.getItem("customer_id");
+    setLoginStatus(!!customerId); // customerId가 있으면 true, 없으면 false로 설정
+
     const dropdownElements = document.querySelectorAll(".NavDropdown-menu");
     dropdownElements.forEach((element) => {
       const id = element.id;
@@ -74,8 +79,18 @@ const Header = () => {
     return () => {
       document.removeEventListener("mousedown", handleDocumentClick);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localStorage.getItem("customer_id")]);
 
+  const logout = () => {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("customer_id");
+    localStorage.removeItem("refresh_token");
+    alert("로그아웃 되었습니다.");
+    navigate("/");
+  };
+
+  console.log(loginStatus);
   return (
     <Navbar
       variant="dark"
@@ -844,9 +859,15 @@ const Header = () => {
             <Link to="/join" className="auth-btn signup-btn">
               계좌개설
             </Link>
-            <Link to="/login" className="auth-btn login-btn">
-              로그인
-            </Link>
+            {loginStatus ? (
+              <Link to="/" className="auth-btn logout-btn" onClick={logout}>
+                로그아웃
+              </Link>
+            ) : (
+              <Link to="/login" className="auth-btn login-btn">
+                로그인
+              </Link>
+            )}
           </div>
         </Navbar.Collapse>
       </Container>
