@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../../Css/loan/LoanApply.css";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getCustomerID } from "../../jwt/AxiosToken";
 
 const LoanApply = (props) => {
   const [loanList, setLoanList] = useState([
@@ -20,7 +21,7 @@ const LoanApply = (props) => {
   const [loanCnt, setLoanCnt] = useState(0); // 검색된 상품 갯수
   const [loan_name, setLoan_name] = useState(""); // 검색할 상품 이름
   const [searchResult, setSearchResult] = useState(false); // 검색 결과
-
+  const navigate = useNavigate();
   // 상품 이름 검색
   const searchName = () => {
     fetch(
@@ -188,6 +189,17 @@ const LoanApply = (props) => {
       });
   }, []);
 
+  const loanApply = (event) => {
+    if (getCustomerID() == null) {
+      event.preventDefault();
+      alert("로그인이 필요한 서비스입니다.");
+      if (window.confirm("로그인하시겠습니까?")) {
+        navigate("/login");
+      }
+    }
+    alert("대출신청 전 개인정보 수집 이용·제공 동의서 화면으로 이동합니다.");
+  };
+
   return (
     <div style={{ minHeight: 600 }}>
       <div className="box">
@@ -259,7 +271,11 @@ const LoanApply = (props) => {
                   <br />
                 </div>
                 <div className="ButtonArea">
-                  <Link className="link" to={"/loanAgreement/" + loan.loan_id}>
+                  <Link
+                    className="link"
+                    to={`/loanAgreement/${loan.loan_id}`}
+                    onClick={loanApply}
+                  >
                     신청하기
                   </Link>
                 </div>
