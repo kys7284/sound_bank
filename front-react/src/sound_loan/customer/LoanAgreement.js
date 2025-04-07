@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../Css/loan/LoanAgreement.css";
+import RefreshToken from "../../jwt/RefreshToken";
+import SMSVerificationModal from "../../smsmodal/SMSVerificationModal";
 
 const LoanAgreement = () => {
   const navigate = useNavigate();
@@ -8,8 +10,15 @@ const LoanAgreement = () => {
   const [consent, setConsent] = useState([
     {
       loan_id: 0,
-      consent_to_use: "",
-      consent_to_view: "",
+      customer_id: "",
+      consent_use1: "N",
+      consent_use2: "N",
+      consent_use3: "N",
+      consent_use4: "N",
+      consent_view1: "N",
+      consent_view2: "N",
+      consent_view3: "N",
+      consent_view4: "N",
     },
   ]);
   const [showOffer, setShowOffer] = useState(true);
@@ -25,40 +34,53 @@ const LoanAgreement = () => {
     setShowOffer(false);
     setShowView(true);
   };
+  const [isSMSModalOpen, setIsSMSModalOpen] = useState(false);
 
-  const [consentUse1, setConsentUse1] = useState();
-  const [consentUse2, setConsentUse2] = useState();
-  const [consentUse3, setConsentUse3] = useState();
-  const [consentUse4, setConsentUse4] = useState();
+  useEffect(() => {
+    setConsent((prevConsent) => ({
+      ...prevConsent,
+      loan_id: loan_id,
+      customer_id: localStorage.getItem("customer_id"),
+    }));
+  }, [loan_id]); // loan_id 가 변경될 때만 useEffect 가 실행됩니다.
 
-  const [consentView1, setConsentView1] = useState();
-  const [consentView2, setConsentView2] = useState();
-  const [consentView3, setConsentView3] = useState();
-  const [consentView4, setConsentView4] = useState();
+  // SMS 인증 성공 시 호출되는 콜백
+  const handleSMSVerified = () => {
+    // 모달을 닫고 다음 페이지로 이동
+    setIsSMSModalOpen(false);
+    navigate("/loanInfoApply/" + loan_id);
+  };
 
   const nextStep = () => {
     if (
-      consentUse1 === "Y" &&
-      consentUse2 === "Y" &&
-      consentUse3 === "Y" &&
-      consentUse4 === "Y" &&
-      consentView1 === "Y" &&
-      consentView2 === "Y" &&
-      consentView3 === "Y" &&
-      consentView4 === "Y"
+      consent.consent_use1 === "Y" &&
+      consent.consent_use2 === "Y" &&
+      consent.consent_use3 === "Y" &&
+      consent.consent_use4 === "Y" &&
+      consent.consent_view1 === "Y" &&
+      consent.consent_view2 === "Y" &&
+      consent.consent_view3 === "Y" &&
+      consent.consent_view4 === "Y"
     ) {
       if (
         window.confirm(
           "확인버튼을 누르면 대출신청정보 작성 페이지로 이동하며 [귀 행]의 신용점수에 영향을 줄 수 있습니다. 진행 하시겠습니까?"
         )
       ) {
-        const consent_to_use = "Y";
-        const consent_to_view = "Y";
-        setConsent({
-          loan_id: loan_id,
-          consent_to_use: consent_to_use,
-          consent_to_view: consent_to_view,
-        });
+        RefreshToken.post("/consertInsert", consent)
+          .then((res) => {
+            if (res && res.status === 201) {
+              // 응답이 성공하면 바로 다음 페이지로 이동하지 않고 SMS 인증 모달을 엽니다.
+              setIsSMSModalOpen(true);
+            } else {
+              console.log(res);
+              alert("요청 실패! 서버 응답이 올바르지 않습니다.");
+            }
+          })
+          .catch((err) => {
+            console.error("Axios error:", err);
+            alert("서버 오류 발생!");
+          });
       } else {
         navigate("/loanApply");
       }
@@ -67,31 +89,12 @@ const LoanAgreement = () => {
     }
   };
 
-  useEffect(() => {
-    if (consent.loan_id && consent.consent_to_use && consent.consent_to_view) {
-      console.log(consent); // 상태 업데이트 후 실행
-      fetch("http://localhost:8081/api/consertInsert", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify(consent),
-      })
-        .then((res) => {
-          if (res != null) {
-            alert("신청정보 작성화면으로 넘어갑니다.");
-            navigate("/loanInfoApply/" + loan_id);
-          } else {
-            console.error("API 호출 실패");
-            alert("상품 등록에 실패했습니다.");
-          }
-        })
-        .catch((err) => {
-          console.error("Fetch error:", err);
-          alert("서버 오류 발생!");
-        });
-    }
-  }, [consent, loan_id, navigate]); // consent가 변경될 때 실행
+  const consentChange = (e) => {
+    setConsent({
+      ...consent,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
     <div>
@@ -197,20 +200,18 @@ const LoanAgreement = () => {
                   <td>
                     <input
                       type="radio"
-                      name="consentUse1"
+                      name="consent_use1"
                       value={"N"}
-                      checked={consentUse1 === "N"}
-                      onChange={() => setConsentUse1("N")}
+                      onChange={consentChange}
                     />
                   </td>
                   <th>동의함</th>
                   <td>
                     <input
                       type="radio"
-                      name="consentUse1"
+                      name="consent_use1"
                       value={"Y"}
-                      checked={consentUse1 === "Y"}
-                      onChange={() => setConsentUse1("Y")}
+                      onChange={consentChange}
                     />
                   </td>
                 </tr>
@@ -224,20 +225,18 @@ const LoanAgreement = () => {
                   <td>
                     <input
                       type="radio"
-                      name="consentUse2"
+                      name="consent_use2"
                       value={"N"}
-                      checked={consentUse2 === "N"}
-                      onChange={() => setConsentUse2("N")}
+                      onChange={consentChange}
                     />
                   </td>
                   <th>동의함</th>
                   <td>
                     <input
                       type="radio"
-                      name="consentUse2"
+                      name="consent_use2"
                       value={"Y"}
-                      checked={consentUse2 === "Y"}
-                      onChange={() => setConsentUse2("Y")}
+                      onChange={consentChange}
                     />
                   </td>
                 </tr>
@@ -324,20 +323,18 @@ const LoanAgreement = () => {
                   <td>
                     <input
                       type="radio"
-                      name="consentUse3"
+                      name="consent_use3"
                       value={"N"}
-                      checked={consentUse3 === "N"}
-                      onChange={() => setConsentUse3("N")}
+                      onChange={consentChange}
                     />
                   </td>
                   <th>동의함</th>
                   <td>
                     <input
                       type="radio"
-                      name="consentUse3"
+                      name="consent_use3"
                       value={"Y"}
-                      checked={consentUse3 === "Y"}
-                      onChange={() => setConsentUse3("Y")}
+                      onChange={consentChange}
                     />
                   </td>
                 </tr>
@@ -351,20 +348,18 @@ const LoanAgreement = () => {
                   <td>
                     <input
                       type="radio"
-                      name="consentUse4"
+                      name="consent_use4"
                       value={"N"}
-                      checked={consentUse4 === "N"}
-                      onChange={() => setConsentUse4("N")}
+                      onChange={consentChange}
                     />
                   </td>
                   <th>동의함</th>
                   <td>
                     <input
                       type="radio"
-                      name="consentUse4"
+                      name="consent_use4"
                       value={"Y"}
-                      checked={consentUse4 === "Y"}
-                      onChange={() => setConsentUse4("Y")}
+                      onChange={consentChange}
                     />
                   </td>
                 </tr>
@@ -440,20 +435,18 @@ const LoanAgreement = () => {
                   <td>
                     <input
                       type="radio"
-                      name="consentView1"
+                      name="consent_view1"
                       value={"N"}
-                      checked={consentView1 === "N"}
-                      onChange={() => setConsentView1("N")}
+                      onChange={consentChange}
                     />
                   </td>
                   <th>동의함</th>
                   <td>
                     <input
                       type="radio"
-                      name="consentView1"
+                      name="consent_view1"
                       value={"Y"}
-                      checked={consentView1 === "Y"}
-                      onChange={() => setConsentView1("Y")}
+                      onChange={consentChange}
                     />
                   </td>
                 </tr>
@@ -467,20 +460,18 @@ const LoanAgreement = () => {
                   <td>
                     <input
                       type="radio"
-                      name="consentView2"
+                      name="consent_view2"
                       value={"N"}
-                      checked={consentView2 === "N"}
-                      onChange={() => setConsentView2("N")}
+                      onChange={consentChange}
                     />
                   </td>
                   <th>동의함</th>
                   <td>
                     <input
                       type="radio"
-                      name="consentView2"
+                      name="consent_view2"
                       value={"Y"}
-                      checked={consentView2 === "Y"}
-                      onChange={() => setConsentView2("Y")}
+                      onChange={consentChange}
                     />
                   </td>
                 </tr>
@@ -572,20 +563,18 @@ const LoanAgreement = () => {
                   <td>
                     <input
                       type="radio"
-                      name="consentView3"
+                      name="consent_view3"
                       value={"N"}
-                      checked={consentView3 === "N"}
-                      onChange={() => setConsentView3("N")}
+                      onChange={consentChange}
                     />
                   </td>
                   <th>동의함</th>
                   <td>
                     <input
                       type="radio"
-                      name="consentView3"
+                      name="consent_view3"
                       value={"Y"}
-                      checked={consentView3 === "Y"}
-                      onChange={() => setConsentView3("Y")}
+                      onChange={consentChange}
                     />
                   </td>
                 </tr>
@@ -599,20 +588,18 @@ const LoanAgreement = () => {
                   <td>
                     <input
                       type="radio"
-                      name="consentView4"
+                      name="consent_view4"
                       value={"N"}
-                      checked={consentView4 === "N"}
-                      onChange={() => setConsentView4("N")}
+                      onChange={consentChange}
                     />
                   </td>
                   <th>동의함</th>
                   <td>
                     <input
                       type="radio"
-                      name="consentView4"
+                      name="consent_view4"
                       value={"Y"}
-                      checked={consentView4 === "Y"}
-                      onChange={() => setConsentView4("Y")}
+                      onChange={consentChange}
                     />
                   </td>
                 </tr>
@@ -645,6 +632,12 @@ const LoanAgreement = () => {
           <button>취소</button>
         </div>
       </div>
+
+      <SMSVerificationModal
+        isOpen={isSMSModalOpen}
+        onRequestClose={() => setIsSMSModalOpen(false)}
+        onVerified={handleSMSVerified}
+      />
     </div>
   );
 };

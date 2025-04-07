@@ -61,8 +61,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="consentInsert" parameterType="com.boot.sound.loan.LoanConsentDTO">
-		INSERT INTO LOAN_AGREE_STATUS_TBL(agree_status_id,loan_id,consent_to_use,consent_to_view)
-		VALUES ((SELECT NVL(MAX(agree_status_id)+1,1) FROM LOAN_AGREE_STATUS_TBL),#{loan_id},#{consent_to_use},#{consent_to_view})
+		INSERT INTO LOAN_AGREE_STATUS_TBL(loan_id,customer_id,consent_use1,consent_use2,consent_use3,consent_use4,consent_view1,consent_view2,consent_view3,consent_view4)
+		VALUES (#{loan_id},#{customer_id},#{consent_use1},#{consent_use2},#{consent_use3},#{consent_use4},#{consent_view1},#{consent_view2},#{consent_view3},#{consent_view4})
 	</insert>
  
  
