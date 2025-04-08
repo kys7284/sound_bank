@@ -2,6 +2,8 @@
   max-width: 400px;
   min-height: 550px;
   margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
   padding: 30px;
   border: 1px solid #ccc;
   border-radius: 10px;

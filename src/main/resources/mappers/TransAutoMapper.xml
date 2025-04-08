@@ -23,6 +23,35 @@
      #{schedule_mode}, #{schedule_day}, #{schedule_month_day},
      #{schedule_time}, 'Y', #{memo}, NOW())
   </insert>
+  
+  <!-- 자동이체 목록 -->
+	<select id="getAutoList" parameterType="string" resultType="com.boot.sound.transfer.transAuto.TransAutoDTO">
+	  SELECT *
+	  FROM TRANSFER_TBL
+	  WHERE CUSTOMER_ID = #{id}
+	    AND TRANSFER_TYPE = '자동'
+	    AND ACTIVE_YN = 'Y'
+	  ORDER BY TRANSFER_DATE DESC
+	</select>
+	
+  <!-- 자동이체 수정 -->
+	<update id="updateAutoTransfer" parameterType="com.boot.sound.transfer.transAuto.TransAutoDTO">
+	  UPDATE TRANSFER_TBL
+	  SET 
+	    AMOUNT = #{amount},
+	    SCHEDULE_MODE = #{schedule_mode},
+	    SCHEDULE_DAY = #{schedule_day},
+	    SCHEDULE_MONTH_DAY = #{schedule_month_day},
+	    SCHEDULE_TIME = #{schedule_time},
+	    MEMO = #{memo}
+	  WHERE TRANSFER_ID = #{transfer_id}
+	</update>
+	
+  <!-- 자동이체 삭제 -->
+   <delete id="deleteAutoTransfer" parameterType="string">
+	  DELETE FROM TRANSFER_TBL
+	  WHERE TRANSFER_ID = #{transfer_id}
+   </delete>	
 
   <!-- 요일 기준 자동이체 실행 -->
   <select id="getDayModeTransfers" resultType="com.boot.sound.transfer.transAuto.TransAutoDTO">
