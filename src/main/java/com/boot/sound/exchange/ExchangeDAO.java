@@ -44,6 +44,12 @@ public interface ExchangeDAO {
     // 환율 내역 조회
     public List<ExchangeTransactionDTO> getListById(String customer_id);
    
+    // 지갑 정보 조회
+    public List<ExchangeWalletDTO> myWallet(String customer_id);
+    
+    // 통화별 평균 매입 환율
+    public List<ExchangeWalletDTO>findWalletsWithAvgRate(String customer_id);
+    
     // 환율 DB에 자동저장
     public int insertExchangeRate(Map<String, Object> rate);
 }

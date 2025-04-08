@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class ExchangeController {
 
     @Autowired
     private ExchangeService service;
-
+      
     // 날짜별 환율 조회 API
     @GetMapping("/rates")
     public ResponseEntity<List<Map<String, Object>>> getExchangeRates(@RequestParam(required = false) String date) {
@@ -64,16 +65,18 @@ public class ExchangeController {
     
     // 환전요청
     @PostMapping("/walletCharge")
-    @CrossOrigin
-    public ResponseEntity<ExchangeTransactionDTO> chargeWallet(@RequestBody ExchangeTransactionDTO req) {
-        System.out.println(req);
-    	ExchangeTransactionDTO result = service.chargeWallet(req);
-        
-        System.out.println("결과 = " + result);
-
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+    public ResponseEntity<?> handleExchange(@RequestBody ExchangeTransactionDTO dto) {
+        if ("buy".equalsIgnoreCase(dto.getTransaction_type())) {
+            return ResponseEntity.ok(service.chargeWallet(dto));
+        } else if ("sell".equalsIgnoreCase(dto.getTransaction_type())) {
+            return ResponseEntity.ok(service.sellForeignCurrency(dto));
+        } else {
+            return ResponseEntity.badRequest().body("Invalid transaction type");
+        }
     }
 
+    
+    // 환전결과 출력
     @GetMapping("/exchangeList/{customer_id}")
     public ResponseEntity<?> exchangeList(@PathVariable String customer_id){
     	System.out.println("controller - exchangeList");
@@ -82,6 +85,17 @@ public class ExchangeController {
     	
     	return new ResponseEntity<>(list,HttpStatus.OK);
     }
+    
+    // my지갑
+    @GetMapping("/myWallet/{customer_id}")
+    public ResponseEntity<List<ExchangeWalletDTO>> myWallet(@PathVariable String customer_id){
+    	System.out.println("controller - myWallet");
+    	List<ExchangeWalletDTO> list = service.myWallet(customer_id);
+    	System.out.println(list);
+    	
+    	return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+    
     
            
 }
