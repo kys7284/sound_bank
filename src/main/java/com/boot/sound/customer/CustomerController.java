@@ -1,8 +1,17 @@
 package com.boot.sound.customer;
 
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+ import com.boot.sound.jwt.config.UserAuthProvider;
+import com.boot.sound.jwt.dto.CredentialsDTO;
+import com.boot.sound.jwt.dto.SignUpDTO;
+import com.boot.sound.jwt.mappers.CustomerMapper;
 
 @RestController
 @RequestMapping("/api")
@@ -11,25 +20,31 @@ public class CustomerController {
 
     @Autowired
     private CustomerService service;
+     private UserAuthProvider provider;
+     private CustomerMapper customerMapper;
+    
+    public CustomerController(CustomerService service,UserAuthProvider provider,CustomerMapper customerMapper) {
+    	super();
+    	this.service = service;
+    	this.provider = provider;
+    	this.customerMapper = customerMapper;
+    }
 
+    @GetMapping({"", "/"})
+	public String index() {
+		System.out.println("<<< index >>>");
+		
+		return "index";   // 주소 아닌 값을 브라우저에 출력
+	}
+    
     // 계좌개설
     @PostMapping("/joinAction.do")
-    public ResponseEntity<?> registerCustomer(@RequestBody CustomerDTO customer) {
-        try {
-            // 고객이 제출한 아이디가 이미 사용 중인 아이디인지 확인
-            if (service.checkId(customer.getCustomer_id())) {
-                return ResponseEntity.badRequest().body("이미 사용중인 아이디입니다");
-            }
-
-            // 아이디가 중복되지 않으면 회원가입을 위한 서비스 메소드 호출
-            service.registerCustomer(customer);
-            
-            // 계좌개설이 성공적으로 완료되었음을 알리는 메시지 반환
-            return ResponseEntity.ok("계좌개설 완료되었습니다");
-        } catch (Exception e) {
-            // 예외 발생 시 400 Bad Request 응답 반환, 예외 메시지를 포함
-            return ResponseEntity.badRequest().body("회원가입 중 오류가 발생했습니다: " + e.getMessage());
-        }
+    public ResponseEntity<?> registerCustomer(@RequestBody SignUpDTO dto) {
+       
+    	CustomerDTO customer = service.registerCustomer(dto);
+    	
+    	return ResponseEntity.created(URI.create("/users/" + customer.getCustomer_id()))
+				.body(customer);  // 크롬 Network - Headers : 201  Created 반환 
     }
 
     // ID 중복 확인의 응답을 담기 위한 DTO 클래스
@@ -61,14 +76,27 @@ public class CustomerController {
 
     // 로그인
     @PostMapping("/login.do")
-    public ResponseEntity<?> login(@RequestBody CustomerDTO loginInfo) {
-        CustomerDTO customer = service.login(loginInfo.getCustomer_id(), loginInfo.getCustomer_password());
-        
-        if (customer != null) {
-            return ResponseEntity.ok("로그인 성공");
-        } else {
-            return ResponseEntity.status(401).body("아이디 또는 비밀번호가 틀렸습니다");
-        }
+    public ResponseEntity<?> login(@RequestBody CredentialsDTO dto) {
+        System.out.println(dto);
+        // 로그인한 사용자 정보 가져오기
+        CustomerDTO customer = service.login(dto);
+        // Access Token 및 Refresh Token 생성
+        String accessToken = provider.createToken(customer.getCustomer_id());
+        String refresh_token = provider.createRefreshToken(customer.getCustomer_id());
+
+        // Refresh Token DB에 저장
+        customerMapper.saveRefreshToken(customer.getCustomer_id(), refresh_token);
+
+        // 클라이언트에게 Access Token, Refresh Token 및 Customer ID 전달
+        Map<String, String> response = new HashMap<>();
+        response.put("customer_token", accessToken);
+        response.put("refresh_token", refresh_token);
+        response.put("customer_id", customer.getCustomer_id()); // Customer ID 추가
+
+        System.out.println(accessToken);
+        System.out.println(refresh_token);
+        return ResponseEntity.ok(response);
+       
     }
     
 }
