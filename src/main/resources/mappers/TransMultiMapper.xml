@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.sound.transfer.transMulti.TransMultiDAO">
+
+  <!-- 다건이체 요청 (추가 > 단건씩 반복) -->
+  <insert id="addMultiTransfer" parameterType="com.boot.sound.transfer.transMulti.TransMultiDTO">
+    INSERT INTO TRANSFER_TBL
+    (CUSTOMER_ID, OUT_ACCOUNT_NUMBER, IN_ACCOUNT_NUMBER, AMOUNT, IN_NAME, MEMO, TRANSFER_TYPE)
+    VALUES
+    (#{customer_id}, #{out_account_number}, #{in_account_number}, #{amount}, #{in_name}, #{memo}, 'multi')
+  </insert>
+
+</mapper>

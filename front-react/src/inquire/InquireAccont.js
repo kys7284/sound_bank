@@ -68,7 +68,7 @@ function AccountCheck() {
       <h2 className="account-title">{customer_id}님의 계좌 조회</h2>
       
       <div className="account-type-buttons">
-        {['입출금', '예금', '적금', '외환'].map(t => (
+        {['입출금', '예금', '적금'].map(t => (
           <button
             key={t}
             // 버튼 클릭 시 타입 저장, 선택된 계좌 초기화

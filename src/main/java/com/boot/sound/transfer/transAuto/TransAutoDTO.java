@@ -5,6 +5,7 @@ package com.boot.sound.transfer.transAuto;
 	@Data 
 	public class TransAutoDTO {
 	    private String customer_id;         // 사용자 ID
+	    private String transfer_id;         // 사용자 ID
 	    private String out_account_number;  // 출금 계좌번호
 	    private String in_account_number;   // 입금 계좌번호
 	    private String in_name;             // 받는 사람 이름
