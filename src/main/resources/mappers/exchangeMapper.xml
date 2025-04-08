@@ -132,5 +132,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  WHERE ew.customer_id = #{customer_id}
 	</select>
 	
+	<!-- DB저장 환율 조회 -->
+	<select id="getRateByDate" parameterType="String" resultType="java.util.Map">
+		SELECT * FROM exchange_rate
+		where base_date = #{base_date}
+	</select>
 	
 </mapper>   

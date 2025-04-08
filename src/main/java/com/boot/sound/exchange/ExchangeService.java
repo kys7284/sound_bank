@@ -1,15 +1,14 @@
 package com.boot.sound.exchange;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.apache.http.impl.client.HttpClients;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
@@ -218,6 +217,14 @@ public class ExchangeService {
     public List<ExchangeWalletDTO> getWalletsWithAverageRate(String customer_id) {
         return dao.findWalletsWithAvgRate(customer_id);
     }
+
+    @Transactional(readOnly=true)
+    public List<Map<String, Object>> getDbExchangeRateList(String base_date){
+        System.out.println("service - getExchangeList");
+        System.out.println("base_date = " + base_date);
+        return dao.getRateByDate(base_date);
+    }
+
     // 환율 DB에 저장
     @Transactional
     public int saveExchangeRates() {
