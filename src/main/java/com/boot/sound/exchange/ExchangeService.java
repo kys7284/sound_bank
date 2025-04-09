@@ -213,6 +213,7 @@ public class ExchangeService {
     	
 		return dao.myWallet(customer_id);
     }
+    
     // 통화별 평균 매입 환율
     public List<ExchangeWalletDTO> getWalletsWithAverageRate(String customer_id) {
         return dao.findWalletsWithAvgRate(customer_id);
