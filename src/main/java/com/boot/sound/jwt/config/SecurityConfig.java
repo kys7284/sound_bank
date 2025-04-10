@@ -39,7 +39,6 @@ public class SecurityConfig {
 					.antMatchers(HttpMethod.DELETE,"/api/*").permitAll()
 					.antMatchers(HttpMethod.PUT,"/api/*").permitAll()
 					.anyRequest().authenticated()
-					
 		);			
 		
 		return http.build();
