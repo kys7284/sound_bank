@@ -14,7 +14,7 @@ function TransMulti() {
   });
 
   const [inputs, setInputs] = useState(
-    Array.from({ length: 5 }, () => ({
+    Array.from({ length: 2 }, () => ({
       in_account_number: '',
       amount: '',
       in_name: '',

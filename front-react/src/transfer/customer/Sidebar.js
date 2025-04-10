@@ -22,7 +22,13 @@ function Sidebar() {
         </li>
 
         {/* 다건이체 */}
-        <li style={{ fontWeight: 'bold'}} onClick={() => navigate('/TransMulti')}>다건이체</li>
+        <li>
+          <div className="submenu-title">다건이체</div>
+          <ul className="submenu">
+            <li onClick={() => navigate('/TransMulti')}>다건이체 등록</li>
+            <li onClick={() => navigate('/TransMultiEdit')}>다건이체 관리</li>
+          </ul>
+        </li>
 
         {/* 이체한도 변경 */}
         <li style={{ fontWeight: 'bold'}} onClick={() => navigate('/TransLimit')}>이체한도 변경</li>
