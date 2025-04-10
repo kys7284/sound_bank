@@ -92,7 +92,7 @@ function TransAutoEdit() {
             <tr>
               <th>출금계좌</th>
               <th>입금계좌</th>
-              <th>이름</th>
+              <th>수취인</th>
               <th>이체금액</th>
               <th>이체방식</th>
               <th>메모</th>

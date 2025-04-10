@@ -1,6 +1,8 @@
 package com.boot.sound.transfer.transMulti;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,26 +34,55 @@ public class TransMultiService {
         List<InList> list = dto.getInList();
 
         for (InList in : list) {
-            // 각 이체 건마다 스레드에 작업 위임
             pool.submit(() -> {
-                // 입금 정보 세팅
-                InList inOne = new InList();
-                inOne.setIn_account_number(in.getIn_account_number());
-                inOne.setAmount(in.getAmount());
-                inOne.setIn_name(in.getIn_name());
-                inOne.setMemo(in.getMemo());
+            	 synchronized (this) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("customer_id", dto.getCustomer_id());
+                map.put("out_account_number", dto.getOut_account_number());
+                map.put("password", dto.getPassword());
+                map.put("memo", in.getMemo());
+                map.put("in_account_number", in.getIn_account_number());
+                map.put("amount", in.getAmount());
+                map.put("in_name", in.getIn_name());
+                map.put("request_date", dto.getRequest_date()); // 요청일
+                map.put("status", "대기");
+                map.put("transfer_type", "다건");
+                map.put("reject_reason", null); // 거절사유 생략
+                map.put("approval_date", null); // 승인일 생략
 
-                // 1건의 이체 정보를 DTO로 구성
-                TransMultiDTO one = new TransMultiDTO();
-                one.setCustomer_id(dto.getCustomer_id());
-                one.setOut_account_number(dto.getOut_account_number());
-                one.setPassword(dto.getPassword());
-                one.setMemo(in.getMemo());
-                one.setInList(List.of(inOne));
+                dao.addMultiTransfer(map); // DAO는 map으로 받도록 수정
+                
+                // transfer_id 가져오기
+                Integer transfer_id = dao.getLastTransferId(dto.getCustomer_id());  // Mapper에서 max(id)로 가져오게
 
-                // DB에 저장 (요청 insert)
-                dao.addMultiTransfer(one);
+                // approval_tbl 저장
+                Map<String, Object> approvalMap = new HashMap<>();
+                approvalMap.put("transfer_id", transfer_id);
+                approvalMap.put("approval_type", "다건");
+                approvalMap.put("status", "대기");
+                approvalMap.put("reject_reason", null);
+                approvalMap.put("approval_date", null);
+
+                dao.insertApproval(approvalMap);
+            	 }
             });
         }
     }
+    
+    // 다건이체 조회
+    public List<Map<String, Object>> getMultiListByCustomer(String customer_id) {
+        return dao.getMultiListByCustomer(customer_id);
+    }
+    
+    // 다건이체 수정
+    public void updateMulti(Map<String, Object> data) {
+    	dao.updateMultiTransfer(data);
+    }
+    
+    // 다건이체 삭제
+    public void deleteMulti(int transfer_id) {
+    	dao.deleteMultiTransfer(transfer_id);
+    }
+    
+    
 }
