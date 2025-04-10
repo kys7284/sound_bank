@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,7 +31,7 @@ public class ExchangeWalletDTO {
     @Column(name = "CUSTOMER_ID")
     private String customer_id; // 고객 ID
     
-    @Column(name = "CURRENCY_CODE")
+    @Column(name = "currency_code")
     private String currency_code; // 통화 코드 (예: KRW, USD 등)
     
     @Column(name = "BALANCE")
@@ -43,6 +45,14 @@ public class ExchangeWalletDTO {
     
     @Column(name = "STATUS")
     private String status; // 상태 (ACTIVE, INACTIVE)
+    
+    @JsonProperty("transaction_type")
+    private String transaction_type; // "buy" or "sell"
+
+    // 평균 매입 환율 (exchange_transaction + exchange_rate 기준, DB에는 존재하지 않음)
+    @JsonProperty("average_rate")
+    @Column(name = "average_rate")
+    private BigDecimal average_rate;
 
 }
 // -- soundbank.exchange_wallet definition

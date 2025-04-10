@@ -1,82 +1,123 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { getCustomerID, getAuthToken } from "../../jwt/AxiosToken";
+import RefreshToken from "../../jwt/RefreshToken";
+import useExchangeRates from "./useExchangeRates";
 
 const ExRequest = () => {
-  const [rates, setRates] = useState([]); // 환율
-  const [selectedCurrency, setSelectedCurrency] = useState(""); // 선택한 통화
-  const [krwAmount, setKrwAmount] = useState("");  // 원화 금액
-  const [exchangedAmount, setExchangedAmount] = useState(""); // 환전 금액
-  const [result, setResult] = useState(null);  // 결과
+  const customer_id = getCustomerID();
 
-  const [accounts, setAccounts] = useState([]); // 계좌 목록
-  const [selectedAccount, setSelectedAccount] = useState(null); // 선택된 계좌 객체
+  const [selectedCurrency, setSelectedCurrency] = useState("");
+  const [transactionType, setTransactionType] = useState("buy");
+  const [inputAmount, setInputAmount] = useState("");
+  const [exchangedAmount, setExchangedAmount] = useState("");
+  const [result, setResult] = useState(null);
+  const [accounts, setAccounts] = useState([]);
+  const [selectedAccount, setSelectedAccount] = useState(null);
+  const [walletBalance, setWalletBalance] = useState(null);
 
-  const customer_id = "milk"; // 로그인 정보로 대체 예정
+  const today = new Date().toISOString().split("T")[0];
+  const { rates } = useExchangeRates(today);
 
-  // 환율 데이터 불러오기
   useEffect(() => {
-    axios
-      .get("http://localhost:8081/api/exchange/rates")
-      .then((res) => setRates(res.data))
-      .catch((err) => console.error("환율 불러오기 실패", err));
-  }, []);
-
-  // 사용자 계좌 목록 불러오기
-  useEffect(() => {
-    axios
+    RefreshToken
       .get(`http://localhost:8081/api/exchange/account/${customer_id}`)
       .then((res) => setAccounts(res.data))
       .catch((err) => console.error("계좌 목록 불러오기 실패", err));
   }, [customer_id]);
 
-  // 실시간 환전 금액 계산
   useEffect(() => {
-    const selected = rates.find((r) => r.cur_unit === selectedCurrency);
-    if (selected && krwAmount) {
-      const rate = parseFloat(selected.deal_bas_r.replace(",", ""));
-      const result = (parseFloat(krwAmount) / rate).toFixed(2);
+    if (transactionType === "sell") {
+      RefreshToken
+        .get(`http://localhost:8081/api/exchange/myWallet/${customer_id}`)
+        .then((res) => {
+          const wallet = res.data.find(w => w.currency_code === selectedCurrency);
+          setWalletBalance(wallet ? parseFloat(wallet.balance) : 0);
+        })
+        .catch((err) => console.error("지갑 정보 불러오기 실패", err));
+    } else {
+      setWalletBalance(null);
+    }
+  }, [transactionType, selectedCurrency, customer_id]);
+
+  useEffect(() => {
+    const selected = rates.find((r) => r.currency_code === selectedCurrency);
+    if (selected && inputAmount) {
+      const buyRate = selected.buy_rate;
+      const sellRate = selected.sell_rate;
+      let result = 0;
+
+      if (transactionType === "buy") {
+        result = (parseFloat(inputAmount) / buyRate).toFixed(2);
+      } else {
+        result = (parseFloat(inputAmount) * sellRate).toFixed(0);
+      }
+
       setExchangedAmount(result);
     } else {
       setExchangedAmount("");
     }
-  }, [selectedCurrency, krwAmount, rates]);
+  }, [selectedCurrency, inputAmount, rates, transactionType]);
 
-  // 환전 신청
   const handleSubmit = () => {
     if (!selectedAccount) {
       alert("출금 계좌를 선택해주세요.");
       return;
     }
+    if (transactionType === "sell" && parseFloat(inputAmount) > walletBalance) {
+      alert("보유 외화를 초과하여 판매할 수 없습니다.");
+      return;
+    }
 
+    const selectedRate = rates.find((r) => r.currency_code === selectedCurrency);
     const dto = {
-      customer_id: customer_id,
-      currency_code: selectedCurrency,
-      request_amount: parseInt(krwAmount),
-      exchanged_amount: parseFloat(exchangedAmount),
+      customer_id,
       withdraw_account_number: selectedAccount.account_number,
+      transaction_type : transactionType,
+      exchange_rate: transactionType === "buy" ? selectedRate.buy_rate : selectedRate.sell_rate,
+      currency_code: selectedCurrency, 
+      from_currency: transactionType === "buy" ? "KRW" : selectedCurrency,
+      to_currency: transactionType === "buy" ? selectedCurrency : "KRW",
     };
+    
 
-    axios
+    if (transactionType === "buy") {
+      dto.request_amount = parseInt(inputAmount); // 원화
+      dto.exchanged_amount = parseFloat(exchangedAmount); // 외화
+    } else {
+      dto.request_amount = parseFloat(inputAmount); // 외화
+      dto.exchanged_amount = parseInt(exchangedAmount); // 원화
+    }
+
+    RefreshToken
       .post("http://localhost:8081/api/exchange/walletCharge", dto)
       .then((res) => {
-        console.log("신청 결과:", res.data);
         setResult(res.data);
+        alert("거래가 완료되었습니다.");
       })
       .catch((err) => {
         console.error("환전 신청 실패", err);
-        alert("환전 신청에 실패했습니다.");
+        alert("거래 실패");
       });
   };
 
   return (
     <div style={{ maxWidth: "650px", margin: "40px auto", fontFamily: "sans-serif", minHeight: "570px" }}>
-      <h2>💱 환전 신청</h2>
+      <h2>💱 외환 거래</h2>
 
-      {/* 계좌 선택 */}
+      <label>거래 유형</label>
+      <select
+        value={transactionType}
+        onChange={(e) => setTransactionType(e.target.value)}
+        style={{ display: "block", marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
+      >
+        <option value="buy">외화 구매 (KRW → 외화)</option>
+        <option value="sell">외화 판매 (외화 → KRW)</option>
+      </select>
+
       <label>출금 계좌</label>
       <select
         onChange={(e) => {
-          const acc = accounts.find(a => a.account_number === e.target.value);
+          const acc = accounts.find((a) => a.account_number === e.target.value);
           setSelectedAccount(acc);
         }}
         style={{ display: "block", marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
@@ -89,15 +130,13 @@ const ExRequest = () => {
         ))}
       </select>
 
-      {/* 선택된 계좌의 잔액 표시 */}
       {selectedAccount && (
         <p style={{ marginBottom: "1rem" }}>
-          💰 <strong>잔액: ₩{Number(selectedAccount.balance).toLocaleString()}</strong>
+          <strong>잔액: ₩{Number(selectedAccount.balance).toLocaleString()}</strong>
         </p>
       )}
 
-      {/* 통화 선택 */}
-      <label>환전 대상 통화</label>
+      <label>통화 선택</label>
       <select
         value={selectedCurrency}
         onChange={(e) => setSelectedCurrency(e.target.value)}
@@ -105,30 +144,35 @@ const ExRequest = () => {
       >
         <option value="">-- 통화 선택 --</option>
         {rates.map((r) => (
-          <option key={r.cur_unit} value={r.cur_unit}>
-            {r.cur_unit} ({r.cur_nm}) 살 때: {r.tts}
+          <option key={r.currency_code} value={r.currency_code}>
+            {r.currency_code} ({r.currency_name})
           </option>
         ))}
       </select>
 
-      {/* 금액 입력 */}
-      <label>환전할 금액 (KRW)</label>
-      <input
-        type="number"
-        placeholder="예: 100000"
-        value={krwAmount}
-        onChange={(e) => setKrwAmount(e.target.value)}
-        style={{ display: "block", marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
-      />
-
-      {/* 실시간 환전 결과 */}
-      {exchangedAmount && (
-        <p>
-          💵 예상 환전 금액: <strong>{exchangedAmount}</strong> {selectedCurrency}
+      {transactionType === "sell" && selectedCurrency && (
+        <p style={{ marginBottom: "1rem" }}>
+          <strong>보유 {selectedCurrency}: {walletBalance ?? 0}</strong>
         </p>
       )}
 
-      {/* 신청 버튼 */}
+      <label>{transactionType === "buy" ? "환전할 금액 (KRW)" : "판매할 외화 금액"}</label>
+      <input
+        type="number"
+        placeholder={transactionType === "buy" ? "예: 100000" : "예: 100"}
+        value={inputAmount}
+        onChange={(e) => setInputAmount(e.target.value)}
+        style={{ display: "block", marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
+      />
+
+      {exchangedAmount && (
+        <p>
+          예상 환전 결과: <strong>{transactionType === "buy"
+            ? `${exchangedAmount} ${selectedCurrency}`
+            : `${parseInt(exchangedAmount).toLocaleString()} KRW`}</strong>
+        </p>
+      )}
+
       <button
         onClick={handleSubmit}
         style={{
@@ -140,17 +184,25 @@ const ExRequest = () => {
           cursor: "pointer",
           marginTop: "1rem",
         }}
-        disabled={!selectedAccount || !selectedCurrency || !krwAmount}
+        disabled={!selectedAccount || !selectedCurrency || !inputAmount}
       >
-        환전 신청
+        {transactionType === "buy" ? "환전 신청" : "외화 판매"}
       </button>
 
-      {/* 결과 표시 */}
       {result && (
         <div style={{ marginTop: "2rem", backgroundColor: "#f9f9f9", padding: "1rem", borderRadius: "8px" }}>
-          <h3>✅ 신청 완료</h3>
-          <p>환전 금액: {result.request_amount.toLocaleString()} KRW → {result.exchanged_amount} {result.to_currency}</p>
+          <h3>거래 완료</h3>
+          <p>
+            {result.request_amount.toLocaleString()} {transactionType === "buy" ? "KRW" : selectedCurrency}
+            {" → "}
+            {result.exchanged_amount} {transactionType === "buy" ? selectedCurrency : "KRW"}
+          </p>
           <p>거래 시간: {new Date(result.exchange_transaction_date).toLocaleString()}</p>
+          <button>
+            <a href="/exchange_wallet_status" style={{ textDecoration: "none", color: "inherit" }}>
+              지갑으로 이동
+            </a>
+          </button>
         </div>
       )}
     </div>

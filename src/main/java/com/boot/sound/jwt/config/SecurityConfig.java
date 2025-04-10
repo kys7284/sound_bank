@@ -16,22 +16,11 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 public class SecurityConfig {
 	
-	// 방법1. 매개변수 생성자 => @RequiredArgsConstructor + final 매개변수
+
 	private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
 	private final UserAuthProvider userAuthProvider;
 	
 	
-	// 방법2. 기본 방식 매개변수 생성자
-	// private UserAuthenticationEntryPoint userAuthenticationEntryPoint;
-	// private UserAuthProvider userAuthProvider;
-	
-//	public SecurityConfig(UserAuthenticationEntryPoint userAuthenticationEntryPoint,
-//			UserAuthProvider userAuthProvider) {
-//		super();
-//		this.userAuthenticationEntryPoint = userAuthenticationEntryPoint;
-//		this.userAuthProvider = userAuthProvider;
-//	}
-
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
