@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const LoanInfoApply = () => {
   const { loan_id } = useParams();
-  const { navigate } = useNavigate();
+  const  navigate  = useNavigate();
   const [loanInfo, setLoanInfo] = useState({
     customer_id: "",
     loan_name: "",
