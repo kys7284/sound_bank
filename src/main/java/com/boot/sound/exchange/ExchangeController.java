@@ -108,7 +108,7 @@ public class ExchangeController {
     @GetMapping("/myWallet/{customer_id}")
     public ResponseEntity<List<ExchangeWalletDTO>> myWallet(@PathVariable String customer_id){
     	System.out.println("controller - myWallet");
-    	List<ExchangeWalletDTO> list = service.myWallet(customer_id);
+    	List<ExchangeWalletDTO> list = service.getWalletsWithAverageRate(customer_id);
     	System.out.println(list);
     	
     	return new ResponseEntity<>(list,HttpStatus.OK);

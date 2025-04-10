@@ -41,11 +41,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 환전 내역 저장 -->
 	<insert id="chargeWallet" parameterType="com.boot.sound.exchange.ExchangeTransactionDTO">
 	  INSERT INTO exchange_transaction (
-	    customer_id, withdraw_account_number, currency_code,
+	    customer_id, withdraw_account_number, currency_code, from_currency, to_currency,
 	    request_amount, exchanged_amount, exchange_rate, transaction_type ,exchange_transaction_date, base_date
 	  )
 	  VALUES (
-	    #{customer_id}, #{withdraw_account_number}, #{currency_code},
+	    #{customer_id}, #{withdraw_account_number}, #{currency_code}, #{from_currency}, #{to_currency},
 	    #{request_amount}, #{exchanged_amount},#{exchange_rate},#{transaction_type} , NOW(), CURDATE()
 	  )
 	</insert>
@@ -131,6 +131,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    ON ew.customer_id = avg_rates.customer_id
 	    AND ew.currency_code = avg_rates.currency_code
 	  WHERE ew.customer_id = #{customer_id}
+	    AND ew.balance > 0
+	  ORDER BY ew.wallet_id DESC
 	</select>
 	
 	<!-- DB저장 환율 조회 -->

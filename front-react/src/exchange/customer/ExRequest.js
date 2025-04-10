@@ -71,18 +71,21 @@ const ExRequest = () => {
     const selectedRate = rates.find((r) => r.currency_code === selectedCurrency);
     const dto = {
       customer_id,
-      currency_code: selectedCurrency,
-      transaction_type: transactionType,
-      exchange_rate: transactionType === "buy" ? selectedRate.buy_rate : selectedRate.sell_rate,
       withdraw_account_number: selectedAccount.account_number,
+      transaction_type : transactionType,
+      exchange_rate: transactionType === "buy" ? selectedRate.buy_rate : selectedRate.sell_rate,
+      currency_code: selectedCurrency, 
+      from_currency: transactionType === "buy" ? "KRW" : selectedCurrency,
+      to_currency: transactionType === "buy" ? selectedCurrency : "KRW",
     };
+    
 
     if (transactionType === "buy") {
-      dto.request_amount = parseInt(inputAmount);
-      dto.exchanged_amount = parseFloat(exchangedAmount);
+      dto.request_amount = parseInt(inputAmount); // 원화
+      dto.exchanged_amount = parseFloat(exchangedAmount); // 외화
     } else {
-      dto.request_amount = parseFloat(inputAmount);
-      dto.exchanged_amount = parseInt(exchangedAmount);
+      dto.request_amount = parseFloat(inputAmount); // 외화
+      dto.exchanged_amount = parseInt(exchangedAmount); // 원화
     }
 
     RefreshToken
