@@ -1,5 +1,7 @@
 package com.boot.sound.exchange;
 
+import java.sql.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -31,7 +33,7 @@ public interface ExchangeDAO {
     // 지갑 잔액 업데이트
     public int updateWalletBalance(ExchangeWalletDTO dto);
 
-    // 환전 내역 저장
+    // 환전 내역 저장(지갑충전)
     public int chargeWallet(ExchangeTransactionDTO dto);
 
     // 환전한 거래 내역 조회
@@ -40,8 +42,20 @@ public interface ExchangeDAO {
     // 기존 지갑 잔액조회
     public ExchangeWalletDTO findWalletByCustomerAndCurrency(@Param("customer_id") String customer_id,
             @Param("currency_code") String currency_code);
+            
+    // 환율 내역 조회
+    public List<ExchangeTransactionDTO> getListById(String customer_id);
+   
+    // 지갑 정보 조회
+    public List<ExchangeWalletDTO> myWallet(String customer_id);
     
-    // 환율 DB에 저장
+    // 통화별 평균 매입 환율
+    public List<ExchangeWalletDTO>findWalletsWithAvgRate(String customer_id);
+    
+    // DB 저장된 환율 조회
+    public List<Map<String, Object>> getRateByDate(String base_date);
+
+    // 환율 DB에 자동저장
     public int insertExchangeRate(Map<String, Object> rate);
 }
 
