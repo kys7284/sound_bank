@@ -58,7 +58,6 @@ import Chatbot from "./customer_center/Chatbot";
 import Voicebot from "./customer_center/Voicebot";
 
 import Bankauth from "./customer_center/Bankauth";
-import Idauth from "./customer_center/Idauth";
 import ExRate from "./exchange/customer/ExRate";
 import ExRequest from "./exchange/customer/ExRequest";
 import ExCreateAccount from "./exchange/customer/ExCreateAccount";
@@ -82,13 +81,14 @@ import Charge from "./customer_center/Charge";
 import Businesshour from "./customer_center/Businesshour";
 import AdminNotice from "./customer_center/AdminNotice";
 import Notice from "./customer_center/Notice";
+import IdAuth from "./customer_center/Idauth";
 
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      <SecurityBlocker/>   {/* F12 방지 블록방지 */}
+        {/* F12 방지 블록방지 */}
         {" "}
         {/* Header.js의 Link연동을 위해서 BrowserRouter추가해야됨 */}
         <Header />
@@ -191,10 +191,10 @@ function App() {
           <Route path="/voicebot" element={<Voicebot />} />               {/* 말하는 상담 (음성봇) */}
           <Route path="/authcenter" element={<Authcenter />} />           {/* 인증 센터  */}
           <Route path="/bankauth" element={<Bankauth />} />               {/* 통장 인증 */}
-          <Route path="/idauth" element={<Idauth />} />                   {/* 주민등록증인증 (OCR) */}
-          <Route path="/notice" element={<Notice />} />                 {/* 공지사항(고객용) */}
-          <Route path="/admin/notice" element={<AdminNotice />} />      {/* 공지사항(관리자용) */}
-          <Route path="/business_hour" elemen={<Businesshour/>} />       {/* 이용 시간 */}
+          <Route path="/idauth" element={<IdAuth />} />                   {/* 주민등록증인증 (OCR) */}
+          <Route path="/notice" element={<Notice />} />                   {/* 공지사항(고객용) */}
+          <Route path="/admin/notice" element={<AdminNotice />} />        {/* 공지사항(관리자용) */}
+          <Route path="/business_hour" elemen={<Businesshour/>} />        {/* 이용 시간 */}
           <Route path="/charge" element={<Charge />} />                   {/* 금리 안내 */}
           
           {/* 고객센터 Route 끝 */}
