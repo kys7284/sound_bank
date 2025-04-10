@@ -47,7 +47,25 @@ public class ExchangeController {
         System.out.println("List = " + rates);
 
         return ResponseEntity.ok(rates); // 상태 코드 200과 함께 반환
-    }  
+    }
+    
+    // 날짜별 환율 조회 API
+    @GetMapping("/dbRates")
+    public ResponseEntity<List<Map<String, Object>>> getDbExchangeRates(@RequestParam(required = false) String date) {
+
+        System.out.println("<<<< Controller DB환율 요청 >>>>>>");
+
+        if (date == null || date.isEmpty()) {
+            date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        }
+
+        System.out.println("paramDate : " + date);
+
+        List<Map<String, Object>> rates = service.getDbExchangeRateList(date);
+        System.out.println("List = " + rates);
+
+        return ResponseEntity.ok(rates); // 상태 코드 200과 함께 반환
+    }
     
     // 출금 계좌 조회
     @GetMapping("/account/{customer_id}")
@@ -90,7 +108,7 @@ public class ExchangeController {
     @GetMapping("/myWallet/{customer_id}")
     public ResponseEntity<List<ExchangeWalletDTO>> myWallet(@PathVariable String customer_id){
     	System.out.println("controller - myWallet");
-    	List<ExchangeWalletDTO> list = service.myWallet(customer_id);
+    	List<ExchangeWalletDTO> list = service.getWalletsWithAverageRate(customer_id);
     	System.out.println(list);
     	
     	return new ResponseEntity<>(list,HttpStatus.OK);
