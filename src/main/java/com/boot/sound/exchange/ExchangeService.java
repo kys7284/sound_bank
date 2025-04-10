@@ -45,7 +45,7 @@ public class ExchangeService {
         this.restTemplate = new RestTemplate(factory);		
     }
 
- // 환율 리스트
+    // 환율 리스트
     public List<Map<String, Object>> getExchangeRates(String date) {
         try {
             if (date == null || date.isEmpty()) {
@@ -130,10 +130,14 @@ public class ExchangeService {
     public ExchangeTransactionDTO chargeWallet(ExchangeTransactionDTO dto) { // 지갑 충전
         String customerId = dto.getCustomer_id();
         String currencyCode = dto.getCurrency_code();
+        String to_currency = dto.getTo_currency();
+        String from_currency = dto.getFrom_currency();
         BigDecimal requestAmount = dto.getRequest_amount();
         BigDecimal exchangedAmount = dto.getExchanged_amount();
         BigDecimal exchangeRate = dto.getExchange_rate();
-        System.out.println(customerId +" "+ currencyCode+" "+ requestAmount+" "+ exchangedAmount);
+        
+        System.out.println(customerId +" "+ currencyCode+" "+ requestAmount+" "+ exchangedAmount 
+        + " "+ to_currency + " "+ from_currency);
 
         AccountDTO account = validateAndFetchAccount(dto.getWithdraw_account_number(), requestAmount);
         dao.updateAccountBalance(account);
@@ -172,7 +176,7 @@ public class ExchangeService {
         String currencyCode = dto.getCurrency_code();		
         BigDecimal sellAmount = dto.getRequest_amount();      // 외화 금액
         BigDecimal exchangedKrw = dto.getExchanged_amount();  // 환전 후 받을 KRW
-        BigDecimal exchangeRate = dto.getExchange_rate();		// 외환 환율
+        // BigDecimal exchangeRate = dto.getExchange_rate();		// 외환 환율
 
         // 1. 외화 지갑 확인
         ExchangeWalletDTO wallet = dao.findWalletByCustomerAndCurrency(customerId, currencyCode);
@@ -214,11 +218,12 @@ public class ExchangeService {
 		return dao.myWallet(customer_id);
     }
     
-    // 통화별 평균 매입 환율
+    // 통화별 평균 매입 환율 (MY지갑 구글차트이용)
     public List<ExchangeWalletDTO> getWalletsWithAverageRate(String customer_id) {
         return dao.findWalletsWithAvgRate(customer_id);
     }
 
+    // DB 환율 리스트
     @Transactional(readOnly=true)
     public List<Map<String, Object>> getDbExchangeRateList(String base_date){
         System.out.println("service - getExchangeList");
