@@ -722,16 +722,7 @@ const Header = () => {
                       >
                         지갑상태변경
                       </NavDropdown.Item>
-                    </li>
-                    <li>
-                      <NavDropdown.Item
-                        className="sub-item"
-                        as={Link}
-                        to="/admin_ex_limit"
-                      >
-                        환전한도 설정
-                      </NavDropdown.Item>
-                    </li>
+                    </li>                    
                   </ul>
                   {/* admin 끝 */}
                 </div>
