@@ -77,22 +77,16 @@ import LoanCreditScore from "./sound_loan/customer/LoanCreditScore";
 import Join from "./customer/Join";
 import Login from "./customer/Login";
 import Authcenter from "./customer_center/Authcenter";
-<<<<<<< HEAD
-
 import SecurityBlocker from "./Common/SecurityBlocker";
 import Charge from "./customer_center/Charge";
 import Businesshour from "./customer_center/Businesshour";
 import AdminNotice from "./customer_center/AdminNotice";
 import Notice from "./customer_center/Notice";
 import IdAuth from "./customer_center/Idauth";
-
-
-=======
 import DepositJoin from "./productSubscription/DepositJoin";
 import LoanAgreement from "./sound_loan/customer/LoanAgreement";
 import LoanInfoApply from "./sound_loan/customer/LoanInfoApply";
 import ExchangeWalletStatus from "./exchange/customer/ExchangeWalletStatus";
->>>>>>> dev
 function App() {
   return (
     <div className="App">
