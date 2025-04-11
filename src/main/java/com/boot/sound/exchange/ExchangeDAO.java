@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.boot.sound.exchange.dto.ExchangeTransactionDTO;
+import com.boot.sound.exchange.dto.ExchangeWalletDTO;
 import com.boot.sound.inquire.account.AccountDTO;
 
 @Mapper
@@ -65,5 +67,10 @@ public interface ExchangeDAO {
     // 환전 내역 거래번호로 조회
     public ExchangeTransactionDTO findTransByTransactionId(Long exchange_transaction_id);
 
+    // 지갑목록 조회
+    public List<ExchangeWalletDTO> findWalletList(String customer_id);
+    
+    // 지갑 비활성화
+    public int deactivateWallet(Long wallet_id);
 }
 

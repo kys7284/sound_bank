@@ -62,14 +62,10 @@ import Voicebot from "./customer_center/Voicebot";
 import Bankauth from "./customer_center/Bankauth";
 import ExRate from "./exchange/customer/ExRate";
 import ExRequest from "./exchange/customer/ExRequest";
-import ExCreateAccount from "./exchange/customer/ExCreateAccount";
-import ExRequestSetLimit from "./exchange/customer/ExRequestSetLimit";
 import ExList from "./exchange/customer/ExList";
 import ExAccountManagement from "./exchange/customer/ExAccountManagement";
 import AdminExAccountRequestList from "./exchange/admin/AdminExAccountRequestList";
 import AdminExAccountStatement from "./exchange/admin/AdminExAccountStatement";
-import AdminExLimit from "./exchange/admin/AdminExLimit";
-import AdminExSetCharge from "./exchange/admin/AdminExSetCharge";
 import LoanInsertForm from "./sound_loan/admin/LoanInsertForm";
 import LoanCalculator from "./sound_loan/customer/LoanCalculator";
 import LoanChart from "./sound_loan/customer/LoanChart";
@@ -77,22 +73,16 @@ import LoanCreditScore from "./sound_loan/customer/LoanCreditScore";
 import Join from "./customer/Join";
 import Login from "./customer/Login";
 import Authcenter from "./customer_center/Authcenter";
-<<<<<<< HEAD
-
 import SecurityBlocker from "./Common/SecurityBlocker";
 import Charge from "./customer_center/Charge";
 import Businesshour from "./customer_center/Businesshour";
 import AdminNotice from "./customer_center/AdminNotice";
 import Notice from "./customer_center/Notice";
 import IdAuth from "./customer_center/Idauth";
-
-
-=======
 import DepositJoin from "./productSubscription/DepositJoin";
 import LoanAgreement from "./sound_loan/customer/LoanAgreement";
 import LoanInfoApply from "./sound_loan/customer/LoanInfoApply";
 import ExchangeWalletStatus from "./exchange/customer/ExchangeWalletStatus";
->>>>>>> dev
 function App() {
   return (
     <div className="App">
@@ -193,8 +183,7 @@ function App() {
           <Route path="/ex_account_management" element={<ExAccountManagement />} /> {/* 외환 지갑 해지 */}
           <Route path="/exchange_wallet_status" element={<ExchangeWalletStatus />} /> {/* 내 지갑 */}
           <Route path="/admin_ex_request_list" element={<AdminExAccountRequestList />} /> {/* 환전 신청 현황 (customer로 이동됨) */}
-          <Route path="/admin_ex_management" element={<AdminExAccountStatement />} /> {/* 지갑상태변경 */}
-          <Route path="/admin_ex_limit" element={<AdminExLimit />} /> {/* 환전한도 설정 */}
+          <Route path="/admin_ex_management" element={<AdminExAccountStatement />} /> {/* (관리자)지갑상태변경 */}        
           {/* 외환 Route 끝 */}
           {/* 고객센터 Route 시작 */}
           <Route path="/customerservice" element={<Customerservice />} /> {/* 고객센터 헤더 */}
