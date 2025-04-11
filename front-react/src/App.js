@@ -66,7 +66,6 @@ import ExList from "./exchange/customer/ExList";
 import ExAccountManagement from "./exchange/customer/ExAccountManagement";
 import AdminExAccountRequestList from "./exchange/admin/AdminExAccountRequestList";
 import AdminExAccountStatement from "./exchange/admin/AdminExAccountStatement";
-import AdminExLimit from "./exchange/admin/AdminExLimit";
 import LoanInsertForm from "./sound_loan/admin/LoanInsertForm";
 import LoanCalculator from "./sound_loan/customer/LoanCalculator";
 import LoanChart from "./sound_loan/customer/LoanChart";
