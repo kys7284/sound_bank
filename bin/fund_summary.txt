@@ -1,0 +1,76 @@
+Fund AI 펀드 테스트
+  
+깃 dev pull 이후 
+npm install
+npm audit fix --force
+
+python 버전 확인 (3.9, 3.10, 3.11)
+python --version 
+(만약 파이썬 다운로드가 필요하면 아래 링크 참조)
+=>	https://www.python.org/downloads/release/python-3913/
+	(카페 설치자료 참조)
+
+window 검색창에 anaconda prompt 파일켜기
+conda list 입력 + Enter
+
+fastapi                   0.115.12       
+imblearn          
+keras                     2.11.0                 
+numpy                     1.22.4   
+pandas                    2.2.3 
+pip                       25.0.1 
+pydantic                  2.10.3
+tensorflow                2.11.0
+uvicorn                   0.34.0 
+
+확인하기
+
+없으면 pip install 해당이름==버전 (install 실패시 : 버전없이 그냥 설치)
+
+Visual Studio에서 
+Ctrl + Shift + p 단축키로 검색창 열어서 Python Select Interpreter 선택
+Python 3.9.21('base') 접속
+
+(만약 버전이 다르면 anaconda prompt에서 conda install python==3.9.21)
+
+Command Prompt로 이동후 (Launch Profile ∨ 버튼)
+(base) D:\DEV\workspace_springBoot_ict04\sound_bank\front-react> 라고 돼있는지 확인
+
+cd front-react/src/fund/data로 이동
+python Investment_AI.py 실행
+
+기다린다...
+
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+화면이 뜨면 AI활용 준비 완료 (Ctrl + C로 나가면 안된다)
+
+Command Prompt로 이동후 (Launch Profile ∨ 버튼)
+
+npm start
+
+(실행 안되면 pip install --upgrade tenserflow==2.11.0)
+
+*** react를 껐다 켜서 AI테스트 진행하려면 항상 python Investment_AI.py 명령어로 http://127.0.0.1:8000 서버를 켜줘야 한다 ***
+<< 관리자 >>
+AI data training 실행순서 :
+
+python Generate_training_data.py -> python Generate_model.py -> python Investment_AI.py
+ 
+	
+
+(base) D:\DEV\workspace_springBoot_ict04\sound_bank\front-react\src\fund\data>python Generate_training_data.py
+
+	=> (샘플 데이터가 생성되었습니다.
+	     파일 경로 존재 여부: True)-> 샘플데이터 생성 성공
+
+(base) D:\DEV\workspace_springBoot_ict04\sound_bank\front-react\src\fund\data>python Generate_model.py
+
+	=> 3개 도표 확인
+
+(base) D:\DEV\workspace_springBoot_ict04\sound_bank\front-react\src\fund\data>python Investment_AI.py
+
+	=> Test Accuracy: 0.10000000149011612
+		모델이 저장되었습니다.
+		모델이 로드되었습니다.
+
+  

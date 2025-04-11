@@ -9,7 +9,6 @@ import LoanManage from "./sound_loan/customer/LoanManage";
 import LoanService from "./sound_loan/customer/LoanService";
 import LoanCustomerList from "./sound_loan/admin/LoanCustomerList";
 import LoanList from "./sound_loan/admin/LoanList";
-import ChartManage from "./sound_loan/admin/ChartManage";
 import LoanDetail from "./sound_loan/admin/LoanDetail";
 import LoanUpdate from "./sound_loan/admin/LoanUpdate";
 import Inquire from "./inquire/Inquire";
@@ -19,7 +18,9 @@ import InquireAssets from "./inquire/InquireAssets";
 import Transfer from "./transfer/customer/Transfer";
 import TransInstant from "./transfer/customer/TransInstant";
 import TransAuto from "./transfer/customer/TransAuto";
+import TransAutoEdit from "./transfer/customer/TransAutoEdit";
 import TransMulti from "./transfer/customer/TransMulti";
+import TransMultiEdit from "./transfer/customer/TransMultiEdit";
 import TransLimit from "./transfer/customer/TransLimit";
 import TransferAdmin from "./transfer/admin/TransferAdmin";
 import LimitAdmin from "./transfer/admin/LimitAdmin";
@@ -28,6 +29,7 @@ import Fund from "./fund/customer/Fund";
 import FundSearch from "./fund/customer/FundSearch";
 import FundList from "./fund/customer/FundList";
 import FundTest from "./fund/customer/FundTest";
+import FundTestResult from "./fund/customer/FundTestResult";
 import FundRecommend from "./fund/customer/FundRecommend";
 import MyFund from "./fund/customer/MyFund";
 import MyFundInfo from "./fund/customer/MyFundInfo";
@@ -75,6 +77,7 @@ import LoanCreditScore from "./sound_loan/customer/LoanCreditScore";
 import Join from "./customer/Join";
 import Login from "./customer/Login";
 import Authcenter from "./customer_center/Authcenter";
+<<<<<<< HEAD
 
 import SecurityBlocker from "./Common/SecurityBlocker";
 import Charge from "./customer_center/Charge";
@@ -84,6 +87,12 @@ import Notice from "./customer_center/Notice";
 import IdAuth from "./customer_center/Idauth";
 
 
+=======
+import DepositJoin from "./productSubscription/DepositJoin";
+import LoanAgreement from "./sound_loan/customer/LoanAgreement";
+import LoanInfoApply from "./sound_loan/customer/LoanInfoApply";
+import ExchangeWalletStatus from "./exchange/customer/ExchangeWalletStatus";
+>>>>>>> dev
 function App() {
   return (
     <div className="App">
@@ -101,6 +110,7 @@ function App() {
           {/* 조회/입출금 Route 끝 */}
           {/* 상품가입 Route 시작 */}
           <Route path="/fixedDeposit" element={<FixedDeposit />} />
+          <Route path="/DepositJoin/:name" element={<DepositJoin />} /> {/* ID를 URL 파라미터로 전달 */}
           <Route path="/installmentSavings" element={<InstallmentSavings />} />
           <Route path="/precautions" element={<Precautions />} />
           {/* 상품가입 Route 끝 */}
@@ -126,7 +136,9 @@ function App() {
           <Route path="/transfer" element={<Transfer />} />
           <Route path="/transInstant" element={<TransInstant />} />
           <Route path="/transAuto" element={<TransAuto />} />
+          <Route path="/transAutoEdit" element={<TransAutoEdit />} />
           <Route path="/transMulti" element={<TransMulti />} />
+          <Route path="/transMultiEdit" element={<TransMultiEdit />} />
           <Route path="/transLimit" element={<TransLimit />} />
           {/* 이체(고객) Route 끝 */}
           {/* 이체(관리자) Route 시작 */}
@@ -136,6 +148,8 @@ function App() {
           {/* 이체(관리자) Route 끝 */}
           {/* 대출관련 Route 시작 */}
           <Route path="/loanApply" element={<LoanApply />} />
+          <Route path="/loanAgreement/:loan_id" element={<LoanAgreement />} />
+          <Route path="/loanInfoApply/:loan_id" element={<LoanInfoApply />} />
           <Route path="/loanStatus" element={<LoanStatus />} />
           <Route path="/loanManage" element={<LoanManage />} />
           <Route path="/loanService" element={<LoanService />} />
@@ -147,13 +161,13 @@ function App() {
           <Route path="/loanDetail/:loan_id" element={<LoanDetail />} />
           <Route path="/loanUpdate/:loan_id" element={<LoanUpdate />} />
           <Route path="/loanCustomerList" element={<LoanCustomerList />} />
-          <Route path="/chartManage" element={<ChartManage />} />
           {/* 대출관련 Route 종료 */}
           {/* 펀드 Route 시작 */}
           <Route path="/fund" element={<Fund />} />
           <Route path="/fundSearch" element={<FundSearch />} />
           <Route path="/fundList" element={<FundList />} />
           <Route path="/fundTest" element={<FundTest />} />
+          <Route path="/test-result" element={<FundTestResult />} />
           <Route path="/fundRecommend" element={<FundRecommend />} />
           <Route path="/myFund" element={<MyFund />} />
           <Route path="/myFundInfo" element={<MyFundInfo />} />
@@ -174,15 +188,13 @@ function App() {
           {/* 펀드 Route 끝 */}
           {/* 외환 Route 시작 */}
           <Route path="/ex_rate" element={<ExRate />} /> {/* 환율조회/계산기 */}
-          <Route path="/ex_request" element={<ExRequest />} />{" "}{/* 환전신청하기 */}
-          <Route path="/ex_create_account" element={<ExCreateAccount />} />{" "}{/* 외환 계좌 신청 */}
-          <Route path="/ex_set_limit" element={<ExRequestSetLimit />} />{" "}{/* 외환 계좌 한도 설정 */}
-          <Route path="/exchange_list" element={<ExList />} />{" "}{/* 환전내역 조회 */}
-          <Route path="/ex_account_management" element={<ExAccountManagement />}/>{" "} {/* 외환 계좌 해지 */}
-          <Route path="/admin_ex_request_list" element={<AdminExAccountRequestList />}/>{" "}{/* 외환 계좌 신청 현황 */}
-          <Route path="/admin_ex_management" element={<AdminExAccountStatement />}/>{" "}{/* 계좌상태변경 */}
-          <Route path="/admin_ex_limit" element={<AdminExLimit />} />{" "}{/* 환전한도 설정 */}
-          <Route path="/admin_ex_set_charge"element={<AdminExSetCharge />}/>{" "}{/* 고객별 환전 수수료 조정 */}
+          <Route path="/ex_request" element={<ExRequest />} /> {/* 환전신청하기 */}
+          <Route path="/exchange_list" element={<ExList />} /> {/* 환전내역 조회 */}
+          <Route path="/ex_account_management" element={<ExAccountManagement />} /> {/* 외환 지갑 해지 */}
+          <Route path="/exchange_wallet_status" element={<ExchangeWalletStatus />} /> {/* 내 지갑 */}
+          <Route path="/admin_ex_request_list" element={<AdminExAccountRequestList />} /> {/* 환전 신청 현황 (customer로 이동됨) */}
+          <Route path="/admin_ex_management" element={<AdminExAccountStatement />} /> {/* 지갑상태변경 */}
+          <Route path="/admin_ex_limit" element={<AdminExLimit />} /> {/* 환전한도 설정 */}
           {/* 외환 Route 끝 */}
           {/* 고객센터 Route 시작 */}
           <Route path="/customerservice" element={<Customerservice />} /> {/* 고객센터 헤더 */}
@@ -198,13 +210,10 @@ function App() {
           <Route path="/charge" element={<Charge />} />                   {/* 금리 안내 */}
           
           {/* 고객센터 Route 끝 */}
-
           {/* 계좌개설 / 로그인 Route 시작 */}
           <Route path="/join" element={<Join />} />
           <Route path="/login" element={<Login />} />
           {/* 계좌개설 / 로그인 Route 끝 */}
-
-
         </Routes>
         <Footer />
       </BrowserRouter>
