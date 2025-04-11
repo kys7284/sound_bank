@@ -345,7 +345,7 @@ const Header = () => {
                       <NavDropdown.Item
                         className="sub-item"
                         as={Link}
-                        to="/limitAdmin"
+                        to="/multiAdmin"
                       >
                         다건이체 승인
                       </NavDropdown.Item>
@@ -354,7 +354,7 @@ const Header = () => {
                       <NavDropdown.Item
                         className="sub-item"
                         as={Link}
-                        to="/multiAdmin"
+                        to="/limitAdmin"
                       >
                         이체한도 심사
                       </NavDropdown.Item>
