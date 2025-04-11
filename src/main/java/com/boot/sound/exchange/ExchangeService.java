@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.boot.sound.exchange.api.ExchangeRateApiClient;
+import com.boot.sound.exchange.dto.ExchangeRateDTO;
+import com.boot.sound.exchange.dto.ExchangeTransactionDTO;
+import com.boot.sound.exchange.dto.ExchangeWalletDTO;
 import com.boot.sound.inquire.account.AccountDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -112,6 +115,7 @@ public class ExchangeService {
         	ExchangeWalletDTO wallet = dao.findWalletByCustomerAndCurrency(customerId, currencyCode);
 
             wallet.setBalance(wallet.getBalance().add(exchangedAmount));
+            wallet.setStatus("ACTIVE");
             dao.updateWalletBalance(wallet);
        
         } else { // 외환지갑 없을시에는 새로 등록
@@ -183,7 +187,6 @@ public class ExchangeService {
     @Transactional
     public void handleApprovalAction(ExchangeTransactionDTO dto) {
 
-        String customer_id = dto.getCustomer_id(); // 고객 ID
         Long exchange_transaction_id = dto.getExchange_transaction_id(); // 거래 ID
         String approval_status = dto.getApproval_status(); // "APPROVED" or "REJECTED"
         System.out.println(exchange_transaction_id + " " + approval_status);
@@ -311,4 +314,20 @@ public class ExchangeService {
         if (raw == null || raw.isBlank()) return BigDecimal.ZERO;
         return new BigDecimal(raw.replace(",", "").trim());
     }
+    
+    // 지갑 목록 조회
+    @Transactional(readOnly=true)
+    public List<ExchangeWalletDTO> findWalletList(String customer_id){
+    	System.out.println("service - findWalletList");
+    	
+    	return dao.findWalletList(customer_id);
+    }
+    
+    @Transactional
+    public int deactivateWallet(Long wallet_id) {
+    	System.out.println("service - deactivateWallet");
+    	
+    	return dao.deactivateWallet(wallet_id);
+    }
+    
 }
