@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+ <mapper namespace="com.boot.sound.loan.LoanDAO">
+ 	<select id="loanList" resultType="com.boot.sound.loan.LoanDTO">
+ 		SELECT * FROM LOAN_TBL
+ 		ORDER BY LOAN_ID
+ 	</select>
+ 
+ 	<insert id="loanInsert">
+ 		INSERT INTO LOAN_TBL(LOAN_NAME,LOAN_MAX_AMOUNT,LOAN_MIN_AMOUNT,INTEREST_RATE,LOAN_TERM,LOAN_INFO,LOAN_TYPE)
+		VALUES( #{loan_name},#{loan_max_amount},#{loan_min_amount},#{interest_rate},#{loan_term},#{loan_info},#{loan_type})
+ 	</insert>
+
+	<select id="loanDetail" parameterType="int">
+		SELECT * FROM LOAN_TBL
+		WHERE loan_id = #{loan_id}
+	</select>
+	
+	<delete id="loanDelete" parameterType="int">
+		DELETE FROM LOAN_TBL
+		WHERE loan_id = #{loan_id}
+	</delete>
+	
+	<update id="loanUpdate" parameterType="com.boot.sound.loan.LoanDTO">
+		UPDATE LOAN_TBL
+		SET loan_name = #{loan_name}
+		,	loan_min_amount = #{loan_min_amount}
+		,	loan_max_amount	= #{loan_max_amount}
+		,	interest_rate = #{interest_rate}
+		,	loan_term = #{loan_term}
+		,	loan_info = #{loan_info}
+		,	loan_type = #{loan_type}
+		WHERE loan_id = #{loan_id}
+	</update>
+	
+	<select id="loanCnt" resultType="int">
+		SELECT COUNT(*) FROM LOAN_TBL
+	</select>
+	
+	<select id="loanTypeSearch" parameterType="String" resultType="com.boot.sound.loan.LoanDTO">
+		SELECT * FROM LOAN_TBL
+ 		WHERE loan_type = #{loan_type}
+	</select>
+	
+	<select id="loanTypeCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM LOAN_TBL
+		WHERE loan_type = #{loan_type}
+	</select>
+	
+	<select id="loanNameSearch" parameterType="String" resultType="com.boot.sound.loan.LoanDTO">
+	SELECT * FROM LOAN_TBL
+	WHERE loan_name LIKE '%${loan_name}%'
+	</select>
+	
+	<select id="loanNameCnt" parameterType="String" resultType="int">
+	SELECT COUNT(*) FROM LOAN_TBL
+	WHERE loan_name LIKE '%${loan_name}%'
+	</select>
+	
+	<insert id="consentInsert" parameterType="com.boot.sound.loan.LoanConsentDTO">
+		INSERT INTO LOAN_AGREE_STATUS_TBL(agree_status_id,loan_id,consent_to_use,consent_to_view)
+		VALUES ((SELECT NVL(MAX(agree_status_id)+1,1) FROM LOAN_AGREE_STATUS_TBL),#{loan_id},#{consent_to_use},#{consent_to_view})
+	</insert>
+ 
+ 
+ </mapper>

@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.boot.sound.customer.CustomerDTO;
+import com.boot.sound.jwt.dto.CredentialsDTO;
+
 @Service
 public class LoanService {
 
@@ -51,5 +54,82 @@ public class LoanService {
 		System.out.println("서비스 - loanDetail");
 		return dao.loanDetail(loan_id);
 	}
-
+	
+	// 전체 대출 상품 갯수
+	@Transactional
+	public int loanCnt() {
+		System.out.println("서비스 - loanCnt()");
+		return dao.loanCnt();
+	}
+	
+	// 대출유형 검색 리스트
+	@Transactional
+	public List<LoanDTO> loanTypeSearch(String loan_type) {
+		System.out.println("서비스 - loanTypeSearch()");
+		return dao.loanTypeSearch(loan_type);
+	}
+	
+	// 대출 유형 상품별 갯수
+	@Transactional
+	public int loanTypeCnt(String loan_type) {
+		System.out.println("서비스 - loanTypeCnt()");
+		return dao.loanTypeCnt(loan_type);
+	}
+	
+	// 대출 이름검색 리스트
+	@Transactional
+	public List<LoanDTO> loanNameSearch(String loan_name){
+		System.out.println("서비스 - loanNameSearch()");
+		return dao.loanNameSearch(loan_name);
+	}
+	
+	// 대출 이름 검색 결과 갯수
+	@Transactional
+	public int loanNameCnt(String loan_name){
+		System.out.println("서비스 - loanNameSearch()");
+		return dao.loanNameCnt(loan_name);
+	}
+	
+	// 대출실행 필수동의내역 저장
+	@Transactional
+	public int consentInsert(LoanConsentDTO dto) {
+		System.out.println("서비스 - consentInsert()");
+		return dao.consentInsert(dto);
+	}
+	
+	// 대출신청 고객정보
+	@Transactional
+	public LoanCustomerDTO loanCustomer(String customerId, String loan_id) {
+		System.out.println("서비스 - loanCustomer()");
+		System.out.println(dao.loanCustomer(customerId, loan_id));
+		return dao.loanCustomer(customerId, loan_id);
+	}
+	
+	// 대출신청 정보 저장
+	@Transactional
+	public int loanApply(LoanStatusDTO dto) {
+		System.out.println("서비스 - loanApply()");
+		return dao.loanApply(dto);
+	}
+	
+	// 대출 현황 리스트
+	@Transactional
+	public List<LoanStatusDTO>loanStatus(){
+		System.out.println("서비스 - loanStatus()");
+		return dao.loanStatus();
+	}
+	
+	// 대출 상태 변경 및 변경정보 문자 송신
+	public boolean loanStatusUpdate(int loan_status_no, String loan_progress) {
+		System.out.println("서비스 - loanStatusUpdate()");
+		return dao.loanStatusUpdate(loan_status_no, loan_progress);
+	}
+	
+	// 문자 발송을 위한 고객정보 조회
+	public CustomerDTO selecCustomer(String customerId) {
+		System.out.println("서비스 - selecCustomer()");
+		return dao.selecCustomer(customerId);
+	}
+	
+	
 }
