@@ -35,7 +35,8 @@ public class SecurityConfig {
 			.and()
 			.authorizeHttpRequests((requests) -> requests
 					.antMatchers(HttpMethod.GET, "/api/loanList","/api/loanCnt","/api/*","/api/exchange/*"
-							,"/api/loanTypeSearch/","/api/loanTypeCnt/","/api/loanNameSearch/","/api/loanNameCnt/","/api/loanDetail/").permitAll() 
+							,"/api/loanTypeSearch/","/api/loanTypeCnt/","/api/loanNameSearch/","/api/loanNameCnt/","/api/loanDetail/", "/elk/*",
+						    "/elk/user/action").permitAll() 
 					.antMatchers(HttpMethod.POST, "/api/*", "/api/login.do","/api/refresh-token", "/api/**").permitAll()
 					.antMatchers(HttpMethod.GET, "/api/*").permitAll() 
 					.antMatchers(HttpMethod.POST, "/api/*").permitAll()

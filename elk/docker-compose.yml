@@ -17,8 +17,9 @@ services:
     ports:
       - "5044:5044"
     volumes:
+      - ./logs:/usr/share/logstash/logs
       - ./pipeline:/usr/share/logstash/pipeline
-      - ./elk-local/logs:/usr/share/logstash/logs
+
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.3

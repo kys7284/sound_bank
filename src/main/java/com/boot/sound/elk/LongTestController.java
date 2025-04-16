@@ -1,6 +1,7 @@
 package com.boot.sound.elk;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LongTestController {
 
     @GetMapping("/log-test")
-    public String testLog() {
-        log.info("환율 저장 시도: USD 1350.25");
-        log.error("환율 저장 실패: API Timeout 발생");
-        return "로그발생완료";
+    public String testLog(@RequestParam String user_id, @RequestParam String action) {
+        log.info("log-test | user_id={} | action={}",user_id, action);
+        return "logggggggg";
     }
     
 
