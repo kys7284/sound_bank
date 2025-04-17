@@ -19,7 +19,9 @@ services:
     volumes:
       - ./logs:/usr/share/logstash/logs
       - ./pipeline:/usr/share/logstash/pipeline
-
+      - ./drivers:/usr/share/logstash/drivers
+    depends_on:
+      - elasticsearch
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.3

@@ -14,8 +14,9 @@ target/
 .sts4-cache
 application.properties
 application-API-KEY.properties
-/elk-local/logs/
-
+/elk/logs/
+/drivers
+/elk/drivers/
 ### IntelliJ IDEA ###
 .idea
 *.iws
