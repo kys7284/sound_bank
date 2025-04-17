@@ -38,10 +38,10 @@ public class SecurityConfig {
 							,"/api/loanTypeSearch/","/api/loanTypeCnt/","/api/loanNameSearch/","/api/loanNameCnt/","/api/loanDetail/", "/elk/*",
 						    "/elk/user/action").permitAll() 
 					.antMatchers(HttpMethod.POST, "/api/*", "/api/login.do","/api/refresh-token", "/api/**").permitAll()
-					.antMatchers(HttpMethod.GET, "/api/*").permitAll() 
-					.antMatchers(HttpMethod.POST, "/api/*").permitAll()
-					.antMatchers(HttpMethod.DELETE,"/api/*").permitAll()
-					.antMatchers(HttpMethod.PUT,"/api/*").permitAll()
+					.antMatchers(HttpMethod.GET, "/api/**").permitAll() 
+					.antMatchers(HttpMethod.POST, "/api/**").permitAll()
+					.antMatchers(HttpMethod.DELETE,"/api/**").permitAll()
+					.antMatchers(HttpMethod.PUT,"/api/**").permitAll()
 					.anyRequest().authenticated()
 		);			
 		
