@@ -20,13 +20,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.boot.sound.elk.LongTestController;
 import com.boot.sound.exchange.dto.ExchangeTransactionDTO;
 import com.boot.sound.exchange.dto.ExchangeWalletDTO;
 import com.boot.sound.inquire.account.AccountDTO;
 
+import lombok.extern.slf4j.Slf4j;
 
 
 
+@Slf4j
 @RestController
 @RequestMapping("/api/exchange")
 @CrossOrigin // React 프론트엔드 주소
@@ -49,7 +52,7 @@ public class ExchangeController {
 
         List<Map<String, Object>> rates = service.getExchangeRates(date); 
         System.out.println("List = " + rates);
-
+        
         return ResponseEntity.ok(rates); // 상태 코드 200과 함께 반환
     }
     
@@ -124,13 +127,23 @@ public class ExchangeController {
     // 환전요청
     @PostMapping("/walletCharge")
     public ResponseEntity<?> handleExchange(@RequestBody ExchangeTransactionDTO dto) {
-        if ("buy".equalsIgnoreCase(dto.getTransaction_type())) {
-            return ResponseEntity.ok(service.chargeWallet(dto));
-        } else if ("sell".equalsIgnoreCase(dto.getTransaction_type())) {
-            return ResponseEntity.ok(service.sellForeignCurrency(dto));
-        } else {
-            return ResponseEntity.badRequest().body("Invalid transaction type");
-        }
+        
+    	if ("buy".equalsIgnoreCase(dto.getTransaction_type())) {
+        
+    		log.info("ex-log | customer_id={} | action={} | currency_code={}",dto.getCustomer_id(), dto.getTransaction_type(), dto.getCurrency_code());
+            
+    		return ResponseEntity.ok(service.chargeWallet(dto));
+        
+    	} else if ("sell".equalsIgnoreCase(dto.getTransaction_type())) {
+        
+    		log.info("ex-log | customer_id={} | action={} | currency_code={}",dto.getCustomer_id(), dto.getTransaction_type(), dto.getCurrency_code());
+            
+    		return ResponseEntity.ok(service.sellForeignCurrency(dto));
+        
+    	} else {
+    		
+    		return ResponseEntity.badRequest().body("Invalid transaction type");
+    	}
     }
 
     // 환전요청 목록
