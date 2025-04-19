@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
  
-<mapper namespace="com.boot.sound.exchange.ExchangeDAO">
+<mapper namespace="com.boot.sound.exchange.dao.ExchangeDAO">
 	<!-- 계좌 조회 -->
 	<select id="findAccountByNumber" parameterType="String" resultType="com.boot.sound.inquire.account.AccountDTO">
 	  SELECT * FROM account_tbl
@@ -104,7 +104,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        currency_name,
 	        base_rate,
 	        buy_rate,
-	        sell_rate
+	        sell_rate,
+	        fee_rate
 	    )
 	    VALUES (
 	        #{base_date},
@@ -112,7 +113,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        #{currency_name},
 	        #{base_rate},
 	        #{buy_rate},
-	        #{sell_rate}
+	        #{sell_rate},
+	        #{fee_rate}
 	    )
 	</insert>
 	
@@ -125,7 +127,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			ew.balance,
 			IFNULL(avg.avg_rate, 0) AS average_rate,
 			IFNULL(er.BASE_RATE, 0) AS current_rate
-		FROM exchange_wallet ew
+		FROM exchange_wallet ew		 
 		LEFT JOIN (
 			SELECT 
 				et.customer_id,
@@ -144,7 +146,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ON er.base_date = CURDATE()
 		AND ew.currency_code = er.currency_code
 		WHERE ew.customer_id = #{customer_id}
-		AND ew.balance > 0;
+		AND ew.balance > 0
+		AND ew.status = 'ACTIVE';
 	</select>
 	
 	<!-- DB저장 환율 조회 -->
